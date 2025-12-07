@@ -62,6 +62,10 @@ public class Bootstrap {
             }
         }
 
+        if (System.getProperty("libraryDirectory") == null) {
+            System.setProperty("libraryDirectory", libraryDir);
+        }
+
         if (modulePath != null) {
             ModuleUtil.addModules(modulePath);
         }
