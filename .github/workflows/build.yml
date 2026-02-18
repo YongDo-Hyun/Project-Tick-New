@@ -1,0 +1,205 @@
+name: Repack Existing Images
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "dockerfiles/**"
+      - ".github/workflows/build.yml"
+      - "README.md"
+  schedule:
+    - cron: "17 3 * * *"
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.make.outputs.matrix }}
+      count: ${{ steps.make.outputs.count }}
+    steps:
+      - id: make
+        run: |
+          set -euo pipefail
+
+          APT_CUSTOM='apt-get update && apt-get install -y --no-install-recommends dpkg-dev ninja-build scdoc appstream libxcb-cursor-dev openjdk-21-jdk lcov libdbus-1-dev libinih-dev libsystemd-dev qt6-base-dev qt6-declarative-dev qt6-tools-dev qt6-tools-dev-tools && if apt-cache show libtiff6 >/dev/null 2>&1; then apt-get install -y --no-install-recommends libtiff6; else apt-get install -y --no-install-recommends libtiff5; fi'
+          APK_PACKAGES='ninja scdoc appstream libxcb openjdk21-jdk lcov dbus-dev inih-dev libsystemd-dev tiff-dev qt6-qtbase-dev qt6-qtdeclarative-dev qt6-qttools-dev'
+          DNF_PACKAGES='ninja-build scdoc appstream libxcb-devel java-21-openjdk-devel lcov dbus-devel inih-devel systemd-devel libtiff qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qttools-devel'
+          YUM_CUSTOM='yum install -y ninja-build scdoc lcov dbus-devel systemd-devel libtiff qt5-qtbase-devel qt5-qtdeclarative-devel qt5-qttools-devel && (yum install -y java-21-openjdk-devel || yum install -y java-17-openjdk-devel)'
+          ZYPPER_PACKAGES='ninja scdoc appstream libxcb-devel java-21-openjdk-devel lcov dbus-1-devel inih-devel systemd-devel libtiff qt6-base-devel qt6-declarative-devel qt6-tools-devel'
+          PACMAN_PACKAGES='base-devel ninja scdoc appstream libxcb jdk21-openjdk lcov dbus inih systemd-libs libtiff qt6-base qt6-declarative qt6-tools'
+          XBPS_PACKAGES='ninja scdoc appstream libxcb-devel openjdk21 lcov dbus-devel inih-devel libsystemd-devel tiff-devel qt6-base-devel qt6-declarative-devel qt6-tools-devel'
+          NIX_CUSTOM='nix-channel --update && nix-env -iA nixpkgs.qt6.qtbase nixpkgs.qt6.qtdeclarative nixpkgs.qt6.qttools nixpkgs.ninja nixpkgs.scdoc nixpkgs.appstream nixpkgs.jdk21 nixpkgs.lcov nixpkgs.dbus nixpkgs.inih nixpkgs.systemd nixpkgs.libtiff'
+          EMERGE_CUSTOM='emerge --sync && emerge dev-qt/qtbase dev-qt/qtdeclarative dev-qt/qttools dev-util/ninja app-text/scdoc sys-apps/dbus dev-libs/libinih sys-apps/systemd media-libs/tiff dev-util/lcov virtual/jdk'
+
+          rows=""
+          packages=""
+          custom_install=""
+          update_cmd=""
+          clean_cmd=""
+
+          set_profile() {
+            local manager="$1"
+            packages=""
+            custom_install=""
+            update_cmd=""
+            clean_cmd=""
+
+            case "$manager" in
+              apt)
+                custom_install="$APT_CUSTOM"
+                clean_cmd='rm -rf /var/lib/apt/lists/*'
+                ;;
+              apk)
+                packages="$APK_PACKAGES"
+                clean_cmd='true'
+                ;;
+              dnf)
+                packages="$DNF_PACKAGES"
+                clean_cmd='dnf clean all || true'
+                ;;
+              yum)
+                custom_install="$YUM_CUSTOM"
+                clean_cmd='yum clean all || true'
+                ;;
+              zypper)
+                packages="$ZYPPER_PACKAGES"
+                clean_cmd='zypper clean --all || true'
+                ;;
+              pacman)
+                packages="$PACMAN_PACKAGES"
+                clean_cmd='pacman -Scc --noconfirm || true'
+                ;;
+              xbps)
+                packages="$XBPS_PACKAGES"
+                clean_cmd='xbps-remove -O || true'
+                ;;
+              nix)
+                custom_install="$NIX_CUSTOM"
+                clean_cmd='nix-collect-garbage -d || true'
+                ;;
+              emerge)
+                custom_install="$EMERGE_CUSTOM"
+                clean_cmd='true'
+                ;;
+              *)
+                echo "Unsupported manager: $manager" >&2
+                exit 2
+                ;;
+            esac
+          }
+
+          add_row() {
+            local id="$1"
+            local dockerfile="$2"
+            local target_name="$3"
+            local manager="$4"
+
+            set_profile "$manager"
+
+            row=$(jq -cn \
+              --arg id "$id" \
+              --arg dockerfile "$dockerfile" \
+              --arg target_name "$target_name" \
+              --arg target_tag "latest" \
+              --arg packages "$packages" \
+              --arg custom_install "$custom_install" \
+              --arg update_cmd "$update_cmd" \
+              --arg clean_cmd "$clean_cmd" \
+              '{id:$id,dockerfile:$dockerfile,target_name:$target_name,target_tag:$target_tag,packages:$packages,custom_install:$custom_install,update_cmd:$update_cmd,clean_cmd:$clean_cmd}')
+
+            if [[ -z "$rows" ]]; then
+              rows="$row"
+            else
+              rows="$rows"$'\n'"$row"
+            fi
+          }
+
+          entries=(
+            "debian-bookworm-slim|dockerfiles/debian-bookworm-slim.Dockerfile|debian/bookworm-slim|apt"
+            "debian-bookworm|dockerfiles/debian-bookworm.Dockerfile|debian/bookworm|apt"
+            "debian-bullseye-slim|dockerfiles/debian-bullseye-slim.Dockerfile|debian/bullseye-slim|apt"
+            "debian-bullseye|dockerfiles/debian-bullseye.Dockerfile|debian/bullseye|apt"
+            "debian-trixie-slim|dockerfiles/debian-trixie-slim.Dockerfile|debian/trixie-slim|apt"
+            "debian-stable-slim|dockerfiles/debian-stable-slim.Dockerfile|debian/stable-slim|apt"
+            "ubuntu-2404|dockerfiles/ubuntu-2404.Dockerfile|ubuntu/24.04|apt"
+            "ubuntu-2204|dockerfiles/ubuntu-2204.Dockerfile|ubuntu/22.04|apt"
+            "ubuntu-2004|dockerfiles/ubuntu-2004.Dockerfile|ubuntu/20.04|apt"
+            "ubuntu-latest|dockerfiles/ubuntu-latest.Dockerfile|ubuntu/latest|apt"
+            "devuan-daedalus|dockerfiles/devuan-daedalus.Dockerfile|devuan/daedalus|apt"
+            "devuan-chimaera|dockerfiles/devuan-chimaera.Dockerfile|devuan/chimaera|apt"
+            "kali-rolling|dockerfiles/kali-rolling.Dockerfile|kali/rolling|apt"
+            "alpine-322|dockerfiles/alpine-322.Dockerfile|alpine/3.22|apk"
+            "alpine-321|dockerfiles/alpine-321.Dockerfile|alpine/3.21|apk"
+            "alpine-320|dockerfiles/alpine-320.Dockerfile|alpine/3.20|apk"
+            "alpine-319|dockerfiles/alpine-319.Dockerfile|alpine/3.19|apk"
+            "alpine-latest|dockerfiles/alpine-latest.Dockerfile|alpine/latest|apk"
+            "fedora-42|dockerfiles/fedora-42.Dockerfile|fedora/42|dnf"
+            "fedora-41|dockerfiles/fedora-41.Dockerfile|fedora/41|dnf"
+            "fedora-40|dockerfiles/fedora-40.Dockerfile|fedora/40|dnf"
+            "fedora-latest|dockerfiles/fedora-latest.Dockerfile|fedora/latest|dnf"
+            "centos-stream10|dockerfiles/centos-stream10.Dockerfile|centos-stream/10|dnf"
+            "centos-stream9|dockerfiles/centos-stream9.Dockerfile|centos-stream/9|dnf"
+            "rocky-10|dockerfiles/rocky-10.Dockerfile|rocky/10|dnf"
+            "rocky-9|dockerfiles/rocky-9.Dockerfile|rocky/9|dnf"
+            "alma-10|dockerfiles/alma-10.Dockerfile|alma/10|dnf"
+            "alma-9|dockerfiles/alma-9.Dockerfile|alma/9|dnf"
+            "oraclelinux-10|dockerfiles/oraclelinux-10.Dockerfile|oraclelinux/10|dnf"
+            "oraclelinux-9|dockerfiles/oraclelinux-9.Dockerfile|oraclelinux/9|dnf"
+            "oraclelinux-8|dockerfiles/oraclelinux-8.Dockerfile|oraclelinux/8|dnf"
+            "amazonlinux-2023|dockerfiles/amazonlinux-2023.Dockerfile|amazonlinux/2023|dnf"
+            "amazonlinux-2|dockerfiles/amazonlinux-2.Dockerfile|amazonlinux/2|yum"
+            "opensuse-leap-156|dockerfiles/opensuse-leap-156.Dockerfile|opensuse-leap/15.6|zypper"
+            "opensuse-leap-155|dockerfiles/opensuse-leap-155.Dockerfile|opensuse-leap/15.5|zypper"
+            "opensuse-tumbleweed|dockerfiles/opensuse-tumbleweed.Dockerfile|opensuse-tumbleweed/latest|zypper"
+            "arch-latest|dockerfiles/arch-latest.Dockerfile|arch/latest|pacman"
+            "void-latest|dockerfiles/void-latest.Dockerfile|void/latest|xbps"
+            "nix-latest|dockerfiles/nix-latest.Dockerfile|nix/latest|nix"
+            "gentoo-stage3|dockerfiles/gentoo-stage3.Dockerfile|gentoo/stage3|emerge"
+          )
+
+          for entry in "${entries[@]}"; do
+            IFS='|' read -r id dockerfile target_name manager <<<"$entry"
+            add_row "$id" "$dockerfile" "$target_name" "$manager"
+          done
+
+          matrix=$(printf '%s\n' "$rows" | jq -cs '{include:.}')
+          count=$(echo "$matrix" | jq -r '.include | length')
+          matrix_compact=$(echo "$matrix" | jq -c .)
+          echo "matrix=$matrix_compact" >> "$GITHUB_OUTPUT"
+          echo "count=$count" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: prepare
+    if: needs.prepare.outputs.count != '0'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: true
+          provenance: false
+          tags: ghcr.io/Project-Tick-Infra/images/${{ matrix.target_name }}:${{ matrix.target_tag }}
+          build-args: |
+            PACKAGES=${{ matrix.packages }}
+            CUSTOM_INSTALL=${{ matrix.custom_install }}
+            UPDATE_CMD=${{ matrix.update_cmd }}
+            CLEAN_CMD=${{ matrix.clean_cmd }}
