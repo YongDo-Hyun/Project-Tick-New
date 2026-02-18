@@ -26,13 +26,13 @@ jobs:
           set -euo pipefail
 
           APT_CUSTOM='set -eu; apt-get update; PKGS="dpkg-dev ninja-build scdoc appstream lcov libdbus-1-dev libinih-dev libsystemd-dev"; if apt-cache show libxcb-cursor-dev >/dev/null 2>&1; then PKGS="$PKGS libxcb-cursor-dev"; elif apt-cache show libxcb-cursor0-dev >/dev/null 2>&1; then PKGS="$PKGS libxcb-cursor0-dev"; fi; if apt-cache show openjdk-21-jdk >/dev/null 2>&1; then PKGS="$PKGS openjdk-21-jdk"; elif apt-cache show openjdk-17-jdk >/dev/null 2>&1; then PKGS="$PKGS openjdk-17-jdk"; else PKGS="$PKGS default-jdk"; fi; if apt-cache show qt6-base-dev >/dev/null 2>&1 && apt-cache show qt6-declarative-dev >/dev/null 2>&1 && apt-cache show qt6-tools-dev >/dev/null 2>&1; then PKGS="$PKGS qt6-base-dev qt6-declarative-dev qt6-tools-dev qt6-tools-dev-tools"; else echo "Qt6 dev packages are required but not available" >&2; exit 1; fi; if apt-cache show libtiff6 >/dev/null 2>&1; then PKGS="$PKGS libtiff6"; elif apt-cache show libtiff5 >/dev/null 2>&1; then PKGS="$PKGS libtiff5"; else PKGS="$PKGS libtiff-dev"; fi; apt-get install -y --no-install-recommends $PKGS'
-          APK_PACKAGES='ninja scdoc appstream libxcb openjdk21-jdk lcov dbus-dev inih-dev tiff-dev qt6-qtbase-dev qt6-qtdeclarative-dev qt6-qttools-dev'
+          APK_CUSTOM='set -eu; apk update; apk add --no-cache qt6-qtbase-dev qt6-qtdeclarative-dev qt6-qttools-dev; for p in ninja scdoc appstream libxcb openjdk21-jdk lcov dbus-dev inih-dev tiff-dev; do apk add --no-cache "$p" || true; done'
           DNF_CUSTOM='set -eu; dnf -y install dnf-plugins-core || true; dnf config-manager --set-enabled crb || dnf config-manager --set-enabled powertools || true; dnf -y install epel-release || dnf -y install epel-next-release || true; dnf -y makecache || true; dnf -y install appstream libxcb-devel dbus-devel systemd-devel libtiff qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qttools-devel; dnf -y install ninja-build || dnf -y install ninja; dnf -y install inih-devel || dnf -y install libinih-devel; dnf -y install lcov || true; dnf -y install scdoc || (dnf -y install cargo git && cargo install --locked scdoc && ln -sf /root/.cargo/bin/scdoc /usr/local/bin/scdoc); dnf -y install java-21-openjdk-devel || dnf -y install java-17-openjdk-devel || dnf -y install java-latest-openjdk-devel'
           YUM_CUSTOM='yum install -y ninja-build scdoc lcov dbus-devel systemd-devel libtiff qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qttools-devel && (yum install -y java-21-openjdk-devel || yum install -y java-17-openjdk-devel)'
-          ZYPPER_PACKAGES='ninja scdoc appstream libxcb-devel java-21-openjdk-devel lcov dbus-1-devel inih-devel systemd-devel libtiff qt6-base-devel qt6-declarative-devel qt6-tools-devel'
-          PACMAN_PACKAGES='base-devel ninja scdoc appstream libxcb jdk21-openjdk lcov dbus inih systemd-libs libtiff qt6-base qt6-declarative qt6-tools'
-          XBPS_PACKAGES='ninja scdoc appstream libxcb-devel openjdk21 lcov dbus-devel inih-devel libsystemd-devel tiff-devel qt6-base-devel qt6-declarative-devel qt6-tools-devel'
-          NIX_CUSTOM='nix-channel --update && nix-env -iA nixpkgs.qt6.qtbase nixpkgs.qt6.qtdeclarative nixpkgs.qt6.qttools nixpkgs.ninja nixpkgs.scdoc nixpkgs.appstream nixpkgs.jdk21 nixpkgs.lcov nixpkgs.dbus nixpkgs.inih nixpkgs.systemd nixpkgs.libtiff'
+          ZYPPER_CUSTOM='set -eu; zypper --non-interactive refresh; zypper --non-interactive install --no-recommends qt6-base-devel qt6-declarative-devel qt6-tools-devel; for p in ninja scdoc appstream libxcb-devel java-21-openjdk-devel lcov dbus-1-devel inih-devel systemd-devel libtiff; do zypper --non-interactive install --no-recommends "$p" || true; done'
+          PACMAN_CUSTOM='set -eu; pacman -Syu --noconfirm; pacman -S --noconfirm --needed qt6-base qt6-declarative qt6-tools; for p in base-devel ninja scdoc appstream libxcb jdk21-openjdk lcov dbus inih systemd-libs libtiff; do pacman -S --noconfirm --needed "$p" || true; done'
+          XBPS_CUSTOM='set -eu; xbps-install -Suy xbps; xbps-install -y qt6-base-devel qt6-declarative-devel qt6-tools-devel; for p in ninja scdoc appstream libxcb-devel openjdk21 lcov dbus-devel inih-devel tiff-devel; do xbps-install -y "$p" || true; done'
+          NIX_CUSTOM='set -eu; nix-channel --update; nix-env -iA nixpkgs.qt6.qtbase nixpkgs.qt6.qtdeclarative nixpkgs.qt6.qttools; nix-env -iA nixpkgs.ninja nixpkgs.scdoc nixpkgs.appstream nixpkgs.jdk21 nixpkgs.lcov nixpkgs.dbus nixpkgs.inih nixpkgs.systemd nixpkgs.libtiff || true'
           EMERGE_CUSTOM='emerge --sync && emerge dev-qt/qtbase dev-qt/qtdeclarative dev-qt/qttools dev-util/ninja app-text/scdoc sys-apps/dbus dev-libs/libinih sys-apps/systemd media-libs/tiff dev-util/lcov virtual/jdk'
 
           rows=""
@@ -54,7 +54,7 @@ jobs:
                 clean_cmd='rm -rf /var/lib/apt/lists/*'
                 ;;
               apk)
-                packages="$APK_PACKAGES"
+                custom_install="$APK_CUSTOM"
                 clean_cmd='true'
                 ;;
               dnf)
@@ -66,15 +66,15 @@ jobs:
                 clean_cmd='yum clean all || true'
                 ;;
               zypper)
-                packages="$ZYPPER_PACKAGES"
+                custom_install="$ZYPPER_CUSTOM"
                 clean_cmd='zypper clean --all || true'
                 ;;
               pacman)
-                packages="$PACMAN_PACKAGES"
+                custom_install="$PACMAN_CUSTOM"
                 clean_cmd='pacman -Scc --noconfirm || true'
                 ;;
               xbps)
-                packages="$XBPS_PACKAGES"
+                custom_install="$XBPS_CUSTOM"
                 clean_cmd='xbps-remove -O || true'
                 ;;
               nix)
