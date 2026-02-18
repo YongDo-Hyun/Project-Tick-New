@@ -28,5 +28,5 @@ Package profile highlights:
 - `yum`/`pacman`/`xbps`/`nix`/`emerge`: mapped best-effort equivalents + Qt
 
 ## Notes
-- If Qt tools are not found during build, Docker build fails.
+- Qt6 is mandatory. If Qt6 packages/tools are unavailable, Docker build fails (no Qt5 fallback).
 - If an upstream image tag disappears, update the corresponding file in `dockerfiles/`.
