@@ -32,4 +32,4 @@ status:
 	@printf '%s\n' "$(TARGET)"
 
 clean:
-	@rm -rf "$(CURDIR)/build" "$(CURDIR)/out"
+	@rm -rf "$(CURDIR)/build" "$(CURDIR)/out" "$(CURDIR)/.tmp-tests"
