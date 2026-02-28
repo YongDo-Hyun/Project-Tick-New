@@ -118,7 +118,7 @@ fi
 
 assert_status "write failure status" 1 "$status"
 assert_file_eq "write failure stdout" "" "$stdout_file"
-assert_file_eq "write failure stderr" "echo: write failed: Bad file descriptor
+assert_file_eq "write failure stderr" "echo: write: Bad file descriptor
 " "$stderr_file"
 
 printf '%s\n' "PASS"
