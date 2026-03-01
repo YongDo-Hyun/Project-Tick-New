@@ -2,6 +2,7 @@
  * SPDX-License-Identifier: BSD-2-Clause
  *
  * Copyright (c) 2004-2009, Jilles Tjoelker
+ * Copyright (c) 2026 Project Tick.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with
