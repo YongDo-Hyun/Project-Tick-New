@@ -56,8 +56,10 @@
 	 ((a)->tv_sec cmp (b)->tv_sec))
 #endif
 
+int sh_issetugid(void);
 size_t sh_strlcpy(char *dst, const char *src, size_t dstsize);
 
+#define issetugid sh_issetugid
 #define strlcpy sh_strlcpy
 
 #endif

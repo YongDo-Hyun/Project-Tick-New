@@ -12,9 +12,6 @@ trap 'rm -rf "$WORKDIR"' EXIT INT TERM
 SKIP_CASES='
 parameters/mail1.0
 parameters/mail2.0
-builtins/fc1.0
-builtins/fc2.0
-builtins/fc3.0
 '
 
 fail() {
