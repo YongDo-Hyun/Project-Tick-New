@@ -47,6 +47,12 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#ifdef SHELL
+#define main killcmd
+#include "bltin/bltin.h"
+#include "error.h"
+#endif
+
 struct signal_entry {
 	const char *name;
 	int number;
@@ -182,12 +188,16 @@ static int max_signal_number(void);
 static void
 usage(void)
 {
+#ifdef SHELL
+	error("usage: kill [-s signal_name] pid ...");
+#else
 	fprintf(stderr,
 	    "usage: kill [-s signal_name] pid ...\n"
 	    "       kill -l [exit_status]\n"
 	    "       kill -signal_name pid ...\n"
 	    "       kill -signal_number pid ...\n");
 	exit(2);
+#endif
 }
 
 static void
@@ -195,12 +205,21 @@ die(int status, const char *fmt, ...)
 {
 	va_list ap;
 
+#ifdef SHELL
+	char buffer[256];
+
+	va_start(ap, fmt);
+	vsnprintf(buffer, sizeof(buffer), fmt, ap);
+	va_end(ap);
+	errorwithstatus(status, "%s", buffer);
+#else
 	fprintf(stderr, "kill: ");
 	va_start(ap, fmt);
 	vfprintf(stderr, fmt, ap);
 	va_end(ap);
 	fputc('\n', stderr);
 	exit(status);
+#endif
 }
 
 static char *
@@ -421,17 +440,17 @@ printsignals(FILE *fp)
 		name_length = strlen(signame);
 		if (line_length != 0) {
 			if (line_length + 1 + (int)name_length > 72) {
-				fputc('\n', fp);
+				putc('\n', fp);
 				line_length = 0;
 			} else {
-				fputc(' ', fp);
+				putc(' ', fp);
 				line_length++;
 			}
 		}
 		fputs(signame, fp);
 		line_length += (int)name_length;
 	}
-	fputc('\n', fp);
+	putc('\n', fp);
 }
 
 static void
@@ -488,12 +507,12 @@ main(int argc, char *argv[])
 			if (status_value >= 128)
 				status_value -= 128;
 			if (status_value == 0) {
-				puts("0");
+				printf("0\n");
 				return (0);
 			}
 			if (!signal_name_for_number(status_value, signame, sizeof(signame)))
 				unknown_signal(argv[0]);
-			puts(signame);
+			printf("%s\n", signame);
 			return (0);
 		}
 		if (!parse_signal_name(argv[0], &status_value))
@@ -531,9 +550,19 @@ main(int argc, char *argv[])
 
 	errors = 0;
 	for (; argc > 0; argc--, argv++) {
-		if (argv[0][0] == '%')
+		if (argv[0][0] == '%') {
+#ifdef SHELL
+			if (killjob(argv[0], signum) != 0) {
+				fprintf(stderr, "kill: %s: %s\n", argv[0],
+				    strerror(errno));
+				errors = 1;
+			}
+			continue;
+#else
 			die(2, "job control process specifications require a shell builtin: %s",
 			    argv[0]);
+#endif
+		}
 		if (!parse_pid_argument(argv[0], &pid))
 			die(2, "illegal process id: %s", argv[0]);
 		if (kill(pid, signum) != 0) {
