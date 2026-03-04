@@ -7,6 +7,7 @@
  *	Herbert Xu <herbert@gondor.apana.org.au>.  All rights reserved.
  * Copyright (c) 2010-2015
  *	Jilles Tjoelker <jilles@stack.nl>.  All rights reserved.
+ * Copyright (c) 2026 Project Tick. All rights reserved.
  *
  * This code is derived from software contributed to Berkeley by
  * Kenneth Almquist.
