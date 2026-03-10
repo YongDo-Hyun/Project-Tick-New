@@ -20,13 +20,16 @@ pass() {
     printf "${GREEN}PASS: %s${NC}\n" "$1"
 }
 
-# Compile helper if not already there
+# Build a ps-specific helper in shared out/ roots to avoid name collisions
+# with other test suites (e.g. pkill also has a spin_helper).
 HELPER_DIR="$(dirname "$0")"
 OUT_DIR="$(dirname "${PS_BIN}")"
-HELPER_BIN="${OUT_DIR}/spin_helper"
+HELPER_BIN="${OUT_DIR}/ps_spin_helper"
+HELPER_SRC="${HELPER_DIR}/spin_helper.c"
+CC_BIN="${CC:-cc}"
 
-if [ ! -f "${HELPER_BIN}" ]; then
-    cc -O2 "${HELPER_DIR}/spin_helper.c" -o "${HELPER_BIN}" || fail "failed to compile spin_helper"
+if [ ! -x "${HELPER_BIN}" ] || [ "${HELPER_SRC}" -nt "${HELPER_BIN}" ]; then
+    "${CC_BIN}" -O2 "${HELPER_SRC}" -o "${HELPER_BIN}" || fail "failed to compile spin_helper"
 fi
 
 # 1. Basic sanity: run without arguments
