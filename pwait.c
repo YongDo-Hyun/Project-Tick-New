@@ -49,6 +49,7 @@
 #include <sysexits.h>
 #include <unistd.h>
 #include <limits.h>
+#include <stdint.h>
 
 static int
 x_pidfd_open(pid_t pid)
