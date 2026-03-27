@@ -238,6 +238,12 @@ void VersionPage::updateVersionControls()
     bool supportsFabric = minecraftVersion >= Version("1.14");
     ui->actionInstall_Fabric->setEnabled(controlsEnabled && supportsFabric);
 
+    bool supportsNeoForge = minecraftVersion >= Version("1.20.1");
+    ui->actionInstall_NeoForge->setEnabled(controlsEnabled && supportsNeoForge);
+
+    bool supportsQuilt = minecraftVersion >= Version("1.14");
+    ui->actionInstall_Quilt->setEnabled(controlsEnabled && supportsQuilt);
+
     bool supportsLiteLoader = minecraftVersion <= Version("1.12.2");
     ui->actionInstall_LiteLoader->setEnabled(controlsEnabled && supportsLiteLoader);
 
@@ -381,6 +387,11 @@ void VersionPage::on_actionChange_version_triggered()
         on_actionInstall_Forge_triggered();
         return;
     }
+    else if(uid == "net.neoforged")
+    {
+        on_actionInstall_NeoForge_triggered();
+        return;
+    }
     else if (uid == "com.mumfrey.liteloader")
     {
         on_actionInstall_LiteLoader_triggered();
@@ -439,6 +450,23 @@ void VersionPage::on_actionDownload_All_triggered()
 
 void VersionPage::on_actionInstall_Forge_triggered()
 {
+    // Forge conflicts with Fabric, NeoForge, and Quilt
+    if(!m_profile->getComponentVersion("net.fabricmc.fabric-loader").isEmpty())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Forge is incompatible with Fabric Loader. Please remove Fabric Loader first."));
+        return;
+    }
+    if(!m_profile->getComponentVersion("net.neoforged").isEmpty())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Forge is incompatible with NeoForge. Please remove NeoForge first."));
+        return;
+    }
+    if(!m_profile->getComponentVersion("org.quiltmc.quilt-loader").isEmpty())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Forge is incompatible with Quilt Loader. Please remove Quilt Loader first."));
+        return;
+    }
+
     auto vlist = APPLICATION->metadataIndex()->get("net.minecraftforge");
     if(!vlist)
     {
@@ -468,6 +496,23 @@ void VersionPage::on_actionInstall_Forge_triggered()
 
 void VersionPage::on_actionInstall_Fabric_triggered()
 {
+    // Fabric conflicts with Forge, NeoForge, and Quilt
+    if(!m_profile->getComponentVersion("net.minecraftforge").isEmpty())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Fabric Loader is incompatible with Forge. Please remove Forge first."));
+        return;
+    }
+    if(!m_profile->getComponentVersion("net.neoforged").isEmpty())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Fabric Loader is incompatible with NeoForge. Please remove NeoForge first."));
+        return;
+    }
+    if(!m_profile->getComponentVersion("org.quiltmc.quilt-loader").isEmpty())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Fabric Loader is incompatible with Quilt Loader. Please remove Quilt Loader first."));
+        return;
+    }
+
     auto vlist = APPLICATION->metadataIndex()->get("net.fabricmc.fabric-loader");
     if(!vlist)
     {
@@ -487,6 +532,95 @@ void VersionPage::on_actionInstall_Fabric_triggered()
     {
         auto vsn = vselect.selectedVersion();
         m_profile->setComponentVersion("net.fabricmc.fabric-loader", vsn->descriptor());
+        m_profile->resolve(Net::Mode::Online);
+        preselect(m_profile->rowCount(QModelIndex())-1);
+        m_container->refreshContainer();
+    }
+}
+
+void VersionPage::on_actionInstall_NeoForge_triggered()
+{
+    // NeoForge conflicts with Forge, Fabric, and Quilt
+    if(!m_profile->getComponentVersion("net.minecraftforge").isEmpty())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("NeoForge is incompatible with Forge. Please remove Forge first."));
+        return;
+    }
+    if(!m_profile->getComponentVersion("net.fabricmc.fabric-loader").isEmpty())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("NeoForge is incompatible with Fabric Loader. Please remove Fabric Loader first."));
+        return;
+    }
+    if(!m_profile->getComponentVersion("org.quiltmc.quilt-loader").isEmpty())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("NeoForge is incompatible with Quilt Loader. Please remove Quilt Loader first."));
+        return;
+    }
+
+    auto vlist = APPLICATION->metadataIndex()->get("net.neoforged");
+    if(!vlist)
+    {
+        return;
+    }
+    VersionSelectDialog vselect(vlist.get(), tr("Select NeoForge version"), this);
+    vselect.setExactFilter(BaseVersionList::ParentVersionRole, m_profile->getComponentVersion("net.minecraft"));
+    vselect.setEmptyString(tr("No NeoForge versions are currently available for Minecraft ") + m_profile->getComponentVersion("net.minecraft"));
+    vselect.setEmptyErrorString(tr("Couldn't load or download the NeoForge version lists!"));
+
+    auto currentVersion = m_profile->getComponentVersion("net.neoforged");
+    if(!currentVersion.isEmpty())
+    {
+        vselect.setCurrentVersion(currentVersion);
+    }
+
+    if (vselect.exec() && vselect.selectedVersion())
+    {
+        auto vsn = vselect.selectedVersion();
+        m_profile->setComponentVersion("net.neoforged", vsn->descriptor());
+        m_profile->resolve(Net::Mode::Online);
+        preselect(m_profile->rowCount(QModelIndex())-1);
+        m_container->refreshContainer();
+    }
+}
+
+void VersionPage::on_actionInstall_Quilt_triggered()
+{
+    // Quilt conflicts with Forge, Fabric, and NeoForge
+    if(!m_profile->getComponentVersion("net.minecraftforge").isEmpty())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Quilt Loader is incompatible with Forge. Please remove Forge first."));
+        return;
+    }
+    if(!m_profile->getComponentVersion("net.fabricmc.fabric-loader").isEmpty())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Quilt Loader is incompatible with Fabric Loader. Please remove Fabric Loader first."));
+        return;
+    }
+    if(!m_profile->getComponentVersion("net.neoforged").isEmpty())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("Quilt Loader is incompatible with NeoForge. Please remove NeoForge first."));
+        return;
+    }
+
+    auto vlist = APPLICATION->metadataIndex()->get("org.quiltmc.quilt-loader");
+    if(!vlist)
+    {
+        return;
+    }
+    VersionSelectDialog vselect(vlist.get(), tr("Select Quilt Loader version"), this);
+    vselect.setEmptyString(tr("No Quilt Loader versions are currently available."));
+    vselect.setEmptyErrorString(tr("Couldn't load or download the Quilt Loader version lists!"));
+
+    auto currentVersion = m_profile->getComponentVersion("org.quiltmc.quilt-loader");
+    if(!currentVersion.isEmpty())
+    {
+        vselect.setCurrentVersion(currentVersion);
+    }
+
+    if (vselect.exec() && vselect.selectedVersion())
+    {
+        auto vsn = vselect.selectedVersion();
+        m_profile->setComponentVersion("org.quiltmc.quilt-loader", vsn->descriptor());
         m_profile->resolve(Net::Mode::Online);
         preselect(m_profile->rowCount(QModelIndex())-1);
         m_container->refreshContainer();

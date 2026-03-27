@@ -265,6 +265,8 @@ void InstanceImportTask::processFlame()
 
     QString forgeVersion;
     QString fabricVersion;
+    QString neoForgeVersion;
+    QString quiltVersion;
     for(auto &loader: pack.minecraft.modLoaders)
     {
         auto id = loader.id;
@@ -278,6 +280,18 @@ void InstanceImportTask::processFlame()
         {
             id.remove("fabric-");
             fabricVersion = id;
+            continue;
+        }
+        if(id.startsWith("neoforge-"))
+        {
+            id.remove("neoforge-");
+            neoForgeVersion = id;
+            continue;
+        }
+        if(id.startsWith("quilt-"))
+        {
+            id.remove("quilt-");
+            quiltVersion = id;
             continue;
         }
         logWarning(tr("Unknown mod loader in manifest: %1").arg(id));
@@ -317,6 +331,14 @@ void InstanceImportTask::processFlame()
     if(!fabricVersion.isEmpty())
     {
         components->setComponentVersion("net.fabricmc.fabric-loader", fabricVersion);
+    }
+    if(!neoForgeVersion.isEmpty())
+    {
+        components->setComponentVersion("net.neoforged", neoForgeVersion);
+    }
+    if(!quiltVersion.isEmpty())
+    {
+        components->setComponentVersion("org.quiltmc.quilt-loader", quiltVersion);
     }
     if (m_instIcon != "default")
     {

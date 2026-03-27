@@ -44,6 +44,12 @@ Config::Config()
     VERSION_BUILD = @MeshMC_VERSION_BUILD@;
 
     BUILD_PLATFORM = "@MeshMC_BUILD_PLATFORM@";
+    BUILD_ARTIFACT = "@MeshMC_BUILD_ARTIFACT@";
+    COMPILER_NAME = "@MeshMC_COMPILER_NAME@";
+    COMPILER_VERSION = "@MeshMC_COMPILER_VERSION@";
+    COMPILER_TARGET_SYSTEM = "@MeshMC_COMPILER_TARGET_SYSTEM@";
+    COMPILER_TARGET_SYSTEM_VERSION = "@MeshMC_COMPILER_TARGET_SYSTEM_VERSION@";
+    COMPILER_TARGET_SYSTEM_PROCESSOR = "@MeshMC_COMPILER_TARGET_PROCESSOR@";
     UPDATER_BASE = "@MeshMC_UPDATER_BASE@";
     ANALYTICS_ID = "@MeshMC_ANALYTICS_ID@";
     NOTIFICATION_URL = "@MeshMC_NOTIFICATION_URL@";
@@ -91,4 +97,16 @@ QString Config::printableVersionString() const
         vstr += "-" + QString::number(VERSION_BUILD);
     }
     return vstr;
+}
+
+QString Config::compilerID() const
+{
+    if (COMPILER_VERSION.isEmpty())
+        return COMPILER_NAME;
+    return QStringLiteral("%1 - %2").arg(COMPILER_NAME).arg(COMPILER_VERSION);
+}
+
+QString Config::systemID() const
+{
+    return QStringLiteral("%1 %2 %3").arg(COMPILER_TARGET_SYSTEM, COMPILER_TARGET_SYSTEM_VERSION, COMPILER_TARGET_SYSTEM_PROCESSOR);
 }

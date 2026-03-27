@@ -582,31 +582,34 @@ Application::Application(int &argc, char **argv) : QApplication(argc, argv)
         FS::updateTimestamp(m_rootPath);
 #endif
 
-        qDebug() << BuildConfig.MESHMC_DISPLAYNAME << ", (c) 2013-2021 " << BuildConfig.MESHMC_COPYRIGHT;
-        qDebug() << "Version                    : " << BuildConfig.printableVersionString();
-        qDebug() << "Git commit                 : " << BuildConfig.GIT_COMMIT;
-        qDebug() << "Git refspec                : " << BuildConfig.GIT_REFSPEC;
+        qInfo() << BuildConfig.MESHMC_DISPLAYNAME << ", (c) 2026 " << BuildConfig.MESHMC_COPYRIGHT;
+        qInfo() << "Version                    : " << BuildConfig.printableVersionString();
+        qInfo() << "Git commit                 : " << BuildConfig.GIT_COMMIT;
+        qInfo() << "Git refspec                : " << BuildConfig.GIT_REFSPEC;
+        qInfo() << "Compiled for               : " << BuildConfig.systemID();
+        qInfo() << "Compiled by                : " << BuildConfig.compilerID();
+        qInfo() << "Build Artifact             : " << BuildConfig.BUILD_ARTIFACT;
         if (adjustedBy.size())
         {
-            qDebug() << "Work dir before adjustment : " << origcwdPath;
-            qDebug() << "Work dir after adjustment  : " << QDir::currentPath();
-            qDebug() << "Adjusted by                : " << adjustedBy;
+            qInfo() << "Work dir before adjustment : " << origcwdPath;
+            qInfo() << "Work dir after adjustment  : " << QDir::currentPath();
+            qInfo() << "Adjusted by                : " << adjustedBy;
         }
         else
         {
-            qDebug() << "Work dir                   : " << QDir::currentPath();
+            qInfo() << "Work dir                   : " << QDir::currentPath();
         }
-        qDebug() << "Binary path                : " << binPath;
-        qDebug() << "Application root path      : " << m_rootPath;
+        qInfo() << "Binary path                : " << binPath;
+        qInfo() << "Application root path      : " << m_rootPath;
         if(!m_instanceIdToLaunch.isEmpty())
         {
-            qDebug() << "ID of instance to launch   : " << m_instanceIdToLaunch;
+            qInfo() << "ID of instance to launch   : " << m_instanceIdToLaunch;
         }
         if(!m_serverToJoin.isEmpty())
         {
-            qDebug() << "Address of server to join  :" << m_serverToJoin;
+            qInfo() << "Address of server to join  :" << m_serverToJoin;
         }
-        qDebug() << "<> Paths set.";
+        qInfo() << "<> Paths set.";
     }
 
     do // once
@@ -1275,7 +1278,7 @@ void Application::setIconTheme(const QString& name)
 QIcon Application::getThemedIcon(const QString& name)
 {
     if(name == "logo") {
-        return QIcon(":/logo.svg");
+        return QIcon(":/org.projecttick.MeshMC.svg");
     }
     return XdgIcon::fromTheme(name);
 }

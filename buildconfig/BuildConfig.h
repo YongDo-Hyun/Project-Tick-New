@@ -66,6 +66,23 @@ public:
     /// User-Agent to use for uncached requests.
     QString USER_AGENT_UNCACHED;
 
+    /// A short string identifying this build's valid artifacts int he updater. For example, "lin64" or "win32".
+    QString BUILD_ARTIFACT;
+
+    /// Compiler name
+    QString COMPILER_NAME;
+
+    /// Compiler version
+    QString COMPILER_VERSION;
+
+    /// Target system name (e.g. "Linux", "Windows")
+    QString COMPILER_TARGET_SYSTEM;
+
+    /// Target system version
+    QString COMPILER_TARGET_SYSTEM_VERSION;
+
+    /// Target system processor (e.g. "x86_64")
+    QString COMPILER_TARGET_SYSTEM_PROCESSOR;
 
     /// Google analytics ID
     QString ANALYTICS_ID;
@@ -134,6 +151,18 @@ public:
      * \return The version number in string format (major.minor.revision.build).
      */
     QString printableVersionString() const;
+
+        /**
+     * \brief Compiler ID String
+     * \return a string of the form "Name - Version"  of just "Name" if the version is empty
+     */
+    QString compilerID() const;
+
+    /**
+     * \brief System ID String
+     * \return a string of the form "OS Verison Processor"
+     */
+    QString systemID() const;
 };
 
 extern const Config BuildConfig;

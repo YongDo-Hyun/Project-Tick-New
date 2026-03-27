@@ -228,10 +228,13 @@ void PackInstallTask::install()
             components->setComponentVersion("net.minecraftforge", target.version, true);
         }
         else if(target.name == "neoforge") {
-            components->setComponentVersion("net.neoforged.neoforge", target.version, true);
+            components->setComponentVersion("net.neoforged", target.version, true);
         }
         else if(target.name == "fabric") {
             components->setComponentVersion("net.fabricmc.fabric-loader", target.version, true);
+        }
+        else if(target.name == "quilt-loader") {
+            components->setComponentVersion("org.quiltmc.quilt-loader", target.version, true);
         }
     }
 

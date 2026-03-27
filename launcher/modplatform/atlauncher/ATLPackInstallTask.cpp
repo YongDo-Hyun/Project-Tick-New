@@ -783,6 +783,20 @@ void PackInstallTask::install()
 
         components->setComponentVersion("net.fabricmc.fabric-loader", version, true);
     }
+    else if(m_version.loader.type == QString("neoforge"))
+    {
+        auto version = getVersionForLoader("net.neoforged");
+        if(version == Q_NULLPTR) return;
+
+        components->setComponentVersion("net.neoforged", version, true);
+    }
+    else if(m_version.loader.type == QString("quilt"))
+    {
+        auto version = getVersionForLoader("org.quiltmc.quilt-loader");
+        if(version == Q_NULLPTR) return;
+
+        components->setComponentVersion("org.quiltmc.quilt-loader", version, true);
+    }
     else if(m_version.loader.type != QString())
     {
         emitFailed(tr("Unknown loader type: ") + m_version.loader.type);

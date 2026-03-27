@@ -107,6 +107,8 @@
    <addaction name="separator"/>
    <addaction name="actionInstall_Forge"/>
    <addaction name="actionInstall_Fabric"/>
+   <addaction name="actionInstall_NeoForge"/>
+   <addaction name="actionInstall_Quilt"/>
    <addaction name="actionInstall_LiteLoader"/>
    <addaction name="actionInstall_mods"/>
    <addaction name="separator"/>
@@ -198,6 +200,22 @@
    </property>
    <property name="toolTip">
     <string>Install the LiteLoader package.</string>
+   </property>
+  </action>
+  <action name="actionInstall_NeoForge">
+   <property name="text">
+    <string>Install NeoForge</string>
+   </property>
+   <property name="toolTip">
+    <string>Install the NeoForge mod loader.</string>
+   </property>
+  </action>
+  <action name="actionInstall_Quilt">
+   <property name="text">
+    <string>Install Quilt</string>
+   </property>
+   <property name="toolTip">
+    <string>Install the Quilt Loader package.</string>
    </property>
   </action>
   <action name="actionInstall_mods">
