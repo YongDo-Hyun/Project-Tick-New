@@ -607,6 +607,7 @@ SET(MESHMC_SOURCES
     resources/OSX/OSX.qrc
     resources/iOS/iOS.qrc
     resources/flat/flat.qrc
+    resources/flat_white/flat_white.qrc
     resources/documents/documents.qrc
     resources/breeze_dark/breeze_dark.qrc
     resources/breeze_light/breeze_light.qrc
@@ -656,6 +657,8 @@ SET(MESHMC_SOURCES
     ui/themes/ITheme.h
     ui/themes/SystemTheme.cpp
     ui/themes/SystemTheme.h
+    ui/themes/ThemeManager.cpp
+    ui/themes/ThemeManager.h
 
     # Processes
     LaunchController.h
@@ -703,6 +706,8 @@ SET(MESHMC_SOURCES
     # GUI - global settings pages
     ui/pages/global/AccountListPage.cpp
     ui/pages/global/AccountListPage.h
+    ui/pages/global/AppearancePage.cpp
+    ui/pages/global/AppearancePage.h
     ui/pages/global/CustomCommandsPage.cpp
     ui/pages/global/CustomCommandsPage.h
     ui/pages/global/ExternalToolsPage.cpp
@@ -853,6 +858,7 @@ SET(MESHMC_SOURCES
 
 qt6_wrap_ui(MESHMC_UI
     ui/pages/global/AccountListPage.ui
+    ui/pages/global/AppearancePage.ui
     ui/pages/global/JavaPage.ui
     ui/pages/global/MeshMCPage.ui
     ui/pages/global/PasteEEPage.ui
@@ -915,6 +921,7 @@ qt6_add_resources(MESHMC_RESOURCES
     resources/OSX/OSX.qrc
     resources/iOS/iOS.qrc
     resources/flat/flat.qrc
+    resources/flat_white/flat_white.qrc
     resources/documents/documents.qrc
     resources/breeze_dark/breeze_dark.qrc
     resources/breeze_light/breeze_light.qrc

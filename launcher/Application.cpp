@@ -37,12 +37,10 @@
 #include "ui/pages/global/AccountListPage.h"
 #include "ui/pages/global/PasteEEPage.h"
 #include "ui/pages/global/CustomCommandsPage.h"
+#include "ui/pages/global/AppearancePage.h"
 
 #include "ui/themes/ITheme.h"
-#include "ui/themes/SystemTheme.h"
-#include "ui/themes/DarkTheme.h"
-#include "ui/themes/BrightTheme.h"
-#include "ui/themes/CustomTheme.h"
+#include "ui/themes/ThemeManager.h"
 
 #include "ui/setupwizard/SetupWizard.h"
 #include "ui/setupwizard/LanguageWizardPage.h"
@@ -870,6 +868,7 @@ void Application::initSettings()
     {
         m_globalSettingsProvider = std::make_shared<GenericPageProvider>(tr("Settings"));
         m_globalSettingsProvider->addPage<MeshMCPage>();
+        m_globalSettingsProvider->addPage<AppearancePage>();
         m_globalSettingsProvider->addPage<MinecraftPage>();
         m_globalSettingsProvider->addPage<JavaPage>();
         m_globalSettingsProvider->addPage<LanguagePage>();
@@ -948,15 +947,7 @@ void Application::initSubsystems()
 
     // Initialize widget themes
     {
-        auto insertTheme = [this](ITheme * theme)
-        {
-            m_themes.insert(std::make_pair(theme->id(), std::unique_ptr<ITheme>(theme)));
-        };
-        auto darkTheme = new DarkTheme();
-        insertTheme(new SystemTheme());
-        insertTheme(darkTheme);
-        insertTheme(new BrightTheme());
-        insertTheme(new CustomTheme(darkTheme, "custom"));
+        m_themeManager = std::make_unique<ThemeManager>();
         qDebug() << "<> Widget themes initialized.";
     }
 
@@ -1298,34 +1289,22 @@ std::shared_ptr<JavaInstallList> Application::javalist()
 
 std::vector<ITheme *> Application::getValidApplicationThemes()
 {
-    std::vector<ITheme *> ret;
-    auto iter = m_themes.cbegin();
-    while (iter != m_themes.cend())
-    {
-        ret.push_back((*iter).second.get());
-        iter++;
-    }
-    return ret;
+    return m_themeManager->allThemes();
 }
 
 void Application::setApplicationTheme(const QString& name, bool initial)
 {
-    auto systemPalette = qApp->palette();
-    auto themeIter = m_themes.find(name);
-    if(themeIter != m_themes.end())
-    {
-        auto & theme = (*themeIter).second;
-        theme->apply(initial);
-    }
-    else
-    {
-        qWarning() << "Tried to set invalid theme:" << name;
-    }
+    m_themeManager->setApplicationTheme(name, initial);
 }
 
 void Application::setIconTheme(const QString& name)
 {
-    XdgIcon::setThemeName(name);
+    m_themeManager->setIconTheme(name);
+}
+
+ThemeManager* Application::themeManager() const
+{
+    return m_themeManager.get();
 }
 
 QIcon Application::getThemedIcon(const QString& name)

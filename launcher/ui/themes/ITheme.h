@@ -43,6 +43,14 @@ public:
     {
         return {};
     }
+    virtual QString family()
+    {
+        return name();
+    }
+    virtual QString variant()
+    {
+        return QString();
+    }
 
     static QPalette fadeInactive(QPalette in, qreal bias, QColor color);
 };

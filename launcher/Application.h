@@ -54,6 +54,7 @@ class BaseProfilerFactory;
 class BaseDetachedToolFactory;
 class TranslationsModel;
 class ITheme;
+class ThemeManager;
 class MCEditTool;
 class GAnalytics;
 
@@ -101,6 +102,8 @@ public:
     std::vector<ITheme *> getValidApplicationThemes();
 
     void setApplicationTheme(const QString& name, bool initial);
+
+    ThemeManager* themeManager() const;
 
     shared_qobject_ptr<UpdateChecker> updateChecker() {
         return m_updateChecker;
@@ -230,7 +233,7 @@ private:
     std::shared_ptr<JavaInstallList> m_javalist;
     std::shared_ptr<TranslationsModel> m_translations;
     std::shared_ptr<GenericPageProvider> m_globalSettingsProvider;
-    std::map<QString, std::unique_ptr<ITheme>> m_themes;
+    std::unique_ptr<ThemeManager> m_themeManager;
     std::unique_ptr<MCEditTool> m_mcedit;
     QString m_jarsPath;
     QSet<QString> m_features;

@@ -50,7 +50,6 @@
 #include <FileSystem.h>
 #include "Application.h"
 #include "BuildConfig.h"
-#include "ui/themes/ITheme.h"
 
 #include <QApplication>
 #include <QProcess>
@@ -270,55 +269,6 @@ void MeshMCPage::applySettings()
     // Updates
     s->set("AutoUpdate", ui->autoUpdateCheckBox->isChecked());
     s->set("UpdateChannel", m_currentUpdateChannel);
-    auto original = s->get("IconTheme").toString();
-    //FIXME: make generic
-    switch (ui->themeComboBox->currentIndex())
-    {
-    case 1:
-        s->set("IconTheme", "multimc");
-        break;
-    case 2:
-        s->set("IconTheme", "pe_dark");
-        break;
-    case 3:
-        s->set("IconTheme", "pe_light");
-        break;
-    case 4:
-        s->set("IconTheme", "pe_blue");
-        break;
-    case 5:
-        s->set("IconTheme", "pe_colored");
-        break;
-    case 6:
-        s->set("IconTheme", "OSX");
-        break;
-    case 7:
-        s->set("IconTheme", "iOS");
-        break;
-    case 8:
-        s->set("IconTheme", "flat");
-        break;
-    case 9:
-        s->set("IconTheme", "custom");
-        break;
-    case 0:
-    default:
-        s->set("IconTheme", "pe_colored");
-        break;
-    }
-
-    if(original != s->get("IconTheme"))
-    {
-        APPLICATION->setIconTheme(s->get("IconTheme").toString());
-    }
-
-    auto originalAppTheme = s->get("ApplicationTheme").toString();
-    auto newAppTheme = ui->themeComboBoxColors->currentData().toString();
-    if(originalAppTheme != newAppTheme)
-    {
-        s->set("ApplicationTheme", newAppTheme);
-        APPLICATION->setApplicationTheme(newAppTheme, false);
-    }
 
     // Console settings
     s->set("ShowConsole", ui->showConsoleCheck->isChecked());
@@ -360,63 +310,6 @@ void MeshMCPage::loadSettings()
     // Updates
     ui->autoUpdateCheckBox->setChecked(s->get("AutoUpdate").toBool());
     m_currentUpdateChannel = s->get("UpdateChannel").toString();
-    //FIXME: make generic
-    auto theme = s->get("IconTheme").toString();
-    if (theme == "multimc")
-    {
-        ui->themeComboBox->setCurrentIndex(1);
-    }
-    else if (theme == "pe_dark")
-    {
-        ui->themeComboBox->setCurrentIndex(2);
-    }
-    else if (theme == "pe_light")
-    {
-        ui->themeComboBox->setCurrentIndex(3);
-    }
-    else if (theme == "pe_blue")
-    {
-        ui->themeComboBox->setCurrentIndex(4);
-    }
-    else if (theme == "pe_colored")
-    {
-        ui->themeComboBox->setCurrentIndex(5);
-    }
-    else if (theme == "OSX")
-    {
-        ui->themeComboBox->setCurrentIndex(6);
-    }
-    else if (theme == "iOS")
-    {
-        ui->themeComboBox->setCurrentIndex(7);
-    }
-    else if (theme == "flat")
-    {
-        ui->themeComboBox->setCurrentIndex(8);
-    }
-    else if (theme == "custom")
-    {
-        ui->themeComboBox->setCurrentIndex(9);
-    }
-    else
-    {
-        ui->themeComboBox->setCurrentIndex(0);
-    }
-
-    {
-        auto currentTheme = s->get("ApplicationTheme").toString();
-        auto themes = APPLICATION->getValidApplicationThemes();
-        int idx = 0;
-        for(auto &theme: themes)
-        {
-            ui->themeComboBoxColors->addItem(theme->name(), theme->id());
-            if(currentTheme == theme->id())
-            {
-                ui->themeComboBoxColors->setCurrentIndex(idx);
-            }
-            idx++;
-        }
-    }
 
     // Console settings
     ui->showConsoleCheck->setChecked(s->get("ShowConsole").toBool());
