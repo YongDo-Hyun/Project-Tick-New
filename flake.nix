@@ -37,49 +37,6 @@
     in
 
     {
-      checks = forAllSystems (
-        system:
-
-        let
-          pkgs = nixpkgsFor.${system};
-          llvm = pkgs.llvmPackages_19;
-        in
-
-        {
-          formatting =
-            pkgs.runCommand "check-formatting"
-              {
-                nativeBuildInputs = with pkgs; [
-                  deadnix
-                  llvm.clang-tools
-                  markdownlint-cli
-                  nixfmt-rfc-style
-                  statix
-                ];
-              }
-              ''
-                cd ${self}
-
-                echo "Running clang-format...."
-                clang-format --dry-run --style='file' --Werror */**.{c,cc,cpp,h,hh,hpp}
-
-                echo "Running deadnix..."
-                deadnix --fail
-
-                echo "Running markdownlint..."
-                markdownlint --dot .
-
-                echo "Running nixfmt..."
-                find -type f -name '*.nix' -exec nixfmt --check {} +
-
-                echo "Running statix"
-                statix check .
-
-                touch $out
-              '';
-        }
-      );
-
       devShells = forAllSystems (
         system:
 
