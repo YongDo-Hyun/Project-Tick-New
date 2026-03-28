@@ -923,7 +923,7 @@ qt6_add_resources(MESHMC_RESOURCES
 
 ######## Windows resource files ########
 if(WIN32)
-    set(MESHMC_RCS ../${MeshMC_Branding_WindowsRC})
+    set(MESHMC_RCS ${CMAKE_BINARY_DIR}/${MeshMC_AppBinaryName}.rc)
 endif()
 
 # Add executable
