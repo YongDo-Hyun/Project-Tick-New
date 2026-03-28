@@ -190,9 +190,9 @@ void MojangVersionFormat::readVersionProperties(const QJsonObject &in, VersionFi
     out->releaseTime = timeFromS3Time(in.value("releaseTime").toString(""));
     out->updateTime = timeFromS3Time(in.value("time").toString(""));
 
-    if (in.contains("minimumMeshMCVersion"))
+    if (in.contains("minimumLauncherVersion"))
     {
-        out->minimumMeshMCVersion = requireInteger(in.value("minimumMeshMCVersion"));
+        out->minimumMeshMCVersion = requireInteger(in.value("minimumLauncherVersion"));
         if (out->minimumMeshMCVersion > CURRENT_MINIMUM_MESHMC_VERSION)
         {
             out->addProblem(
@@ -267,7 +267,7 @@ void MojangVersionFormat::writeVersionProperties(const VersionFile* in, QJsonObj
     }
     if(in->minimumMeshMCVersion != -1)
     {
-        out.insert("minimumMeshMCVersion", in->minimumMeshMCVersion);
+        out.insert("minimumLauncherVersion", in->minimumMeshMCVersion);
     }
     writeString(out, "assets", in->assets);
     if(in->mojangAssetIndex && in->mojangAssetIndex->known)

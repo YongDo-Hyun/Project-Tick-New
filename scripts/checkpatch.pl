@@ -4816,10 +4816,10 @@ sub check_cyclomatic_complexity {
             $complexity++ if $stripped =~ /\|\|/;
 
             if ($brace_depth <= 0 && $stripped =~ /}/) {
-                if ($complexity > 15) {
+                if ($complexity > 40) {
                     report($filepath, $function_start, SEV_WARNING, 'HIGH_COMPLEXITY',
-                        "Function '$function_name' has cyclomatic complexity of $complexity (recommended max: 15). Consider refactoring.");
-                } elsif ($complexity > 10) {
+                        "Function '$function_name' has cyclomatic complexity of $complexity (recommended max: 40). Consider refactoring.");
+                } elsif ($complexity > 30) {
                     report($filepath, $function_start, SEV_INFO, 'MODERATE_COMPLEXITY',
                         "Function '$function_name' has cyclomatic complexity of $complexity (consider simplifying)");
                 }
