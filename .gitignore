@@ -35,3 +35,6 @@ tags
 .DS_Store
 
 run/
+
+compile_commands.json
+tree.txt

@@ -1,0 +1,41 @@
+{
+  "nodes": {
+    "libnbtplusplus": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774630629,
+        "narHash": "sha256-Hu/7viS/TiXIlNFZpTiIMH/dmVrKlomBKlckD7TKB+Q=",
+        "owner": "Project-Tick",
+        "repo": "libnbtplusplus",
+        "rev": "bc952e1298e7aba15a7e97df521b8fc57efd5d73",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Project-Tick",
+        "repo": "libnbtplusplus",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1774388614,
+        "narHash": "sha256-cUgsPWt0NJz21K4i/5191mWaizw4XtT20WFqyxzSuQI=",
+        "rev": "1073dad219cb244572b74da2b20c7fe39cb3fa9e",
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixos/25.11/nixos-25.11.8107.1073dad219cb/nixexprs.tar.xz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://channels.nixos.org/nixos-25.11/nixexprs.tar.xz"
+      }
+    },
+    "root": {
+      "inputs": {
+        "libnbtplusplus": "libnbtplusplus",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
