@@ -1,12 +1,22 @@
-cmake_minimum_required(VERSION 3.25)
-
+cmake_minimum_required(VERSION 3.28)
+# SPDX-FileCopyrightText: 2026 Project Tick
+# SPDX-FileContributor: Project Tick
+# SPDX-License-Identifier: GPL-3.0-or-later
 if(WIN32)
     # In Qt 5.1+ we have our own main() function, don't autolink to qtmain on Windows
     cmake_policy(SET CMP0020 OLD)
 endif()
 
 project(MeshMC)
-enable_testing()
+
+find_package(ECM NO_MODULE REQUIRED)
+set(CMAKE_MODULE_PATH "${ECM_MODULE_PATH};${CMAKE_MODULE_PATH}")
+
+include(CTest)
+include(ECMAddTests)
+if(BUILD_TESTING)
+    enable_testing()
+endif()
 
 string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BUILD_DIR}" IS_IN_SOURCE_BUILD)
 if(IS_IN_SOURCE_BUILD)
@@ -31,7 +41,7 @@ set(MeshMC_COMPILER_TARGET_PROCESSOR ${CMAKE_SYSTEM_PROCESSOR})
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
+set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/;${CMAKE_MODULE_PATH}")
 
 # Output all executables and shared libs in the main build folder, not in subfolders.
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
@@ -57,6 +67,8 @@ if(UNIX AND APPLE)
     set(CMAKE_CXX_FLAGS " -stdlib=libc++ ${CMAKE_CXX_FLAGS}")
 endif()
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Werror=return-type")
+
+include(ECMQtDeclareLoggingCategory)
 
 # Fix build with Qt 5.13
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQT_NO_DEPRECATED_WARNINGS=Y")
@@ -116,6 +128,7 @@ set(MeshMC_CommonName "MeshMC")
 set(MeshMC_AppBinaryName "meshmc")
 set(MeshMC_AppID "org.projecttick.MeshMC")
 set(MeshMC_Copyright "Project Tick")
+set(MeshMC_Copyright_Mac "© 2026 Project Tick")
 set(MeshMC_Domain "projecttick.org")
 set(MeshMC_Name "${MeshMC_CommonName}")
 set(MeshMC_DisplayName "${MeshMC_CommonName}")
@@ -123,6 +136,7 @@ set(MeshMC_UserAgent "${MeshMC_CommonName}/5.0")
 set(MeshMC_ConfigFile "meshmc.cfg")
 set(MeshMC_Git "https://github.com/Project-Tick/MeshMC")
 
+set(MeshMC_SVGFileName "${MeshMC_AppID}.svg")
 set(MeshMC_Branding_ICNS "branding/MeshMC.icns")
 set(MeshMC_Branding_WindowsRC "branding/${MeshMC_AppBinaryName}.rc")
 set(MeshMC_Branding_LogoQRC "branding/${MeshMC_AppBinaryName}.qrc")
@@ -133,7 +147,9 @@ configure_file(branding/${MeshMC_AppBinaryName}.rc.in ${MeshMC_AppBinaryName}.rc
 configure_file(branding/${MeshMC_AppBinaryName}.qrc.in ${MeshMC_AppBinaryName}.qrc @ONLY)
 configure_file(branding/${MeshMC_CommonName}.manifest.in ${MeshMC_AppBinaryName}.manifest @ONLY)
 configure_file(branding/${MeshMC_AppID}.mime.xml ${MeshMC_AppID}.xml COPYONLY)
-file(COPY branding/${MeshMC_AppID}.svg DESTINATION ${CMAKE_BINARY_DIR})
+configure_file(branding/${MeshMC_SVGFileName} ${MeshMC_SVGFileName} COPYONLY)
+set(MeshMC_Portable_File "branding/portable.txt")
+set(MeshMC_Branding_MAC_ICON "program_info/${MeshMC_CommonName}.icon")
 
 if(MSVC)
     set(MeshMC_MSVC_Redist_NSIS_Section [=[
@@ -220,87 +236,121 @@ add_custom_target(tcversion echo "\\#\\#teamcity[setParameter name=\\'env.MESHMC
 
 ####################################### Install layout #######################################
 
-# How to install the build results
-set(MeshMC_LAYOUT "auto" CACHE STRING "The layout for MeshMC installation (auto, win-bundle, lin-nodeps, mac-bundle)")
-set_property(CACHE MeshMC_LAYOUT PROPERTY STRINGS auto win-bundle lin-nodeps mac-bundle)
-
-if(MeshMC_LAYOUT STREQUAL "auto")
-    if(UNIX AND APPLE)
-        set(MeshMC_LAYOUT_REAL "mac-bundle")
-    elseif(UNIX)
-        set(MeshMC_LAYOUT_REAL "lin-nodeps")
-    elseif(WIN32)
-        set(MeshMC_LAYOUT_REAL "win-bundle")
-    else()
-        message(FATAL_ERROR "Cannot choose a sensible install layout for your platform.")
-    endif()
-else()
-    set(MeshMC_LAYOUT_REAL ${MeshMC_LAYOUT})
+if(NOT (UNIX AND APPLE))
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/${MeshMC_Portable_File}" DESTINATION "." COMPONENT portable EXCLUDE_FROM_ALL)
 endif()
 
-if(MeshMC_LAYOUT_REAL STREQUAL "mac-bundle")
+if(UNIX AND APPLE)
     set(BINARY_DEST_DIR "${MeshMC_Name}.app/Contents/MacOS")
     set(LIBRARY_DEST_DIR "${MeshMC_Name}.app/Contents/MacOS")
     set(PLUGIN_DEST_DIR "${MeshMC_Name}.app/Contents/MacOS")
+    set(FRAMEWORK_DEST_DIR "${MeshMC_Name}.app/Contents/Frameworks")
     set(RESOURCES_DEST_DIR "${MeshMC_Name}.app/Contents/Resources")
     set(JARS_DEST_DIR "${MeshMC_Name}.app/Contents/MacOS/jars")
 
-    set(BUNDLE_DEST_DIR ".")
-
-    # Apps to bundle
-    set(APPS "\${CMAKE_INSTALL_PREFIX}/${MeshMC_Name}.app")
-
     # Mac bundle settings
-    set(MACOSX_BUNDLE_BUNDLE_NAME "${MeshMC_Name}")
-    set(MACOSX_BUNDLE_INFO_STRING "${MeshMC_Name}:  Minecraft launcher and management utility.")
-    set(MACOSX_BUNDLE_GUI_IDENTIFIER "org.projecttick.${MeshMC_Name}")
-    set(MACOSX_BUNDLE_BUNDLE_VERSION "${MeshMC_VERSION_MAJOR}.${MeshMC_VERSION_MINOR}.${MeshMC_VERSION_HOTFIX}.${MeshMC_VERSION_BUILD}")
-    set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${MeshMC_VERSION_MAJOR}.${MeshMC_VERSION_MINOR}.${MeshMC_VERSION_HOTFIX}.${MeshMC_VERSION_BUILD}")
-    set(MACOSX_BUNDLE_LONG_VERSION_STRING "${MeshMC_VERSION_MAJOR}.${MeshMC_VERSION_MINOR}.${MeshMC_VERSION_HOTFIX}.${MeshMC_VERSION_BUILD}")
+    set(MACOSX_BUNDLE_BUNDLE_NAME "${MeshMC_DisplayName}")
+    set(MACOSX_BUNDLE_INFO_STRING "${MeshMC_DisplayName}: A custom launcher for Minecraft that allows you to easily manage multiple installations of Minecraft at once.")
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER "${MeshMC_AppID}")
+    set(MACOSX_BUNDLE_BUNDLE_VERSION "${MeshMC_RELEASE_VERSION_NAME}")
+    set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${MeshMC_RELEASE_VERSION_NAME}")
+    set(MACOSX_BUNDLE_LONG_VERSION_STRING "${MeshMC_RELEASE_VERSION_NAME}")
     set(MACOSX_BUNDLE_ICON_FILE ${MeshMC_Name}.icns)
-    set(MACOSX_BUNDLE_COPYRIGHT "Copyright 2015-2021 ${MeshMC_Copyright}")
+    set(MACOSX_BUNDLE_COPYRIGHT "${MeshMC_Copyright_Mac}")
+    set(MACOSX_SPARKLE_UPDATE_PUBLIC_KEY "C0eBoyDSoZbzgCMxQH9wH6kmjU2mPRmvhZZd9mHgqZQ=" CACHE STRING "Public key for Sparkle update feed")
+    set(MACOSX_SPARKLE_UPDATE_FEED_URL "https://projecttick.org/product/meshmc/appcast.xml" CACHE STRING "URL for Sparkle update feed")
 
-    # directories to look for dependencies
-    set(DIRS ${QT_LIBS_DIR} ${QT_LIBEXECS_DIR} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-
-    # install as bundle
-    set(INSTALL_BUNDLE "full")
+    set(MACOSX_SPARKLE_DOWNLOAD_URL "https://github.com/sparkle-project/Sparkle/releases/download/2.8.0/Sparkle-2.8.0.tar.xz" CACHE STRING "URL to Sparkle release archive")
+    set(MACOSX_SPARKLE_SHA256 "fd5681ee92bf238aaac2d08214ceaf0cc8976e452d7f882d80bac1e61581f3b1" CACHE STRING "SHA256 checksum for Sparkle release archive")
+    set(MACOSX_SPARKLE_DIR "${CMAKE_BINARY_DIR}/frameworks/Sparkle")
 
     # Add the icon
     install(FILES ${MeshMC_Branding_ICNS} DESTINATION ${RESOURCES_DEST_DIR} RENAME ${MeshMC_Name}.icns)
 
-elseif(MeshMC_LAYOUT_REAL STREQUAL "lin-nodeps")
-    set(BINARY_DEST_DIR "bin")
-    set(LIBRARY_DEST_DIR "bin")
-    set(PLUGIN_DEST_DIR "plugins")
-    set(BUNDLE_DEST_DIR ".")
-    set(RESOURCES_DEST_DIR ".")
-    set(JARS_DEST_DIR "bin/jars")
+    find_program(ACTOOL_EXE actool DOC "Path to the apple asset catalog compiler")
+    if(ACTOOL_EXE)
+        execute_process(
+            COMMAND xcodebuild -version
+            OUTPUT_VARIABLE XCODE_VERSION_OUTPUT
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
 
-    # install as bundle with no dependencies included
-    set(INSTALL_BUNDLE "nodeps")
+        string(REGEX MATCH "Xcode ([0-9]+\.[0-9]+)" XCODE_VERSION_MATCH "${XCODE_VERSION_OUTPUT}")
+        if(XCODE_VERSION_MATCH)
+            set(XCODE_VERSION ${CMAKE_MATCH_1})
+        else()
+            set(XCODE_VERSION 0.0)
+        endif()
+
+        if(XCODE_VERSION VERSION_GREATER_EQUAL 26.0)
+            set(ASSETS_OUT_DIR "${CMAKE_BINARY_DIR}/branding")
+            set(GENERATED_ASSETS_CAR "${ASSETS_OUT_DIR}/Assets.car")
+            set(ICON_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/${MeshMC_Branding_MAC_ICON}")
+
+            add_custom_command(
+                OUTPUT "${GENERATED_ASSETS_CAR}"
+                COMMAND ${ACTOOL_EXE} "${ICON_SOURCE}"
+                        --compile "${ASSETS_OUT_DIR}"
+                        --output-partial-info-plist /dev/null
+                        --app-icon ${MeshMC_Name}
+                        --enable-on-demand-resources NO
+                        --target-device mac
+                        --minimum-deployment-target ${CMAKE_OSX_DEPLOYMENT_TARGET}
+                        --platform macosx
+                DEPENDS "${ICON_SOURCE}"
+                COMMENT "Compiling asset catalog (${ICON_SOURCE})"
+                VERBATIM
+            )
+            add_custom_target(compile_assets ALL DEPENDS "${GENERATED_ASSETS_CAR}")
+            install(FILES "${GENERATED_ASSETS_CAR}" DESTINATION "${RESOURCES_DEST_DIR}")
+        else()
+            message(WARNING "Xcode ${XCODE_VERSION} is too old. Minimum required version is 26.0. Not compiling liquid glass icons.")
+        endif()
+
+    else()
+        message(WARNING "actool not found. Cannot compile macOS app icons.\n"
+                "Install Xcode command line tools: 'xcode-select --install'")
+    endif()
+
+
+elseif(UNIX)
+    include(KDEInstallDirs)
+
+    set(BINARY_DEST_DIR "bin")
+    set(LIBRARY_DEST_DIR "lib${LIB_SUFFIX}")
+    set(JARS_DEST_DIR "share/${MeshMC_Name}")
 
     # Set RPATH
     SET(MeshMC_BINARY_RPATH "$ORIGIN/")
 
-elseif(MeshMC_LAYOUT_REAL STREQUAL "win-bundle")
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${MeshMC_AppID}.desktop DESTINATION ${KDE_INSTALL_APPDIR})
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${MeshMC_AppID}.metainfo.xml DESTINATION ${KDE_INSTALL_METAINFODIR})
+    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/branding/${MeshMC_AppID}.svg DESTINATION "${KDE_INSTALL_ICONDIR}/hicolor/scalable/apps")
+    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/branding/${MeshMC_AppID}_256.png DESTINATION "${KDE_INSTALL_ICONDIR}/hicolor/256x256/apps" RENAME "${MeshMC_AppID}.png")
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${MeshMC_AppID}.xml DESTINATION ${KDE_INSTALL_MIMEDIR})
+
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/launcher/qtlogging.ini" DESTINATION "share/${MeshMC_Name}")
+
+    set(PLUGIN_DEST_DIR "plugins")
+    set(BUNDLE_DEST_DIR ".")
+    set(RESOURCES_DEST_DIR ".")
+
+    if(MeshMC_ManPage)
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${MeshMC_ManPage} DESTINATION "${KDE_INSTALL_MANDIR}/man6")
+    endif()
+
+    # Install basic runner script if component "portable" is selected
+    configure_file(launcher/MeshMC.in "${CMAKE_CURRENT_BINARY_DIR}/MeshMCScript" @ONLY)
+    install(PROGRAMS "${CMAKE_CURRENT_BINARY_DIR}/MeshMCScript" DESTINATION "." RENAME ${MeshMC_Name} COMPONENT portable EXCLUDE_FROM_ALL)
+
+elseif(WIN32)
     set(BINARY_DEST_DIR ".")
     set(LIBRARY_DEST_DIR ".")
     set(PLUGIN_DEST_DIR ".")
-    set(BUNDLE_DEST_DIR ".")
     set(RESOURCES_DEST_DIR ".")
     set(JARS_DEST_DIR "jars")
-
-    # Apps to bundle
-    set(APPS "\${CMAKE_INSTALL_PREFIX}/${MeshMC_Name}.exe")
-
-    # directories to look for dependencies
-    set(DIRS ${QT_LIBS_DIR} ${QT_LIBEXECS_DIR} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY} ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-
-    # install as bundle
-    set(INSTALL_BUNDLE "full")
 else()
-    message(FATAL_ERROR "No sensible install layout set.")
+    message(FATAL_ERROR "Platform not supported")
 endif()
 
 ################################ Included Libs ################################

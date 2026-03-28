@@ -1,12 +1,19 @@
 version = 1
 
-# Git ve config dosyaları
 [[annotations]]
 path = [
   ".gitignore",
   ".gitattributes",
   ".gitmodules",
-  ".github/**"
+  ".github/**",
+  ".envrc",
+  ".markdownlint.yaml",
+  ".markdownlintignore",
+  "Containerfile",
+  "default.nix",
+  "flake.lock",
+  "flake.nix",
+  "shell.nix"
 ]
 SPDX-License-Identifier = "CC0-1.0"
 SPDX-FileCopyrightText = "NONE"
@@ -16,19 +23,16 @@ path = ["launcher/package/**"]
 SPDX-License-Identifier = "GPL-3.0-or-later"
 SPDX-FileCopyrightText = "2026 Project Tick"
 
-# Docs & markdown
 [[annotations]]
 path = ["**/*.md", "doc/**"]
 SPDX-License-Identifier = "CC0-1.0"
 SPDX-FileCopyrightText = "2026 Project Tick"
 
-# Build / cmake
 [[annotations]]
 path = ["cmake/**", "**/CMakeLists.txt"]
 SPDX-License-Identifier = "BSD-3-Clause"
 SPDX-FileCopyrightText = "Various authors"
 
-# Assets (png/svg/icon vs)
 [[annotations]]
 path = [
   "branding/**",
@@ -37,7 +41,6 @@ path = [
 SPDX-License-Identifier = "CC0-1.0"
 SPDX-FileCopyrightText = "2026 Project Tick"
 
-# Test data
 [[annotations]]
 path = [
   "**/testdata/**"
@@ -54,3 +57,13 @@ SPDX-FileCopyrightText = "2026 Project Tick"
 path = ["libraries/**/.gitignore"]
 SPDX-License-Identifier = "CC0-1.0"
 SPDX-FileCopyrightText = "NONE"
+
+[[annotations]]
+path = ["CMakePresets.json"]
+SPDX-License-Identifier = "GPL-3.0-or-later"
+SPDX-FileCopyrightText = "2026 Project Tick"
+
+[[annotations]]
+path = ["nix/**"]
+SPDX-License-Identifier = "GPL-3.0-or-later"
+SPDX-FileCopyrightText = "2026 Project Tick"
