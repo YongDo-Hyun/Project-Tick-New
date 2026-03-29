@@ -57,11 +57,15 @@ public:
     bool apply() override;
 
 private slots:
-    void onThemeFamilyChanged(int index);
+    void applyWidgetTheme(int index);
+    void applyIconTheme(int index);
+    void applyCatTheme(int index);
 
 private:
     void applySettings();
     void loadSettings();
+    void updateIconPreview();
+    void updateCatPreview();
 
     Ui::AppearancePage *ui;
 };

@@ -39,6 +39,7 @@
 #include "BuildConfig.h"
 
 #include "MainWindow.h"
+#include "ui/themes/ThemeManager.h"
 
 #include <QtCore/QVariant>
 #include <QtCore/QUrl>
@@ -1341,43 +1342,21 @@ void MainWindow::onCatToggled(bool state)
     APPLICATION->settings()->set("TheCat", state);
 }
 
-namespace {
-template <typename T>
-T non_stupid_abs(T in)
-{
-    if (in < 0)
-        return -in;
-    return in;
-}
-}
-
 void MainWindow::setCatBackground(bool enabled)
 {
     if (enabled)
     {
-        QDateTime now = QDateTime::currentDateTime();
-        QDateTime birthday(QDate(now.date().year(), 11, 30), QTime(0, 0));
-        QDateTime xmas(QDate(now.date().year(), 12, 25), QTime(0, 0));
-        QString cat;
-        if(non_stupid_abs(now.daysTo(xmas)) <= 4) {
-            cat = "catmas";
-        }
-        else if (non_stupid_abs(now.daysTo(birthday)) <= 12) {
-            cat = "cattiversary";
-        }
-        else {
-            cat = "kitteh";
-        }
+        QString catPath = APPLICATION->themeManager()->getCatPack();
         view->setStyleSheet(QString(R"(
 InstanceView
 {
-    background-image: url(:/backgrounds/%1);
+    background-image: url(%1);
     background-attachment: fixed;
     background-clip: padding;
     background-position: top right;
     background-repeat: none;
     background-color:palette(base);
-})").arg(cat));
+})").arg(catPath));
     }
     else
     {

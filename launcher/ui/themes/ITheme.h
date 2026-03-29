@@ -32,6 +32,10 @@ public:
     virtual void apply(bool initial);
     virtual QString id() = 0;
     virtual QString name() = 0;
+    virtual QString tooltip()
+    {
+        return QString();
+    }
     virtual bool hasStyleSheet() = 0;
     virtual QString appStyleSheet() = 0;
     virtual QString qtTheme() = 0;

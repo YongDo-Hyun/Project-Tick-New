@@ -25,25 +25,52 @@
 #include "DarkTheme.h"
 #include "BrightTheme.h"
 #include "CustomTheme.h"
+#include "CatPack.h"
 
+#include "Application.h"
+#include "Exception.h"
 #include <QApplication>
 #include <QDebug>
+#include <QDirIterator>
+#include <QImageReader>
 #include <QSet>
+#include <QStyle>
+#include <QStyleFactory>
+#include <QSysInfo>
 #include <xdgicon.h>
 
 ThemeManager::ThemeManager()
 {
-    auto insertTheme = [this](ITheme* theme)
-    {
-        addTheme(std::unique_ptr<ITheme>(theme));
-    };
+    const auto& style = QApplication::style();
+    m_defaultStyle = style->objectName();
+    m_defaultPalette = QApplication::palette();
+
+    // Default "System" theme
+    addTheme(std::make_unique<SystemTheme>(m_defaultStyle, m_defaultPalette, true));
+
+    // Built-in Fusion themes
     auto darkTheme = new DarkTheme();
-    insertTheme(new SystemTheme());
-    insertTheme(darkTheme);
-    insertTheme(new BrightTheme());
-    insertTheme(new CustomTheme(darkTheme, "custom"));
+    addTheme(std::unique_ptr<ITheme>(darkTheme));
+    addTheme(std::make_unique<BrightTheme>());
+
+    // System widget themes from QStyleFactory
+    QStringList styles = QStyleFactory::keys();
+    for (auto& st : styles)
+    {
+#ifdef Q_OS_WINDOWS
+        if (QSysInfo::productVersion() != "11" && st == "windows11")
+        {
+            continue;
+        }
+#endif
+        addTheme(std::make_unique<SystemTheme>(st, m_defaultPalette, false));
+    }
+
+    // Custom theme
+    addTheme(std::make_unique<CustomTheme>(darkTheme, "custom"));
 
     initIconThemes();
+    initializeCatPacks();
 }
 
 void ThemeManager::addTheme(std::unique_ptr<ITheme> theme)
@@ -78,6 +105,31 @@ void ThemeManager::setApplicationTheme(const QString& id, bool initial)
 void ThemeManager::setIconTheme(const QString& name)
 {
     XdgIcon::setThemeName(name);
+}
+
+void ThemeManager::applyCurrentlySelectedTheme(bool initial)
+{
+    auto settings = APPLICATION->settings();
+
+    // Apply widget theme first (sets palette)
+    auto applicationTheme = settings->get("ApplicationTheme").toString();
+    if (applicationTheme.isEmpty())
+    {
+        applicationTheme = "system";
+    }
+    setApplicationTheme(applicationTheme, initial);
+
+    // Auto-resolve icon variant based on the now-active palette brightness
+    auto iconTheme = settings->get("IconTheme").toString();
+    if (!iconTheme.isEmpty())
+    {
+        auto resolved = bestIconThemeForPalette(iconTheme);
+        if (resolved != iconTheme)
+        {
+            settings->set("IconTheme", resolved);
+        }
+        setIconTheme(resolved);
+    }
 }
 
 std::vector<ITheme*> ThemeManager::allThemes()
@@ -193,6 +245,29 @@ QString ThemeManager::resolveIconTheme(const QString& family) const
     return entries[0].id;
 }
 
+QString ThemeManager::bestIconThemeForPalette(const QString& currentIconId) const
+{
+    // Find the family of the current icon theme
+    QString family;
+    for (const auto& entry : m_iconThemes)
+    {
+        if (entry.id == currentIconId)
+        {
+            family = entry.family;
+            break;
+        }
+    }
+
+    if (family.isEmpty())
+    {
+        return currentIconId;
+    }
+
+    // Resolve the best variant for that family based on current palette
+    QString resolved = resolveIconTheme(family);
+    return resolved.isEmpty() ? currentIconId : resolved;
+}
+
 void ThemeManager::initIconThemes()
 {
     m_iconThemes = {
@@ -210,4 +285,106 @@ void ThemeManager::initIconThemes()
         { "breeze_light", QStringLiteral("Breeze Light"),     QStringLiteral("Breeze"),             QObject::tr("Light") },
         { "custom",     QObject::tr("Custom"),                QObject::tr("Custom"),                QString() },
     };
+}
+
+void ThemeManager::initializeCatPacks()
+{
+    QList<std::pair<QString, QString>> defaultCats{
+        { "kitteh", QObject::tr("Background Cat (from MultiMC)") },
+        { "rory", QObject::tr("Rory ID 11 (drawn by Ashtaka)") },
+        { "rory-flat", QObject::tr("Rory ID 11 (flat edition, drawn by Ashtaka)") },
+        { "teawie", QObject::tr("Teawie (drawn by SympathyTea)") }
+    };
+
+    for (const auto& [id, name] : defaultCats)
+    {
+        addCatPack(std::make_unique<BasicCatPack>(id, name));
+    }
+
+    // Create catpacks folder in data directory
+    m_catPacksFolder = QDir("catpacks");
+    if (!m_catPacksFolder.mkpath("."))
+        qWarning() << "Couldn't create catpacks folder";
+
+    QStringList supportedImageFormats;
+    for (const auto& format : QImageReader::supportedImageFormats())
+    {
+        supportedImageFormats.append("*." + format);
+    }
+
+    auto loadFiles = [this, &supportedImageFormats](const QDir& dir) {
+        QDirIterator it(dir.absolutePath(), supportedImageFormats, QDir::Files);
+        while (it.hasNext())
+        {
+            QFileInfo info(it.next());
+            addCatPack(std::make_unique<FileCatPack>(info));
+        }
+    };
+
+    // Load image files in catpacks folder root
+    loadFiles(m_catPacksFolder);
+
+    // Load subdirectories
+    QDirIterator directoryIterator(m_catPacksFolder.path(), QDir::Dirs | QDir::NoDotAndDotDot);
+    while (directoryIterator.hasNext())
+    {
+        QDir dir(directoryIterator.next());
+        QFileInfo manifest(dir.absoluteFilePath("catpack.json"));
+
+        if (manifest.isFile())
+        {
+            try
+            {
+                addCatPack(std::make_unique<JsonCatPack>(manifest));
+            }
+            catch (const Exception& e)
+            {
+                qWarning() << "Couldn't load catpack json:" << e.cause();
+            }
+        }
+        else
+        {
+            loadFiles(dir);
+        }
+    }
+}
+
+void ThemeManager::addCatPack(std::unique_ptr<CatPack> catPack)
+{
+    QString id = catPack->id();
+    if (m_catPacks.find(id) == m_catPacks.end())
+        m_catPacks.emplace(id, std::move(catPack));
+    else
+        qWarning() << "CatPack" << id << "not added to prevent id duplication";
+}
+
+QString ThemeManager::getCatPack(const QString& catName)
+{
+    QString id = catName.isEmpty() ? APPLICATION->settings()->get("BackgroundCat").toString() : catName;
+
+    auto it = m_catPacks.find(id);
+    if (it != m_catPacks.end())
+        return it->second->path();
+
+    // Fallback to first available
+    if (!m_catPacks.empty())
+        return m_catPacks.begin()->second->path();
+
+    return QString();
+}
+
+QList<CatPack*> ThemeManager::getValidCatPacks()
+{
+    QList<CatPack*> ret;
+    ret.reserve(m_catPacks.size());
+    for (auto& [id, pack] : m_catPacks)
+    {
+        ret.append(pack.get());
+    }
+    return ret;
+}
+
+QDir ThemeManager::getCatPacksFolder()
+{
+    return m_catPacksFolder;
 }

@@ -25,33 +25,27 @@
 #include <QStyleFactory>
 #include <QDebug>
 
-SystemTheme::SystemTheme()
+static const QStringList S_NATIVE_STYLES{ "windows11", "windowsvista", "macos", "system", "windows" };
+
+SystemTheme::SystemTheme(const QString& styleName, const QPalette& defaultPalette, bool isDefaultTheme)
 {
-    qDebug() << "Determining System Theme...";
-    const auto & style = QApplication::style();
-    systemPalette = style->standardPalette();
-    QString lowerThemeName = style->objectName();
-    qDebug() << "System theme seems to be:" << lowerThemeName;
-    QStringList styles = QStyleFactory::keys();
-    for(auto &st: styles)
+    m_themeName = isDefaultTheme ? "system" : styleName;
+    m_widgetTheme = styleName;
+    if (S_NATIVE_STYLES.contains(m_themeName))
     {
-        qDebug() << "Considering theme from theme factory:" << st.toLower();
-        if(st.toLower() == lowerThemeName)
-        {
-            systemTheme = st;
-            qDebug() << "System theme has been determined to be:" << systemTheme;
-            return;
-        }
+        m_colorPalette = defaultPalette;
     }
-    // fall back to fusion if we can't find the current theme.
-    systemTheme = "Fusion";
-    qDebug() << "System theme not found, defaulted to Fusion";
+    else
+    {
+        auto style = QStyleFactory::create(styleName);
+        m_colorPalette = style != nullptr ? style->standardPalette() : defaultPalette;
+        delete style;
+    }
 }
 
 void SystemTheme::apply(bool initial)
 {
-    // if we are applying the system theme as the first theme, just don't touch anything. it's for the better...
-    if(initial)
+    if (initial && S_NATIVE_STYLES.contains(m_themeName))
     {
         return;
     }
@@ -60,22 +54,69 @@ void SystemTheme::apply(bool initial)
 
 QString SystemTheme::id()
 {
-    return "system";
+    return m_themeName;
 }
 
 QString SystemTheme::name()
 {
-    return QObject::tr("System");
+    if (m_themeName.toLower() == "windowsvista")
+    {
+        return QObject::tr("Windows Vista");
+    }
+    else if (m_themeName.toLower() == "windows")
+    {
+        return QObject::tr("Windows 9x");
+    }
+    else if (m_themeName.toLower() == "windows11")
+    {
+        return QObject::tr("Windows 11");
+    }
+    else if (m_themeName.toLower() == "system")
+    {
+        return QObject::tr("System");
+    }
+    else
+    {
+        return m_themeName;
+    }
+}
+
+QString SystemTheme::tooltip()
+{
+    if (m_themeName.toLower() == "windowsvista")
+    {
+        return QObject::tr("Widget style trying to look like your win32 theme");
+    }
+    else if (m_themeName.toLower() == "windows")
+    {
+        return QObject::tr("Windows 9x inspired widget style");
+    }
+    else if (m_themeName.toLower() == "windows11")
+    {
+        return QObject::tr("WinUI 3 inspired Qt widget style");
+    }
+    else if (m_themeName.toLower() == "fusion")
+    {
+        return QObject::tr("The default Qt widget style");
+    }
+    else if (m_themeName.toLower() == "system")
+    {
+        return QObject::tr("Your current system theme");
+    }
+    else
+    {
+        return QString();
+    }
 }
 
 QString SystemTheme::qtTheme()
 {
-    return systemTheme;
+    return m_widgetTheme;
 }
 
 QPalette SystemTheme::colorScheme()
 {
-    return systemPalette;
+    return m_colorPalette;
 }
 
 QString SystemTheme::appStyleSheet()
@@ -90,7 +131,7 @@ double SystemTheme::fadeAmount()
 
 QColor SystemTheme::fadeColor()
 {
-    return QColor(128,128,128);
+    return QColor(128, 128, 128);
 }
 
 bool SystemTheme::hasStyleSheet()

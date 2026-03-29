@@ -402,8 +402,8 @@ HRESULT CreateLink(LPCSTR linkPath, LPCSTR targetPath, LPCSTR args)
         }
     }
 
-    IShellLink *link;
-    hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLink,
+    IShellLinkA *link;
+    hres = CoCreateInstance(CLSID_ShellLink, nullptr, CLSCTX_INPROC_SERVER, IID_IShellLinkA,
                             (LPVOID *)&link);
 
     if (SUCCEEDED(hres))

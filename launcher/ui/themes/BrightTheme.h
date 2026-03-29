@@ -30,6 +30,7 @@ public:
 
     QString id() override;
     QString name() override;
+    QString tooltip() override;
     bool hasStyleSheet() override;
     QString appStyleSheet() override;
     bool hasColorScheme() override;

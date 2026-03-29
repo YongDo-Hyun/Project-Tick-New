@@ -27,19 +27,10 @@
 
 void ITheme::apply(bool)
 {
+    APPLICATION->setStyleSheet(QString());
     QApplication::setStyle(QStyleFactory::create(qtTheme()));
-    if(hasColorScheme())
-    {
-        QApplication::setPalette(colorScheme());
-    }
-    if(hasStyleSheet())
-    {
-        APPLICATION->setStyleSheet(appStyleSheet());
-    }
-    else
-    {
-        APPLICATION->setStyleSheet(QString());
-    }
+    QApplication::setPalette(colorScheme());
+    APPLICATION->setStyleSheet(appStyleSheet());
     QDir::setSearchPaths("theme", searchPaths());
 }
 

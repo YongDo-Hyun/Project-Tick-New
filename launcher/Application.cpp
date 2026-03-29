@@ -834,6 +834,8 @@ void Application::initSettings()
 
     // The cat
     m_settings->registerSetting("TheCat", false);
+    m_settings->registerSetting("BackgroundCat", QString("kitteh"));
+    m_settings->registerSetting("CatOpacity", 100);
 
     m_settings->registerSetting("InstSortMode", "Name");
     m_settings->registerSetting("SelectedInstance", QString());
@@ -1033,10 +1035,8 @@ void Application::initSubsystems()
     });
 
     {
-        setIconTheme(settings()->get("IconTheme").toString());
-        qDebug() << "<> Icon theme set.";
-        setApplicationTheme(settings()->get("ApplicationTheme").toString(), true);
-        qDebug() << "<> Application theme set.";
+        m_themeManager->applyCurrentlySelectedTheme(true);
+        qDebug() << "<> Theme applied.";
     }
 }
 

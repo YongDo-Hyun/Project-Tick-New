@@ -23,12 +23,16 @@
 
 #include <QString>
 #include <QList>
+#include <QDir>
 #include <QIcon>
+#include <QPalette>
 #include <memory>
 #include <map>
 #include <vector>
 
 class ITheme;
+
+#include "CatPack.h"
 
 struct IconThemeEntry
 {
@@ -51,6 +55,8 @@ public:
 
     void setIconTheme(const QString& name);
 
+    void applyCurrentlySelectedTheme(bool initial = false);
+
     std::vector<ITheme*> allThemes();
 
     QStringList families();
@@ -65,9 +71,22 @@ public:
 
     QString resolveIconTheme(const QString& family) const;
 
+    QString bestIconThemeForPalette(const QString& currentIconId) const;
+
+    // CatPack API
+    QString getCatPack(const QString& catName = QString());
+    QList<CatPack*> getValidCatPacks();
+    QDir getCatPacksFolder();
+
 private:
     std::map<QString, std::unique_ptr<ITheme>> m_themes;
     QList<IconThemeEntry> m_iconThemes;
+    std::map<QString, std::unique_ptr<CatPack>> m_catPacks;
+    QDir m_catPacksFolder;
+    QString m_defaultStyle;
+    QPalette m_defaultPalette;
 
     void initIconThemes();
+    void initializeCatPacks();
+    void addCatPack(std::unique_ptr<CatPack> catPack);
 };

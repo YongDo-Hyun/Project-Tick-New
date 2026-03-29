@@ -25,13 +25,26 @@
 #include "Application.h"
 #include "ui/themes/ITheme.h"
 #include "ui/themes/ThemeManager.h"
+#include "ui/themes/CatPack.h"
+
+#include <QGraphicsOpacityEffect>
+
+static const QStringList previewIconNames = {
+    "new", "centralmods", "viewfolder", "launch", "copy", "about", "settings", "accounts"
+};
 
 AppearancePage::AppearancePage(QWidget *parent) : QWidget(parent), ui(new Ui::AppearancePage)
 {
     ui->setupUi(this);
 
-    connect(ui->themeComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, &AppearancePage::onThemeFamilyChanged);
+    ui->catPreview->setGraphicsEffect(new QGraphicsOpacityEffect(this));
+
+    connect(ui->widgetStyleComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &AppearancePage::applyWidgetTheme);
+    connect(ui->iconsComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &AppearancePage::applyIconTheme);
+    connect(ui->catPackComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &AppearancePage::applyCatTheme);
 
     loadSettings();
 }
@@ -47,162 +60,161 @@ bool AppearancePage::apply()
     return true;
 }
 
+void AppearancePage::applyWidgetTheme(int index)
+{
+    auto settings = APPLICATION->settings();
+    auto originalTheme = settings->get("ApplicationTheme").toString();
+    auto newTheme = ui->widgetStyleComboBox->itemData(index).toString();
+    if (originalTheme != newTheme)
+    {
+        settings->set("ApplicationTheme", newTheme);
+        APPLICATION->themeManager()->applyCurrentlySelectedTheme();
+
+        // Sync icon combo to the auto-resolved icon theme
+        auto resolvedIcon = settings->get("IconTheme").toString();
+        ui->iconsComboBox->blockSignals(true);
+        for (int i = 0; i < ui->iconsComboBox->count(); i++)
+        {
+            if (ui->iconsComboBox->itemData(i).toString() == resolvedIcon)
+            {
+                ui->iconsComboBox->setCurrentIndex(i);
+                break;
+            }
+        }
+        ui->iconsComboBox->blockSignals(false);
+    }
+    updateIconPreview();
+}
+
+void AppearancePage::applyIconTheme(int index)
+{
+    auto settings = APPLICATION->settings();
+    auto originalIconTheme = settings->get("IconTheme").toString();
+    auto newIconTheme = ui->iconsComboBox->itemData(index).toString();
+    if (originalIconTheme != newIconTheme)
+    {
+        settings->set("IconTheme", newIconTheme);
+        APPLICATION->themeManager()->applyCurrentlySelectedTheme();
+    }
+    updateIconPreview();
+}
+
 void AppearancePage::applySettings()
 {
-    auto s = APPLICATION->settings();
-
-    // Apply color theme
-    QString newThemeId;
-    if (ui->variantComboBox->isVisible() && ui->variantComboBox->count() > 0)
-    {
-        newThemeId = ui->variantComboBox->currentData().toString();
-    }
-    else
-    {
-        newThemeId = ui->themeComboBox->currentData().toString();
-    }
-
-    auto originalAppTheme = s->get("ApplicationTheme").toString();
-    if (!newThemeId.isEmpty() && originalAppTheme != newThemeId)
-    {
-        s->set("ApplicationTheme", newThemeId);
-        APPLICATION->setApplicationTheme(newThemeId, false);
-    }
-
-    // Apply icon theme
-    auto originalIconTheme = s->get("IconTheme").toString();
-    auto tm = APPLICATION->themeManager();
-    // Resolve the correct icon variant based on currently active color theme
-    QString iconFamily = ui->iconThemeComboBox->currentText();
-    QString newIconTheme = tm->resolveIconTheme(iconFamily);
-    if (!newIconTheme.isEmpty() && originalIconTheme != newIconTheme)
-    {
-        s->set("IconTheme", newIconTheme);
-        APPLICATION->setIconTheme(newIconTheme);
-    }
+    // Theme and icon changes are already persisted live via applyWidgetTheme/applyIconTheme.
+    // This is intentionally minimal — settings are saved on combo change.
 }
 
 void AppearancePage::loadSettings()
 {
-    auto s = APPLICATION->settings();
+    auto settings = APPLICATION->settings();
     auto tm = APPLICATION->themeManager();
 
-    // Load color theme families
-    ui->themeComboBox->blockSignals(true);
-    ui->themeComboBox->clear();
+    // Block signals during population
+    ui->widgetStyleComboBox->blockSignals(true);
+    ui->iconsComboBox->blockSignals(true);
+    ui->catPackComboBox->blockSignals(true);
 
-    auto currentThemeId = s->get("ApplicationTheme").toString();
-    auto currentTheme = tm->getTheme(currentThemeId);
+    // --- Widget themes (flat list) ---
+    ui->widgetStyleComboBox->clear();
+    auto currentThemeId = settings->get("ApplicationTheme").toString();
+    auto themes = tm->allThemes();
+    int themeIdx = 0;
 
-    auto familyList = tm->families();
-    int familyIdx = 0;
-    QString currentFamily;
-    if (currentTheme)
+    for (size_t i = 0; i < themes.size(); i++)
     {
-        currentFamily = currentTheme->family();
-    }
-
-    for (int i = 0; i < familyList.size(); i++)
-    {
-        const auto& family = familyList[i];
-        auto themes = tm->themesInFamily(family);
-        // Store the first theme's id as data for single-theme families
-        QString dataId = themes.empty() ? QString() : themes[0]->id();
-        ui->themeComboBox->addItem(family, dataId);
-        if (family == currentFamily)
+        auto* theme = themes[i];
+        ui->widgetStyleComboBox->addItem(theme->name(), theme->id());
+        if (!theme->tooltip().isEmpty())
         {
-            familyIdx = i;
+            ui->widgetStyleComboBox->setItemData(static_cast<int>(i), theme->tooltip(), Qt::ToolTipRole);
+        }
+        if (theme->id() == currentThemeId)
+        {
+            themeIdx = static_cast<int>(i);
         }
     }
 
-    ui->themeComboBox->setCurrentIndex(familyIdx);
-    ui->themeComboBox->blockSignals(false);
+    ui->widgetStyleComboBox->setCurrentIndex(themeIdx);
 
-    // Populate variants for the selected family
-    onThemeFamilyChanged(familyIdx);
+    // --- Icon themes (flat list) ---
+    ui->iconsComboBox->clear();
+    auto currentIconTheme = settings->get("IconTheme").toString();
+    auto iconThemeList = tm->iconThemes();
+    int iconIdx = 0;
 
-    // Select the current variant
-    if (currentTheme && !currentTheme->variant().isEmpty())
+    for (int i = 0; i < iconThemeList.size(); i++)
     {
-        for (int i = 0; i < ui->variantComboBox->count(); i++)
-        {
-            if (ui->variantComboBox->itemData(i).toString() == currentThemeId)
-            {
-                ui->variantComboBox->setCurrentIndex(i);
-                break;
-            }
-        }
-    }
-
-    // Load icon theme families
-    ui->iconThemeComboBox->clear();
-    auto currentIconTheme = s->get("IconTheme").toString();
-    auto iconFamilies = tm->iconThemeFamilies();
-    int iconFamilyIdx = 0;
-
-    // Find the current icon theme's family
-    QString currentIconFamily;
-    for (const auto& entry : tm->iconThemes())
-    {
+        const auto& entry = iconThemeList[i];
+        ui->iconsComboBox->addItem(entry.name, entry.id);
         if (entry.id == currentIconTheme)
         {
-            currentIconFamily = entry.family;
-            break;
+            iconIdx = i;
         }
     }
 
-    for (int i = 0; i < iconFamilies.size(); i++)
+    ui->iconsComboBox->setCurrentIndex(iconIdx);
+
+    // --- Cat Packs ---
+    ui->catPackComboBox->clear();
+    auto currentCat = settings->get("BackgroundCat").toString();
+    auto cats = tm->getValidCatPacks();
+    int catIdx = 0;
+
+    for (int i = 0; i < cats.size(); i++)
     {
-        auto entries = tm->iconThemesInFamily(iconFamilies[i]);
-        QString dataId = entries.isEmpty() ? QString() : entries[0].id;
-        ui->iconThemeComboBox->addItem(iconFamilies[i], dataId);
-        if (iconFamilies[i] == currentIconFamily)
+        auto* cat = cats[i];
+        QIcon catIcon(cat->path());
+        ui->catPackComboBox->addItem(catIcon, cat->name(), cat->id());
+        if (cat->id() == currentCat)
         {
-            iconFamilyIdx = i;
+            catIdx = i;
         }
     }
 
-    ui->iconThemeComboBox->setCurrentIndex(iconFamilyIdx);
+    ui->catPackComboBox->setCurrentIndex(catIdx);
+
+    // Unblock signals
+    ui->widgetStyleComboBox->blockSignals(false);
+    ui->iconsComboBox->blockSignals(false);
+    ui->catPackComboBox->blockSignals(false);
+
+    // Initial previews
+    updateIconPreview();
+    updateCatPreview();
 }
 
-void AppearancePage::onThemeFamilyChanged(int index)
+void AppearancePage::updateIconPreview()
 {
-    auto tm = APPLICATION->themeManager();
-    auto familyList = tm->families();
+    QList<QToolButton*> previewButtons = {
+        ui->icon1, ui->icon2, ui->icon3, ui->icon4,
+        ui->icon5, ui->icon6, ui->icon7, ui->icon8
+    };
 
-    if (index < 0 || index >= familyList.size())
+    for (int i = 0; i < previewButtons.size() && i < previewIconNames.size(); i++)
     {
-        ui->variantComboBox->setVisible(false);
-        ui->labelVariant->setVisible(false);
-        return;
+        previewButtons[i]->setIcon(APPLICATION->getThemedIcon(previewIconNames[i]));
     }
+}
 
-    auto themes = tm->themesInFamily(familyList[index]);
+void AppearancePage::applyCatTheme(int index)
+{
+    auto settings = APPLICATION->settings();
+    auto originalCat = settings->get("BackgroundCat").toString();
+    auto newCat = ui->catPackComboBox->itemData(index).toString();
+    if (originalCat != newCat)
+    {
+        settings->set("BackgroundCat", newCat);
+    }
+    updateCatPreview();
+}
 
-    bool hasVariants = false;
-    for (auto* theme : themes)
-    {
-        if (!theme->variant().isEmpty())
-        {
-            hasVariants = true;
-            break;
-        }
-    }
+void AppearancePage::updateCatPreview()
+{
+    QIcon catPackIcon(APPLICATION->themeManager()->getCatPack());
+    ui->catPreview->setIcon(catPackIcon);
 
-    ui->variantComboBox->clear();
-    if (hasVariants && themes.size() > 1)
-    {
-        ui->variantComboBox->setVisible(true);
-        ui->labelVariant->setVisible(true);
-        for (auto* theme : themes)
-        {
-            QString label = theme->variant().isEmpty() ? theme->name() : theme->variant();
-            ui->variantComboBox->addItem(label, theme->id());
-        }
-    }
-    else
-    {
-        ui->variantComboBox->setVisible(false);
-        ui->labelVariant->setVisible(false);
-    }
+    auto effect = dynamic_cast<QGraphicsOpacityEffect*>(ui->catPreview->graphicsEffect());
+    if (effect)
+        effect->setOpacity(1.0);
 }
