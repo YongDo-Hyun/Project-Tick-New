@@ -117,8 +117,8 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 ####################################### Branding #######################################
 
 ######## Firstly, please set version numbers ########
-set(MeshMC_VERSION_MAJOR    0)
-set(MeshMC_VERSION_MINOR    7)
+set(MeshMC_VERSION_MAJOR    7)
+set(MeshMC_VERSION_MINOR    0)
 set(MeshMC_VERSION_HOTFIX   0)
 
 set(MeshMC_RELEASE_VERSION_NAME "${MeshMC_VERSION_MAJOR}.${MeshMC_VERSION_MINOR}.${MeshMC_VERSION_HOTFIX}")

@@ -191,61 +191,58 @@ QList<JavaInstallPtr> JavaUtils::FindJavaFromRegistryKey(DWORD keyType, QString 
         // This will be used to find any key that contains the JavaHome value.
         char *value = new char[0];
         DWORD valueSz = 0;
-        if (RegQueryValueExA(jreKey, "CurrentVersion", NULL, NULL, (BYTE *)value, &valueSz) ==
+        if (RegQueryValueExA(jreKey, "CurrentVersion", nullptr, nullptr, (BYTE *)value, &valueSz) ==
             ERROR_MORE_DATA)
         {
             value = new char[valueSz];
-            RegQueryValueExA(jreKey, "CurrentVersion", NULL, NULL, (BYTE *)value, &valueSz);
+            RegQueryValueExA(jreKey, "CurrentVersion", nullptr, nullptr, (BYTE *)value, &valueSz);
         }
 
-        TCHAR subKeyName[255];
+        char subKeyName[255];
         DWORD subKeyNameSize, numSubKeys, retCode;
 
         // Get the number of subkeys
-        RegQueryInfoKey(jreKey, NULL, NULL, NULL, &numSubKeys, NULL, NULL, NULL, NULL, NULL,
-                        NULL, NULL);
+        RegQueryInfoKeyA(jreKey, nullptr, nullptr, nullptr, &numSubKeys, nullptr, nullptr, nullptr, nullptr, nullptr,
+                         nullptr, nullptr);
 
         // Iterate until RegEnumKeyEx fails
-        if (numSubKeys > 0)
+        for (DWORD i = 0; i < numSubKeys; i++)
         {
-            for (DWORD i = 0; i < numSubKeys; i++)
+            subKeyNameSize = 255;
+            retCode = RegEnumKeyExA(jreKey, i, subKeyName, &subKeyNameSize, nullptr, nullptr, nullptr,
+                                    nullptr);
+            if (retCode != ERROR_SUCCESS)
+                continue;
+
+            // Now open the registry key for the version that we just got.
+            QString newKeyName = keyName + "\\" + subKeyName + subkeySuffix;
+
+            HKEY newKey;
+            if (RegOpenKeyExA(HKEY_LOCAL_MACHINE, newKeyName.toStdString().c_str(), 0,
+                              KEY_READ | KEY_WOW64_64KEY, &newKey) != ERROR_SUCCESS)
+                continue;
+
+            // Read the JavaHome value to find where Java is installed.
+            value = new char[0];
+            valueSz = 0;
+            if (RegQueryValueExA(newKey, keyJavaDir.toStdString().c_str(), nullptr, nullptr, (BYTE *)value,
+                                 &valueSz) == ERROR_MORE_DATA)
             {
-                subKeyNameSize = 255;
-                retCode = RegEnumKeyEx(jreKey, i, subKeyName, &subKeyNameSize, NULL, NULL, NULL,
-                                       NULL);
-                if (retCode == ERROR_SUCCESS)
-                {
-                    // Now open the registry key for the version that we just got.
-                    QString newKeyName = keyName + "\\" + subKeyName + subkeySuffix;
+                value = new char[valueSz];
+                RegQueryValueExA(newKey, keyJavaDir.toStdString().c_str(), nullptr, nullptr, (BYTE *)value,
+                                 &valueSz);
 
-                    HKEY newKey;
-                    if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, newKeyName.toStdString().c_str(), 0,
-                                     KEY_READ | KEY_WOW64_64KEY, &newKey) == ERROR_SUCCESS)
-                    {
-                        // Read the JavaHome value to find where Java is installed.
-                        value = new char[0];
-                        valueSz = 0;
-                        if (RegQueryValueEx(newKey, keyJavaDir.toStdString().c_str(), NULL, NULL, (BYTE *)value,
-                                            &valueSz) == ERROR_MORE_DATA)
-                        {
-                            value = new char[valueSz];
-                            RegQueryValueEx(newKey, keyJavaDir.toStdString().c_str(), NULL, NULL, (BYTE *)value,
-                                            &valueSz);
+                // Now, we construct the version object and add it to the list.
+                JavaInstallPtr javaVersion(new JavaInstall());
 
-                            // Now, we construct the version object and add it to the list.
-                            JavaInstallPtr javaVersion(new JavaInstall());
-
-                            javaVersion->id = subKeyName;
-                            javaVersion->arch = archType;
-                            javaVersion->path =
-                                QDir(FS::PathCombine(value, "bin")).absoluteFilePath("javaw.exe");
-                            javas.append(javaVersion);
-                        }
-
-                        RegCloseKey(newKey);
-                    }
-                }
+                javaVersion->id = subKeyName;
+                javaVersion->arch = archType;
+                javaVersion->path =
+                    QDir(FS::PathCombine(value, "bin")).absoluteFilePath("javaw.exe");
+                javas.append(javaVersion);
             }
+
+            RegCloseKey(newKey);
         }
 
         RegCloseKey(jreKey);
