@@ -43,6 +43,10 @@ function(add_unit_test name)
 
     target_link_libraries(${name}_test Qt6::Test ${OPT_LIBS})
 
+    if(WIN32)
+        target_link_options(${name}_test PRIVATE "/MANIFEST:NO")
+    endif()
+
     target_include_directories(${name}_test PRIVATE "${TEST_RESOURCE_PATH}/UnitTest/")
 
     add_test(NAME ${name} COMMAND ${name}_test WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
