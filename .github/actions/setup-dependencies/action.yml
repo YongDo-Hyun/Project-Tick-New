@@ -21,6 +21,10 @@ inputs:
   qt-version:
     description: Version of Qt to use
     required: true
+  github-token:
+    description: GitHub token for package feed authentication
+    required: false
+    default: ${{ github.token }}
 
 outputs:
   build-type:
@@ -37,12 +41,15 @@ runs:
     - name: Setup Linux dependencies
       if: ${{ runner.os == 'Linux' }}
       uses: ./.github/actions/setup-dependencies/linux
+      with:
+        github-token: ${{ inputs.github-token }}
 
     - name: Setup macOS dependencies
       if: ${{ runner.os == 'macOS' }}
       uses: ./.github/actions/setup-dependencies/macos
       with:
         build-type: ${{ inputs.build-type }}
+        github-token: ${{ inputs.github-token }}
 
     - name: Setup Windows dependencies
       if: ${{ runner.os == 'Windows' }}
@@ -51,6 +58,7 @@ runs:
         build-type: ${{ inputs.build-type }}
         msystem: ${{ inputs.msystem }}
         vcvars-arch: ${{ inputs.vcvars-arch }}
+        github-token: ${{ inputs.github-token }}
 
     # TODO(@YongDo-Hyun): Get this working on MSYS2!
     - name: Setup ccache

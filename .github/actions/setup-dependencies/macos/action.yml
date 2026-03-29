@@ -5,6 +5,9 @@ inputs:
     description: Type for the build
     required: true
     default: Debug
+  github-token:
+    description: GitHub token for package feed authentication
+    required: true
 
 runs:
   using: composite
@@ -26,8 +29,9 @@ runs:
       shell: bash
       env:
         USERNAME: ${{ github.repository_owner }}
-        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
         FEED_URL: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+        NUGET_RW: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
       run: |
         mono `vcpkg fetch nuget | tail -n 1` \
           sources add \
@@ -39,7 +43,8 @@ runs:
         mono `vcpkg fetch nuget | tail -n 1` \
           setapikey "$GITHUB_TOKEN" \
           -Source "$FEED_URL"
-        echo "VCPKG_BINARY_SOURCES=clear;nuget,$FEED_URL,readwrite" >> "$GITHUB_ENV"
+        MODE=$( [ "$NUGET_RW" = "true" ] && echo "readwrite" || echo "read" )
+        echo "VCPKG_BINARY_SOURCES=clear;nuget,$FEED_URL,$MODE" >> "$GITHUB_ENV"
 
     - name: Setup vcpkg environment
       shell: bash
