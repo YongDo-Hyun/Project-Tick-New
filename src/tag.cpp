@@ -32,6 +32,14 @@
 namespace nbt
 {
 
+//Explicit instantiation definitions for tag_primitive
+template class tag_primitive<int8_t>;
+template class tag_primitive<int16_t>;
+template class tag_primitive<int32_t>;
+template class tag_primitive<int64_t>;
+template class tag_primitive<float>;
+template class tag_primitive<double>;
+
 static_assert(std::numeric_limits<float>::is_iec559 && std::numeric_limits<double>::is_iec559,
     "The floating point values for NBT must conform to IEC 559/IEEE 754");
 

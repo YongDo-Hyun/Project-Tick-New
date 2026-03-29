@@ -83,13 +83,13 @@ typedef tag_primitive<int64_t> tag_long;
 typedef tag_primitive<float> tag_float;
 typedef tag_primitive<double> tag_double;
 
-//Explicit instantiations
-template class NBT_EXPORT tag_primitive<int8_t>;
-template class NBT_EXPORT tag_primitive<int16_t>;
-template class NBT_EXPORT tag_primitive<int32_t>;
-template class NBT_EXPORT tag_primitive<int64_t>;
-template class NBT_EXPORT tag_primitive<float>;
-template class NBT_EXPORT tag_primitive<double>;
+//Explicit instantiation declarations
+extern template class NBT_EXPORT tag_primitive<int8_t>;
+extern template class NBT_EXPORT tag_primitive<int16_t>;
+extern template class NBT_EXPORT tag_primitive<int32_t>;
+extern template class NBT_EXPORT tag_primitive<int64_t>;
+extern template class NBT_EXPORT tag_primitive<float>;
+extern template class NBT_EXPORT tag_primitive<double>;
 
 template<class T>
 void tag_primitive<T>::read_payload(io::stream_reader& reader)
