@@ -972,6 +972,10 @@ target_link_libraries(MeshMC_logic
 add_executable(${MeshMC_Name} MACOSX_BUNDLE WIN32 main.cpp ${MESHMC_RCS})
 target_link_libraries(${MeshMC_Name} MeshMC_logic)
 
+if(MSVC)
+    target_link_options(${MeshMC_Name} PRIVATE "/MANIFEST:NO")
+endif()
+
 if(DEFINED MeshMC_AppBinaryName)
     set_target_properties(${MeshMC_Name} PROPERTIES OUTPUT_NAME "${MeshMC_AppBinaryName}")
 endif()
