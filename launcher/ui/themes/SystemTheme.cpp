@@ -37,9 +37,22 @@ SystemTheme::SystemTheme(const QString& styleName, const QPalette& defaultPalett
     }
     else
     {
-        auto style = QStyleFactory::create(styleName);
-        m_colorPalette = style != nullptr ? style->standardPalette() : defaultPalette;
-        delete style;
+        // If this style matches the system's current default style, use the
+        // application palette instead of standardPalette().  standardPalette()
+        // returns a hardcoded palette that ignores the platform color scheme
+        // (e.g. Breeze on Plasma always returns a dark standardPalette even
+        // when the system is set to a light color scheme).
+        auto currentDefault = QApplication::style()->objectName();
+        if (styleName.compare(currentDefault, Qt::CaseInsensitive) == 0)
+        {
+            m_colorPalette = defaultPalette;
+        }
+        else
+        {
+            auto style = QStyleFactory::create(styleName);
+            m_colorPalette = style != nullptr ? style->standardPalette() : defaultPalette;
+            delete style;
+        }
     }
 }
 
