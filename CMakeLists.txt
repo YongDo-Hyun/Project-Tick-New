@@ -364,6 +364,8 @@ elseif(WIN32)
     set(PLUGIN_DEST_DIR ".")
     set(RESOURCES_DEST_DIR ".")
     set(JARS_DEST_DIR "jars")
+
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/launcher/qtlogging.ini" DESTINATION "${RESOURCES_DEST_DIR}")
 else()
     message(FATAL_ERROR "Platform not supported")
 endif()
