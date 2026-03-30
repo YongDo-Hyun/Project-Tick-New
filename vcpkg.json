@@ -29,7 +29,10 @@
         "zstd"
       ]
     },
-    "quazip",
+    {
+      "name": "quazip",
+      "platform": "!osx"
+    },
     "tomlplusplus",
     "zlib",
     "vulkan-headers"
