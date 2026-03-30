@@ -1000,25 +1000,37 @@ install(TARGETS ${MeshMC_Name}
 # NOTE: it seems that this absolutely has to be here, and nowhere else.
 if(WIN32 OR (UNIX AND APPLE))
     if(WIN32)
-        set(QT_DEPLOY_TOOL_OPTIONS "--no-opengl-sw --no-quick-import --no-system-d3d-compiler --no-system-dxc-compiler --skip-plugin-types generic,networkinformation")
+        # Find windeployqt directly — Qt's qt_generate_deploy_script tries to find
+        # windeployqt.debug.bat for Debug builds, which vcpkg doesn't ship.
+        get_target_property(_qt_qmake_loc Qt6::qmake IMPORTED_LOCATION)
+        get_filename_component(_qt_bin_dir "${_qt_qmake_loc}" DIRECTORY)
+        find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt_bin_dir}")
+        if(NOT WINDEPLOYQT_EXECUTABLE)
+            message(FATAL_ERROR "windeployqt not found")
+        endif()
     endif()
 
-    qt_generate_deploy_script(
-        TARGET ${MeshMC_Name}
-        OUTPUT_SCRIPT QT_DEPLOY_SCRIPT
-        CONTENT "
-        qt_deploy_runtime_dependencies(
-            EXECUTABLE ${BINARY_DEST_DIR}/$<TARGET_FILE_NAME:${MeshMC_Name}>
-            BIN_DIR ${BINARY_DEST_DIR}
-            LIBEXEC_DIR ${LIBRARY_DEST_DIR}
-            LIB_DIR ${LIBRARY_DEST_DIR}
-            PLUGINS_DIR ${PLUGIN_DEST_DIR}
-            NO_OVERWRITE
-            NO_TRANSLATIONS
-            NO_COMPILER_RUNTIME
-            DEPLOY_TOOL_OPTIONS ${QT_DEPLOY_TOOL_OPTIONS}
-        )"
-    )
+    if(UNIX AND APPLE)
+        qt_generate_deploy_script(
+            TARGET ${MeshMC_Name}
+            OUTPUT_SCRIPT QT_DEPLOY_SCRIPT
+            CONTENT "
+            qt_deploy_runtime_dependencies(
+                EXECUTABLE ${BINARY_DEST_DIR}/$<TARGET_FILE_NAME:${MeshMC_Name}>
+                BIN_DIR ${BINARY_DEST_DIR}
+                LIBEXEC_DIR ${LIBRARY_DEST_DIR}
+                LIB_DIR ${LIBRARY_DEST_DIR}
+                PLUGINS_DIR ${PLUGIN_DEST_DIR}
+                NO_OVERWRITE
+                NO_TRANSLATIONS
+                NO_COMPILER_RUNTIME
+            )"
+        )
+        install(
+            SCRIPT ${QT_DEPLOY_SCRIPT}
+            COMPONENT bundle
+        )
+    endif()
 
     # Bundle our linked dependencies
     install(
@@ -1030,7 +1042,6 @@ if(WIN32 OR (UNIX AND APPLE))
             ${QT_LIBEXECS_DIR}
         PRE_EXCLUDE_REGEXES
             "^(api-ms-win|ext-ms)-.*\\.dll$"
-            # FIXME: Why aren't these caught by the below regex???
             "^azure.*\\.dll$"
             "^vcruntime.*\\.dll$"
         POST_EXCLUDE_REGEXES
@@ -1039,15 +1050,34 @@ if(WIN32 OR (UNIX AND APPLE))
         RUNTIME DESTINATION ${BINARY_DEST_DIR}
         FRAMEWORK DESTINATION ${FRAMEWORK_DEST_DIR}
     )
-    # Deploy Qt plugins
-    install(
-        SCRIPT ${QT_DEPLOY_SCRIPT}
-        COMPONENT bundle
-    )
+
+    if(WIN32)
+        # Deploy Qt plugins and DLLs using windeployqt directly
+        install(CODE "
+            execute_process(
+                COMMAND \"${WINDEPLOYQT_EXECUTABLE}\"
+                    --no-opengl-sw
+                    --no-quick-import
+                    --no-system-d3d-compiler
+                    --no-system-dxc-compiler
+                    --skip-plugin-types generic,networkinformation
+                    --no-translations
+                    --no-compiler-runtime
+                    --dir \"\${CMAKE_INSTALL_PREFIX}/${BINARY_DEST_DIR}\"
+                    --libdir \"\${CMAKE_INSTALL_PREFIX}/${LIBRARY_DEST_DIR}\"
+                    --plugindir \"\${CMAKE_INSTALL_PREFIX}/${PLUGIN_DEST_DIR}\"
+                    \"\${CMAKE_INSTALL_PREFIX}/${BINARY_DEST_DIR}/$<TARGET_FILE_NAME:${MeshMC_Name}>\"
+                RESULT_VARIABLE _deploy_result
+            )
+            if(NOT _deploy_result EQUAL 0)
+                message(FATAL_ERROR \"windeployqt failed with exit code: \${_deploy_result}\")
+            endif()
+        "
+        COMPONENT bundle)
+    endif()
+
     # FIXME: remove this crap once we stop using msys2
     if(MINGW)
-        # i've not found a solution better than injecting the config vars like this...
-        # with install(CODE" for everything everything just breaks
         install(CODE "
             set(QT_PLUGINS_DIR \"${QT_PLUGINS_DIR}\")
             set(QT_LIBS_DIR \"${QT_LIBS_DIR}\")
@@ -1070,7 +1100,6 @@ if(WIN32 OR (UNIX AND APPLE))
                     ${QT_LIBEXECS_DIR}
                 PRE_EXCLUDE_REGEXES
                     "^(api-ms-win|ext-ms)-.*\\.dll$"
-                    # FIXME: Why aren't these caught by the below regex???
                     "^azure.*\\.dll$"
                     "^vcruntime.*\\.dll$"
                 POST_EXCLUDE_REGEXES
