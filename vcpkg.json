@@ -15,10 +15,6 @@
 
     "cmark",
     {
-      "name": "qtnetworkauth",
-      "platform": "!osx"
-    },
-    {
       "name": "libarchive",
       "default-features": false,
       "features": [

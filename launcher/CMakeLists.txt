@@ -1015,13 +1015,6 @@ if(WIN32 OR (UNIX AND APPLE))
         if(NOT WINDEPLOYQT_EXECUTABLE)
             message(FATAL_ERROR "windeployqt not found")
         endif()
-
-        # For MSVC with vcpkg, debug DLLs live in a separate debug/bin/ directory.
-        if(MSVC)
-            get_filename_component(_vcpkg_prefix "${QT_LIBS_DIR}" DIRECTORY)
-            set(_vcpkg_bin_dir "${_vcpkg_prefix}/bin")
-            set(_vcpkg_debug_bin_dir "${_vcpkg_prefix}/debug/bin")
-        endif()
     endif()
 
     if(UNIX AND APPLE)
@@ -1054,8 +1047,6 @@ if(WIN32 OR (UNIX AND APPLE))
             ${CMAKE_SYSTEM_LIBRARY_PATH}
             ${QT_LIBS_DIR}
             ${QT_LIBEXECS_DIR}
-            ${_vcpkg_bin_dir}
-            ${_vcpkg_debug_bin_dir}
         PRE_EXCLUDE_REGEXES
             "^(api-ms-win|ext-ms)-.*\\.dll$"
             "^azure.*\\.dll$"
@@ -1069,14 +1060,12 @@ if(WIN32 OR (UNIX AND APPLE))
 
     if(WIN32)
         # Deploy Qt plugins and DLLs using windeployqt.
-        # For MSVC/vcpkg, debug DLLs live in debug/bin/ — add to PATH so
-        # windeployqt can discover them.
+        # install-qt-action and MSYS2 only provide release Qt, so always use --release
+        # even when the app itself is built in Debug mode.
         install(CODE "
-            if(EXISTS \"${_vcpkg_debug_bin_dir}\")
-                set(ENV{PATH} \"${_vcpkg_debug_bin_dir}\;${_vcpkg_bin_dir}\;\$ENV{PATH}\")
-            endif()
             execute_process(
                 COMMAND \"${WINDEPLOYQT_EXECUTABLE}\"
+                    --release
                     --no-opengl-sw
                     --no-quick-import
                     --no-system-d3d-compiler
