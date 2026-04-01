@@ -39,7 +39,7 @@
 #pragma once
 
 #include <QDialog>
-#include "net/NetJob.h"
+#include "updater/UpdateChecker.h"
 
 namespace Ui
 {
@@ -52,39 +52,26 @@ enum UpdateAction
     UPDATE_NOW = QDialog::Accepted,
 };
 
-enum ChangelogType
-{
-    CHANGELOG_MARKDOWN,
-    CHANGELOG_COMMITS
-};
-
 class UpdateDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit UpdateDialog(bool hasUpdate = true, QWidget *parent = 0);
+    /*!
+     * Constructs the update dialog.
+     * \a hasUpdate    - true when an update is available (shows "Update now" button).
+     * \a status       - update information (version, release notes); ignored when hasUpdate is false.
+     */
+    explicit UpdateDialog(bool hasUpdate, const UpdateAvailableStatus &status = {}, QWidget *parent = nullptr);
     ~UpdateDialog();
 
 public slots:
     void on_btnUpdateNow_clicked();
     void on_btnUpdateLater_clicked();
 
-    /// Starts loading the changelog
-    void loadChangelog();
-
-    /// Slot for when the chengelog loads successfully.
-    void changelogLoaded();
-
-    /// Slot for when the chengelog fails to load...
-    void changelogFailed(QString reason);
-
 protected:
     void closeEvent(QCloseEvent * ) override;
 
 private:
     Ui::UpdateDialog *ui;
-    QByteArray changelogData;
-    NetJob::Ptr dljob;
-    ChangelogType m_changelogType = CHANGELOG_MARKDOWN;
 };

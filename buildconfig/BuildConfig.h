@@ -56,8 +56,14 @@ public:
     /// A short string identifying this build's platform. For example, "lin64" or "win32".
     QString BUILD_PLATFORM;
 
-    /// URL for the updater's channel
+    /// URL for the updater's channel (legacy, unused)
     QString UPDATER_BASE;
+
+    /// RSS feed URL for the new updater (projt: namespace).
+    QString UPDATER_FEED_URL;
+
+    /// GitHub releases API URL for update verification.
+    QString UPDATER_GITHUB_API_URL;
 
     /// A string containing the build timestamp
     QString BUILD_DATE;

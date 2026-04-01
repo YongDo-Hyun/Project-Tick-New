@@ -842,7 +842,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new MainWindow
     }
 
 
-    if(BuildConfig.UPDATER_ENABLED)
+    if(BuildConfig.UPDATER_ENABLED && UpdateChecker::isUpdaterSupported())
     {
         bool updatesAllowed = APPLICATION->updatesAreAllowed();
         updatesAllowedChanged(updatesAllowed);
@@ -857,7 +857,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new MainWindow
         // if automatic update checks are allowed, start one.
         if (APPLICATION->settings()->get("AutoUpdate").toBool() && updatesAllowed)
         {
-            updater->checkForUpdate(APPLICATION->settings()->get("UpdateChannel").toString(), false);
+            updater->checkForUpdate(false);
         }
     }
 
@@ -1127,7 +1127,7 @@ void MainWindow::repopulateAccountsMenu()
 
 void MainWindow::updatesAllowedChanged(bool allowed)
 {
-    if(!BuildConfig.UPDATER_ENABLED)
+    if(!BuildConfig.UPDATER_ENABLED || !UpdateChecker::isUpdaterSupported())
     {
         return;
     }
@@ -1238,14 +1238,14 @@ void MainWindow::updateNewsLabel()
     }
 }
 
-void MainWindow::updateAvailable(GoUpdate::Status status)
+void MainWindow::updateAvailable(UpdateAvailableStatus status)
 {
     if(!APPLICATION->updatesAreAllowed())
     {
         updateNotAvailable();
         return;
     }
-    UpdateDialog dlg(true, this);
+    UpdateDialog dlg(true, status, this);
     UpdateAction action = (UpdateAction)dlg.exec();
     switch (action)
     {
@@ -1253,14 +1253,36 @@ void MainWindow::updateAvailable(GoUpdate::Status status)
         qDebug() << "Update will be installed later.";
         break;
     case UPDATE_NOW:
-        downloadUpdates(status);
+        if(!status.downloadUrl.isEmpty())
+        {
+            APPLICATION->updateIsRunning(true);
+            UpdateController controller(this, APPLICATION->root(), status.downloadUrl);
+            if(controller.startUpdate())
+            {
+                // The updater binary has been launched; quit the main app so
+                // the updater can overwrite its files.
+                QCoreApplication::quit();
+            }
+            APPLICATION->updateIsRunning(false);
+        }
+        else
+        {
+            CustomMessageBox::selectable(
+                this,
+                tr("No Download URL"),
+                tr("An update to version %1 is available, but no download URL "
+                   "was found for your platform (%2).\n"
+                   "Please visit the project website to download it manually.")
+                    .arg(status.version, BuildConfig.BUILD_ARTIFACT),
+                QMessageBox::Information)->show();
+        }
         break;
     }
 }
 
 void MainWindow::updateNotAvailable()
 {
-    UpdateDialog dlg(false, this);
+    UpdateDialog dlg(false, {}, this);
     dlg.exec();
 }
 
@@ -1302,38 +1324,11 @@ void MainWindow::notificationsChanged()
     APPLICATION->settings()->set("ShownNotifications", intListToString(shownNotifications));
 }
 
-void MainWindow::downloadUpdates(GoUpdate::Status status)
+void MainWindow::downloadUpdates(UpdateAvailableStatus status)
 {
-    if(!APPLICATION->updatesAreAllowed())
-    {
-        return;
-    }
-    qDebug() << "Downloading updates.";
-    ProgressDialog updateDlg(this);
-    status.rootPath = APPLICATION->root();
-
-    auto dlPath = FS::PathCombine(APPLICATION->root(), "update", "XXXXXX");
-    if (!FS::ensureFilePathExists(dlPath))
-    {
-        CustomMessageBox::selectable(this, tr("Error"), tr("Couldn't create folder for update downloads:\n%1").arg(dlPath), QMessageBox::Warning)->show();
-    }
-    GoUpdate::DownloadTask updateTask(APPLICATION->network(), status, dlPath, &updateDlg);
-    // If the task succeeds, install the updates.
-    if (updateDlg.execWithTask(&updateTask))
-    {
-        /**
-         * NOTE: This disables launching instances until the update either succeeds (and this process exits)
-         * or the update fails (and the control leaves this scope).
-         */
-        APPLICATION->updateIsRunning(true);
-        UpdateController update(this, APPLICATION->root(), updateTask.updateFilesDir(), updateTask.operations());
-        update.installUpdates();
-        APPLICATION->updateIsRunning(false);
-    }
-    else
-    {
-        CustomMessageBox::selectable(this, tr("Error"), updateTask.failReason(), QMessageBox::Warning)->show();
-    }
+    // Kept as a stub — actual update installation is now done by the separate
+    // meshmc-updater binary launched from updateAvailable().
+    Q_UNUSED(status)
 }
 
 void MainWindow::onCatToggled(bool state)
@@ -1622,14 +1617,14 @@ void MainWindow::on_actionConfig_Folder_triggered()
 
 void MainWindow::checkForUpdates()
 {
-    if(BuildConfig.UPDATER_ENABLED)
+    if(BuildConfig.UPDATER_ENABLED && UpdateChecker::isUpdaterSupported())
     {
         auto updater = APPLICATION->updateChecker();
-        updater->checkForUpdate(APPLICATION->settings()->get("UpdateChannel").toString(), true);
+        updater->checkForUpdate(true);
     }
     else
     {
-        qWarning() << "Updater not set up. Cannot check for updates.";
+        qWarning() << "Updater not set up or not supported on this platform. Cannot check for updates.";
     }
 }
 

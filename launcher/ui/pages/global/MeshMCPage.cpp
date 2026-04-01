@@ -78,18 +78,12 @@ MeshMCPage::MeshMCPage(QWidget *parent) : QWidget(parent), ui(new Ui::MeshMCPage
     m_languageModel = APPLICATION->translations();
     loadSettings();
 
-    if(BuildConfig.UPDATER_ENABLED)
+    if(BuildConfig.UPDATER_ENABLED && UpdateChecker::isUpdaterSupported())
     {
-        QObject::connect(APPLICATION->updateChecker().get(), &UpdateChecker::channelListLoaded, this, &MeshMCPage::refreshUpdateChannelList);
-
-        if (APPLICATION->updateChecker()->hasChannels())
-        {
-            refreshUpdateChannelList();
-        }
-        else
-        {
-            APPLICATION->updateChecker()->updateChanList(false);
-        }
+        // New updater: hide the legacy channel selector (no channel selection in the new system).
+        ui->updateChannelComboBox->setVisible(false);
+        ui->updateChannelLabel->setVisible(false);
+        ui->updateChannelDescLabel->setVisible(false);
     }
     else
     {
@@ -187,74 +181,17 @@ void MeshMCPage::on_migrateDataFolderMacBtn_clicked()
 
 void MeshMCPage::refreshUpdateChannelList()
 {
-    // Stop listening for selection changes. It's going to change a lot while we update it and
-    // we don't need to update the
-    // description label constantly.
-    QObject::disconnect(ui->updateChannelComboBox, SIGNAL(currentIndexChanged(int)), this,
-                        SLOT(updateChannelSelectionChanged(int)));
-
-    QList<UpdateChecker::ChannelListEntry> channelList = APPLICATION->updateChecker()->getChannelList();
-    ui->updateChannelComboBox->clear();
-    int selection = -1;
-    for (int i = 0; i < channelList.count(); i++)
-    {
-        UpdateChecker::ChannelListEntry entry = channelList.at(i);
-
-        // When it comes to selection, we'll rely on the indexes of a channel entry being the
-        // same in the
-        // combo box as it is in the update checker's channel list.
-        // This probably isn't very safe, but the channel list doesn't change often enough (or
-        // at all) for
-        // this to be a big deal. Hope it doesn't break...
-        ui->updateChannelComboBox->addItem(entry.name);
-
-        // If the update channel we just added was the selected one, set the current index in
-        // the combo box to it.
-        if (entry.id == m_currentUpdateChannel)
-        {
-            qDebug() << "Selected index" << i << "channel id" << m_currentUpdateChannel;
-            selection = i;
-        }
-    }
-
-    ui->updateChannelComboBox->setCurrentIndex(selection);
-
-    // Start listening for selection changes again and update the description label.
-    QObject::connect(ui->updateChannelComboBox, SIGNAL(currentIndexChanged(int)), this,
-                     SLOT(updateChannelSelectionChanged(int)));
-    refreshUpdateChannelDesc();
-
-    // Now that we've updated the channel list, we can enable the combo box.
-    // It starts off disabled so that if the channel list hasn't been loaded, it will be
-    // disabled.
-    ui->updateChannelComboBox->setEnabled(true);
+    // No-op: the new updater does not use named channels.
 }
 
-void MeshMCPage::updateChannelSelectionChanged(int index)
+void MeshMCPage::updateChannelSelectionChanged(int)
 {
-    refreshUpdateChannelDesc();
+    // No-op.
 }
 
 void MeshMCPage::refreshUpdateChannelDesc()
 {
-    // Get the channel list.
-    QList<UpdateChecker::ChannelListEntry> channelList = APPLICATION->updateChecker()->getChannelList();
-    int selectedIndex = ui->updateChannelComboBox->currentIndex();
-    if (selectedIndex < 0)
-    {
-        return;
-    }
-    if (selectedIndex < channelList.count())
-    {
-        // Find the channel list entry with the given index.
-        UpdateChecker::ChannelListEntry selected = channelList.at(selectedIndex);
-
-        // Set the description text.
-        ui->updateChannelDescLabel->setText(selected.description);
-
-        // Set the currently selected channel ID.
-        m_currentUpdateChannel = selected.id;
-    }
+    // No-op.
 }
 
 void MeshMCPage::applySettings()
@@ -268,7 +205,7 @@ void MeshMCPage::applySettings()
 
     // Updates
     s->set("AutoUpdate", ui->autoUpdateCheckBox->isChecked());
-    s->set("UpdateChannel", m_currentUpdateChannel);
+    // (UpdateChannel setting removed - the new updater always checks the stable feed)
 
     // Console settings
     s->set("ShowConsole", ui->showConsoleCheck->isChecked());
@@ -309,7 +246,7 @@ void MeshMCPage::loadSettings()
     auto s = APPLICATION->settings();
     // Updates
     ui->autoUpdateCheckBox->setChecked(s->get("AutoUpdate").toBool());
-    m_currentUpdateChannel = s->get("UpdateChannel").toString();
+    // (no channel to read in the new updater system)
 
     // Console settings
     ui->showConsoleCheck->setChecked(s->get("ShowConsole").toBool());

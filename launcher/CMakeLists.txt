@@ -148,27 +148,11 @@ set(LAUNCH_SOURCES
     launch/LogModel.h
 )
 
-# Old update system
+# New updater system (replaces the old GoUpdate-based system)
 set(UPDATE_SOURCES
-    updater/GoUpdate.h
-    updater/GoUpdate.cpp
     updater/UpdateChecker.h
     updater/UpdateChecker.cpp
-    updater/DownloadTask.h
-    updater/DownloadTask.cpp
 )
-
-add_unit_test(UpdateChecker
-    SOURCES updater/UpdateChecker_test.cpp
-    LIBS MeshMC_logic
-    DATA updater/testdata
-    )
-
-add_unit_test(DownloadTask
-    SOURCES updater/DownloadTask_test.cpp
-    LIBS MeshMC_logic
-    DATA updater/testdata
-    )
 
 # Rarely used notifications
 set(NOTIFICATIONS_SOURCES

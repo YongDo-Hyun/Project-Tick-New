@@ -22,44 +22,33 @@
 #pragma once
 
 #include <QString>
-#include <QList>
-#include <updater/GoUpdate.h>
 
 class QWidget;
 
+/*!
+ * UpdateController launches the separate meshmc-updater binary and then
+ * requests the main application to quit so the updater can proceed.
+ *
+ * The updater binary receives:
+ *   --url  <download_url>   - artifact to download and install
+ *   --root <root_path>      - installation root (directory of the binary)
+ *   --exec <app_binary>     - path to re-launch after the update completes
+ */
 class UpdateController
 {
 public:
-    UpdateController(QWidget * parent, const QString &root, const QString updateFilesDir, GoUpdate::OperationList operations);
-    void installUpdates();
+    UpdateController(QWidget *parent, const QString &root, const QString &downloadUrl);
+
+    /*!
+     * Locates the meshmc-updater binary next to the running executable,
+     * launches it with the required arguments, and returns true on success.
+     * The caller is responsible for quitting the main application afterwards.
+     */
+    bool startUpdate();
 
 private:
-    void fail();
-    bool rollback();
-
-private:
-    QString m_root;
-    QString m_updateFilesDir;
-    GoUpdate::OperationList m_operations;
-    QWidget * m_parent;
-
-    struct BackupEntry
-    {
-        // path where we got the new file from
-        QString update;
-        // path of what is being actually updated
-        QString original;
-        // path where the backup of the updated file was placed
-        QString backup;
-    };
-    QList <BackupEntry> m_replace_backups;
-    QList <BackupEntry> m_delete_backups;
-    enum Failure
-    {
-        Replace,
-        Delete,
-        Start,
-        Nothing
-    } m_failedOperationType = Nothing;
-    QString m_failedFile;
+    QWidget  *m_parent;
+    QString   m_root;
+    QString   m_downloadUrl;
 };
+

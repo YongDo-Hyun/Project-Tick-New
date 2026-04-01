@@ -47,7 +47,7 @@
 #include "BaseInstance.h"
 #include "minecraft/auth/MinecraftAccount.h"
 #include "net/NetJob.h"
-#include "updater/GoUpdate.h"
+#include "updater/UpdateChecker.h"
 
 class LaunchController;
 class NewsChecker;
@@ -185,7 +185,7 @@ private slots:
 
     void startTask(Task *task);
 
-    void updateAvailable(GoUpdate::Status status);
+    void updateAvailable(UpdateAvailableStatus status);
 
     void updateNotAvailable();
 
@@ -200,9 +200,10 @@ private slots:
     void updateNewsLabel();
 
     /*!
-     * Runs the DownloadTask and installs updates.
+     * Stub kept for source compatibility; actual installation is delegated to
+     * the meshmc-updater binary via UpdateController.
      */
-    void downloadUpdates(GoUpdate::Status status);
+    void downloadUpdates(UpdateAvailableStatus status);
 
     void konamiTriggered();
 

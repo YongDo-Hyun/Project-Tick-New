@@ -937,16 +937,15 @@ void Application::initSubsystems()
     }
 
     // initialize the updater
-    if(BuildConfig.UPDATER_ENABLED)
+    if(BuildConfig.UPDATER_ENABLED && UpdateChecker::isUpdaterSupported())
     {
-        auto platform = getIdealPlatform(BuildConfig.BUILD_PLATFORM);
-        auto channelUrl = BuildConfig.UPDATER_BASE + platform + "/channels.json";
-        qDebug() << "Initializing updater with platform: " << platform << " -- " << channelUrl;
-        m_updateChecker.reset(new UpdateChecker(
-            m_network, channelUrl,
-            BuildConfig.VERSION_CHANNEL,
-            BuildConfig.VERSION_BUILD));
-        qDebug() << "<> Updater started.";
+        m_updateChecker.reset(new UpdateChecker(m_network));
+        qDebug() << "<> Updater initialized (feed:" << BuildConfig.UPDATER_FEED_URL
+                 << "| github:" << BuildConfig.UPDATER_GITHUB_API_URL << ").";
+    }
+    else if(BuildConfig.UPDATER_ENABLED)
+    {
+        qDebug() << "<> Updater disabled on this platform/mode.";
     }
 
     // Instance icons

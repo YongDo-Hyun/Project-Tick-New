@@ -52,6 +52,8 @@ Config::Config()
     COMPILER_TARGET_SYSTEM_VERSION = "@MeshMC_COMPILER_TARGET_SYSTEM_VERSION@";
     COMPILER_TARGET_SYSTEM_PROCESSOR = "@MeshMC_COMPILER_TARGET_PROCESSOR@";
     UPDATER_BASE = "@MeshMC_UPDATER_BASE@";
+    UPDATER_FEED_URL = "@MeshMC_UPDATER_FEED_URL@";
+    UPDATER_GITHUB_API_URL = "@MeshMC_UPDATER_GITHUB_API_URL@";
     ANALYTICS_ID = "@MeshMC_ANALYTICS_ID@";
     NOTIFICATION_URL = "@MeshMC_NOTIFICATION_URL@";
     FULL_VERSION_STR = "@MeshMC_VERSION_MAJOR@.@MeshMC_VERSION_MINOR@.@MeshMC_VERSION_BUILD@";
@@ -59,11 +61,19 @@ Config::Config()
     GIT_COMMIT = "@MeshMC_GIT_COMMIT@";
     GIT_REFSPEC = "@MeshMC_GIT_REFSPEC@";
     GIT_TAG = "@MeshMC_GIT_TAG@";
-    if(GIT_REFSPEC.startsWith("refs/heads/") && !UPDATER_BASE.isEmpty() && !BUILD_PLATFORM.isEmpty() && VERSION_BUILD >= 0)
+
+    // New updater: enabled when both feed and GitHub API URLs are configured and
+    // a build artifact name is provided for platform-specific asset matching.
+    if (!UPDATER_FEED_URL.isEmpty() && !UPDATER_GITHUB_API_URL.isEmpty() && !BUILD_ARTIFACT.isEmpty())
+    {
+        UPDATER_ENABLED = true;
+    }
+
+    // VERSION_CHANNEL is still populated from the git branch for informational use.
+    if (GIT_REFSPEC.startsWith("refs/heads/"))
     {
         VERSION_CHANNEL = GIT_REFSPEC;
         VERSION_CHANNEL.remove("refs/heads/");
-        UPDATER_ENABLED = true;
     }
     else
     {

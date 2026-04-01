@@ -112,11 +112,6 @@ slots:
 private:
     Ui::MeshMCPage *ui;
 
-    /*!
-     * Stores the currently selected update channel.
-     */
-    QString m_currentUpdateChannel;
-
     // default format for the font preview...
     QTextCharFormat *defaultFormat;
 

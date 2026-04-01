@@ -202,8 +202,14 @@ set(MeshMC_BUILD_ARTIFACT "" CACHE STRING "Artifact name to help the updater ide
 # Build platform.
 set(MeshMC_BUILD_PLATFORM "" CACHE STRING "A short string identifying the platform that this build was built for. Only used by the notification system and to display in the about dialog.")
 
-# Channel list URL
-set(MeshMC_UPDATER_BASE "" CACHE STRING "Base URL for the updater.")
+# Channel list URL (legacy - kept for compatibility)
+set(MeshMC_UPDATER_BASE "" CACHE STRING "Base URL for the legacy GoUpdate system (unused).")
+
+# New updater: RSS feed URL (projt: namespace)
+set(MeshMC_UPDATER_FEED_URL "" CACHE STRING "RSS feed URL for the updater (projt: namespace, e.g. https://projecttick.org/product/meshmc/feed.xml).")
+
+# New updater: GitHub releases API URL
+set(MeshMC_UPDATER_GITHUB_API_URL "" CACHE STRING "GitHub Releases API URL for update verification (e.g. https://api.github.com/repos/Project-Tick/MeshMC/releases/latest).")
 
 # Notification URL
 set(MeshMC_NOTIFICATION_URL "https://projecttick.org/" CACHE STRING "URL for checking for notifications.")
@@ -401,6 +407,7 @@ add_subdirectory(libraries/katabasis) # An OAuth2 library that tried to do too m
 ############################### Built Artifacts ###############################
 
 add_subdirectory(buildconfig)
+add_subdirectory(updater)
 
 # NOTE: this must always be last to appease the CMake deity of quirky install command evaluation order.
 add_subdirectory(launcher)

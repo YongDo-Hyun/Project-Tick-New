@@ -29,7 +29,7 @@
 #include <QDateTime>
 #include <QUrl>
 #include <QHash>
-#include <updater/GoUpdate.h>
+#include <updater/UpdateChecker.h>
 
 #include <BaseInstance.h>
 
@@ -49,7 +49,6 @@ class AccountList;
 class IconList;
 class QNetworkAccessManager;
 class JavaInstallList;
-class UpdateChecker;
 class BaseProfilerFactory;
 class BaseDetachedToolFactory;
 class TranslationsModel;

@@ -17,277 +17,266 @@
  *
  *   You should have received a copy of the GNU General Public License
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *  
- *  This file incorporates work covered by the following copyright and
- *  permission notice:
- *
- * Copyright 2013-2021 MultiMC Contributors
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
  */
 
 #include "UpdateChecker.h"
 
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QJsonValue>
 #include <QDebug>
-
-#define API_VERSION 0
-#define CHANLIST_FORMAT 0
+#include <QDir>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QXmlStreamReader>
 
 #include "BuildConfig.h"
-#include "sys.h"
+#include "FileSystem.h"
+#include "net/Download.h"
 
-UpdateChecker::UpdateChecker(shared_qobject_ptr<QNetworkAccessManager> nam, QString channelUrl, QString currentChannel, int currentBuild)
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+
+bool UpdateChecker::isPortableMode()
 {
-    m_network = nam;
-    m_channelUrl = channelUrl;
-    m_currentChannel = currentChannel;
-    m_currentBuild = currentBuild;
+    // portable.txt lives next to the application binary.
+    return QFile::exists(FS::PathCombine(QCoreApplication::applicationDirPath(), "portable.txt"));
 }
 
-QList<UpdateChecker::ChannelListEntry> UpdateChecker::getChannelList() const
+bool UpdateChecker::isAppImage()
 {
-    return m_channels;
+    return !qEnvironmentVariable("APPIMAGE").isEmpty();
 }
 
-bool UpdateChecker::hasChannels() const
+QString UpdateChecker::currentVersion()
 {
-    return !m_channels.isEmpty();
+    return QString("%1.%2.%3")
+        .arg(BuildConfig.VERSION_MAJOR)
+        .arg(BuildConfig.VERSION_MINOR)
+        .arg(BuildConfig.VERSION_HOTFIX);
 }
 
-void UpdateChecker::checkForUpdate(QString updateChannel, bool notifyNoUpdate)
+QString UpdateChecker::normalizeVersion(const QString &v)
 {
-    qDebug() << "Checking for updates.";
+    QString out = v.trimmed();
+    if (out.startsWith('v', Qt::CaseInsensitive))
+        out.remove(0, 1);
+    return out;
+}
 
-    // If the channel list hasn't loaded yet, load it and defer checking for updates until
-    // later.
-    if (!m_chanListLoaded)
-    {
-        qDebug() << "Channel list isn't loaded yet. Loading channel list and deferring update check.";
-        m_checkUpdateWaiting = true;
-        m_deferredUpdateChannel = updateChannel;
-        updateChanList(notifyNoUpdate);
+int UpdateChecker::compareVersions(const QString &v1, const QString &v2)
+{
+    const QStringList parts1 = v1.split('.');
+    const QStringList parts2 = v2.split('.');
+    const int len = std::max(parts1.size(), parts2.size());
+    for (int i = 0; i < len; ++i) {
+        const int a = (i < parts1.size()) ? parts1.at(i).toInt() : 0;
+        const int b = (i < parts2.size()) ? parts2.at(i).toInt() : 0;
+        if (a != b)
+            return a - b;
+    }
+    return 0;
+}
+
+// ---------------------------------------------------------------------------
+// Public
+// ---------------------------------------------------------------------------
+
+UpdateChecker::UpdateChecker(shared_qobject_ptr<QNetworkAccessManager> nam, QObject *parent)
+    : QObject(parent), m_network(nam)
+{
+}
+
+bool UpdateChecker::isUpdaterSupported()
+{
+    if (!BuildConfig.UPDATER_ENABLED)
+        return false;
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
+    // On Linux/BSD: disable unless this is a portable install and not an AppImage.
+    if (isAppImage())
+        return false;
+    if (!isPortableMode())
+        return false;
+#endif
+
+    return true;
+}
+
+void UpdateChecker::checkForUpdate(bool notifyNoUpdate)
+{
+    if (!isUpdaterSupported()) {
+        qDebug() << "UpdateChecker: updater not supported on this platform/mode. Skipping.";
         return;
     }
 
-    if (m_updateChecking)
-    {
-        qDebug() << "Ignoring update check request. Already checking for updates.";
+    if (m_checking) {
+        qDebug() << "UpdateChecker: check already in progress, ignoring.";
         return;
     }
 
-    // Find the desired channel within the channel list and get its repo URL. If if cannot be
-    // found, error.
-    QString stableUrl;
-    m_newRepoUrl = "";
-    for (ChannelListEntry entry : m_channels)
+    qDebug() << "UpdateChecker: starting dual-source update check.";
+    m_checking = true;
+    m_feedData.clear();
+    m_githubData.clear();
+
+    m_checkJob.reset(new NetJob("Update Check", m_network));
+    m_checkJob->addNetAction(Net::Download::makeByteArray(QUrl(BuildConfig.UPDATER_FEED_URL), &m_feedData));
+    m_checkJob->addNetAction(Net::Download::makeByteArray(QUrl(BuildConfig.UPDATER_GITHUB_API_URL), &m_githubData));
+
+    connect(m_checkJob.get(), &NetJob::succeeded,
+            [this, notifyNoUpdate]() { onDownloadsFinished(notifyNoUpdate); });
+    connect(m_checkJob.get(), &NetJob::failed,
+            this, &UpdateChecker::onDownloadsFailed);
+
+    m_checkJob->start();
+}
+
+// ---------------------------------------------------------------------------
+// Private slots
+// ---------------------------------------------------------------------------
+
+void UpdateChecker::onDownloadsFinished(bool notifyNoUpdate)
+{
+    m_checking = false;
+    m_checkJob.reset();
+
+    // ---- Parse the RSS feed -----------------------------------------------
+    // We look for the first <item> whose <projt:channel> == "stable".
+    // From that item we read <projt:version> and the <projt:asset> whose
+    // name attribute contains BuildConfig.BUILD_ARTIFACT.
+
+    QString feedVersion;
+    QString downloadUrl;
+    QString releaseNotes;
+
     {
-        qDebug() << "channelEntry = " << entry.id;
-        if(entry.id == "stable") {
-            stableUrl = entry.url;
+        QXmlStreamReader xml(m_feedData);
+        m_feedData.clear();
+
+        bool insideItem = false;
+        bool isStable   = false;
+        QString itemVersion;
+        QString itemUrl;
+        QString itemNotes;
+
+        // We iterate forward and take the FIRST stable item we encounter
+        // (the feed lists newest first).
+        while (!xml.atEnd() && !xml.hasError()) {
+            xml.readNext();
+
+            if (xml.isStartElement()) {
+                const QStringView name = xml.name();
+
+                if (name == u"item") {
+                    insideItem = true;
+                    isStable   = false;
+                    itemVersion.clear();
+                    itemUrl.clear();
+                    itemNotes.clear();
+                } else if (insideItem) {
+                    if (xml.namespaceUri() == u"https://projecttick.org/ns/projt-launcher/feed") {
+                        if (name == u"version") {
+                            itemVersion = xml.readElementText().trimmed();
+                        } else if (name == u"channel") {
+                            isStable = (xml.readElementText().trimmed() == "stable");
+                        } else if (name == u"asset") {
+                            const QString assetName = xml.attributes().value("name").toString();
+                            const QString assetUrl  = xml.attributes().value("url").toString();
+                            if (!BuildConfig.BUILD_ARTIFACT.isEmpty()
+                                    && assetName.contains(BuildConfig.BUILD_ARTIFACT, Qt::CaseInsensitive)) {
+                                itemUrl = assetUrl;
+                            }
+                        }
+                    } else if (name == u"description" && xml.namespaceUri().isEmpty()) {
+                        itemNotes = xml.readElementText(QXmlStreamReader::IncludeChildElements).trimmed();
+                    }
+                }
+            } else if (xml.isEndElement() && xml.name() == u"item" && insideItem) {
+                insideItem = false;
+                if (isStable && !itemVersion.isEmpty()) {
+                    // First stable item wins.
+                    feedVersion  = normalizeVersion(itemVersion);
+                    downloadUrl  = itemUrl;
+                    releaseNotes = itemNotes;
+                    break;
+                }
+            }
         }
-        if (entry.id == updateChannel) {
-            m_newRepoUrl = entry.url;
-            qDebug() << "is intended update channel: " << entry.id;
-        }
-        if (entry.id == m_currentChannel) {
-            m_currentRepoUrl = entry.url;
-            qDebug() << "is current update channel: " << entry.id;
+
+        if (xml.hasError()) {
+            emit checkFailed(tr("Failed to parse update feed: %1").arg(xml.errorString()));
+            return;
         }
     }
 
-    qDebug() << "m_repoUrl = " << m_newRepoUrl;
-
-    if (m_newRepoUrl.isEmpty()) {
-        qWarning() << "m_repoUrl was empty. defaulting to 'stable': " << stableUrl;
-        m_newRepoUrl = stableUrl;
-    }
-
-    // If nothing applies, error
-    if (m_newRepoUrl.isEmpty())
-    {
-        qCritical() << "failed to select any update repository for: " << updateChannel;
-        emit updateCheckFailed();
+    if (feedVersion.isEmpty()) {
+        emit checkFailed(tr("No stable release entry found in the update feed."));
         return;
     }
 
-    m_updateChecking = true;
-
-    QUrl indexUrl = QUrl(m_newRepoUrl).resolved(QUrl("index.json"));
-
-    indexJob = new NetJob("GoUpdate Repository Index", m_network);
-    indexJob->addNetAction(Net::Download::makeByteArray(indexUrl, &indexData));
-    connect(indexJob.get(), &NetJob::succeeded, [this, notifyNoUpdate](){ updateCheckFinished(notifyNoUpdate); });
-    connect(indexJob.get(), &NetJob::failed, this, &UpdateChecker::updateCheckFailed);
-    indexJob->start();
-}
-
-void UpdateChecker::updateCheckFinished(bool notifyNoUpdate)
-{
-    qDebug() << "Finished downloading repo index. Checking for new versions.";
-
-    QJsonParseError jsonError;
-    indexJob.reset();
-
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(indexData, &jsonError);
-    indexData.clear();
-    if (jsonError.error != QJsonParseError::NoError || !jsonDoc.isObject())
-    {
-        qCritical() << "Failed to parse GoUpdate repository index. JSON error"
-                     << jsonError.errorString() << "at offset" << jsonError.offset;
-        m_updateChecking = false;
-        return;
+    if (downloadUrl.isEmpty()) {
+        qWarning() << "UpdateChecker: feed has version" << feedVersion
+                   << "but no asset matching BUILD_ARTIFACT '" << BuildConfig.BUILD_ARTIFACT << "'";
+        // We can still report an update even without a direct URL —
+        // the UpdateDialog will inform the user.
     }
 
-    QJsonObject object = jsonDoc.object();
+    // ---- Parse the GitHub releases JSON -----------------------------------
+    // Expect the GitHub REST API format: { "tag_name": "vX.Y.Z", ... }
 
-    bool success = false;
-    int apiVersion = object.value("ApiVersion").toVariant().toInt(&success);
-    if (apiVersion != API_VERSION || !success)
+    QString githubVersion;
     {
-        qCritical() << "Failed to check for updates. API version mismatch. We're using"
-                     << API_VERSION << "server has" << apiVersion;
-        m_updateChecking = false;
-        return;
-    }
+        QJsonParseError jsonError;
+        const QJsonDocument doc = QJsonDocument::fromJson(m_githubData, &jsonError);
+        m_githubData.clear();
 
-    qDebug() << "Processing repository version list.";
-    QJsonObject newestVersion;
-    QJsonArray versions = object.value("Versions").toArray();
-    for (QJsonValue versionVal : versions)
-    {
-        QJsonObject version = versionVal.toObject();
-        if (newestVersion.value("Id").toVariant().toInt() <
-            version.value("Id").toVariant().toInt())
-        {
-            newestVersion = version;
+        if (jsonError.error != QJsonParseError::NoError || !doc.isObject()) {
+            emit checkFailed(tr("Failed to parse GitHub releases response: %1").arg(jsonError.errorString()));
+            return;
         }
-    }
 
-    // We've got the version with the greatest ID number. Now compare it to our current build
-    // number and update if they're different.
-    int newBuildNumber = newestVersion.value("Id").toVariant().toInt();
-    if (newBuildNumber != m_currentBuild)
-    {
-        qDebug() << "Found newer version with ID" << newBuildNumber;
-        // Update!
-        GoUpdate::Status updateStatus;
-        updateStatus.updateAvailable = true;
-        updateStatus.currentVersionId = m_currentBuild;
-        updateStatus.currentRepoUrl = m_currentRepoUrl;
-        updateStatus.newVersionId = newBuildNumber;
-        updateStatus.newRepoUrl = m_newRepoUrl;
-        emit updateAvailable(updateStatus);
-    }
-    else if (notifyNoUpdate)
-    {
-        emit noUpdateFound();
-    }
-    m_updateChecking = false;
-}
-
-void UpdateChecker::updateCheckFailed()
-{
-    qCritical() << "Update check failed for reasons unknown.";
-}
-
-void UpdateChecker::updateChanList(bool notifyNoUpdate)
-{
-    qDebug() << "Loading the channel list.";
-
-    if (m_chanListLoading)
-    {
-        qDebug() << "Ignoring channel list update request. Already grabbing channel list.";
-        return;
-    }
-
-    m_chanListLoading = true;
-    chanListJob = new NetJob("Update System Channel List", m_network);
-    chanListJob->addNetAction(Net::Download::makeByteArray(QUrl(m_channelUrl), &chanlistData));
-    connect(chanListJob.get(), &NetJob::succeeded, [this, notifyNoUpdate]() { chanListDownloadFinished(notifyNoUpdate); });
-    connect(chanListJob.get(), &NetJob::failed, this, &UpdateChecker::chanListDownloadFailed);
-    chanListJob->start();
-}
-
-void UpdateChecker::chanListDownloadFinished(bool notifyNoUpdate)
-{
-    chanListJob.reset();
-
-    QJsonParseError jsonError;
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(chanlistData, &jsonError);
-    chanlistData.clear();
-    if (jsonError.error != QJsonParseError::NoError)
-    {
-        // TODO: Report errors to the user.
-        qCritical() << "Failed to parse channel list JSON:" << jsonError.errorString() << "at" << jsonError.offset;
-        m_chanListLoading = false;
-        return;
-    }
-
-    QJsonObject object = jsonDoc.object();
-
-    bool success = false;
-    int formatVersion = object.value("format_version").toVariant().toInt(&success);
-    if (formatVersion != CHANLIST_FORMAT || !success)
-    {
-        qCritical()
-            << "Failed to check for updates. Channel list format version mismatch. We're using"
-            << CHANLIST_FORMAT << "server has" << formatVersion;
-        m_chanListLoading = false;
-        return;
-    }
-
-    // Load channels into a temporary array.
-    QList<ChannelListEntry> loadedChannels;
-    QJsonArray channelArray = object.value("channels").toArray();
-    for (QJsonValue chanVal : channelArray)
-    {
-        QJsonObject channelObj = chanVal.toObject();
-        ChannelListEntry entry {
-            channelObj.value("id").toVariant().toString(),
-            channelObj.value("name").toVariant().toString(),
-            channelObj.value("description").toVariant().toString(),
-            channelObj.value("url").toVariant().toString()
-        };
-        if (entry.id.isEmpty() || entry.name.isEmpty() || entry.url.isEmpty())
-        {
-            qCritical() << "Channel list entry with empty ID, name, or URL. Skipping.";
-            continue;
+        const QString tag = doc.object().value("tag_name").toString().trimmed();
+        if (tag.isEmpty()) {
+            emit checkFailed(tr("GitHub releases response contained no tag_name field."));
+            return;
         }
-        loadedChannels.append(entry);
+        githubVersion = normalizeVersion(tag);
     }
 
-    // Swap  the channel list we just loaded into the object's channel list.
-    m_channels.swap(loadedChannels);
+    qDebug() << "UpdateChecker: feed version =" << feedVersion
+             << "| github version =" << githubVersion
+             << "| current =" << currentVersion();
 
-    m_chanListLoading = false;
-    m_chanListLoaded = true;
-    qDebug() << "Successfully loaded UpdateChecker channel list.";
-
-    // If we're waiting to check for updates, do that now.
-    if (m_checkUpdateWaiting) {
-        checkForUpdate(m_deferredUpdateChannel, notifyNoUpdate);
+    // ---- Cross-check both sources -----------------------------------------
+    if (feedVersion != githubVersion) {
+        qDebug() << "UpdateChecker: feed and GitHub disagree on version — no update reported.";
+        if (notifyNoUpdate)
+            emit noUpdateFound();
+        return;
     }
 
-    emit channelListLoaded();
+    // ---- Compare against the running version ------------------------------
+    if (compareVersions(feedVersion, currentVersion()) <= 0) {
+        qDebug() << "UpdateChecker: already up to date.";
+        if (notifyNoUpdate)
+            emit noUpdateFound();
+        return;
+    }
+
+    qDebug() << "UpdateChecker: update available:" << feedVersion;
+    UpdateAvailableStatus status;
+    status.version      = feedVersion;
+    status.downloadUrl  = downloadUrl;
+    status.releaseNotes = releaseNotes;
+    emit updateAvailable(status);
 }
 
-void UpdateChecker::chanListDownloadFailed(QString reason)
+void UpdateChecker::onDownloadsFailed(QString reason)
 {
-    m_chanListLoading = false;
-    qCritical() << QString("Failed to download channel list: %1").arg(reason);
-    emit channelListLoaded();
+    m_checking = false;
+    m_checkJob.reset();
+    m_feedData.clear();
+    m_githubData.clear();
+    qCritical() << "UpdateChecker: download failed:" << reason;
+    emit checkFailed(reason);
 }
 
