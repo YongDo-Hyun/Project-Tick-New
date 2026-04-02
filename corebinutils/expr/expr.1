@@ -1,0 +1,173 @@
+.\" SPDX-License-Identifier: Apache-2.0
+.\"
+.\" Copyright (c) 2026 Project Tick
+.\"
+.\" Licensed under the Apache License, Version 2.0 (the "License");
+.\" you may not use this file except in compliance with the License.
+.\" You may obtain a copy of the License at
+.\"
+.\"    http://www.apache.org/licenses/LICENSE-2.0
+.\"
+.\" Unless required by applicable law or agreed to in writing, software
+.\" distributed under the License is distributed on an "AS IS" BASIS,
+.\" WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+.\" See the License for the specific language governing permissions and
+.\" limitations under the License.
+.\"
+.\" Copyright (c) 2026
+.\" Project Tick
+.Dd February 28, 2026
+.Dt EXPR 1
+.Os Linux
+.Sh NAME
+.Nm expr
+.Nd evaluate integer, string, and regular-expression expressions
+.Sh SYNOPSIS
+.Nm
+.Op Fl e
+.Op Fl -
+.Ar expression ...
+.Sh DESCRIPTION
+.Nm
+evaluates the operand vector given on the command line and writes the result
+to standard output.
+Each operator and operand must be passed as a separate shell argument.
+.Pp
+This Linux port is a standalone implementation derived from FreeBSD
+semantics, but it does not depend on the FreeBSD build system or
+compatibility probes.
+.Sh OPTIONS
+.Bl -tag -width "-e"
+.It Fl e
+Enable compatibility parsing for numeric operands.
+In this mode,
+.Nm
+accepts leading white space, an optional leading plus sign, and an empty
+string in numeric context.
+.It Fl -
+End option processing.
+Use
+.Fl -
+when the first operand may begin with
+.Ql - .
+.El
+.Sh OPERANDS
+Operators are evaluated from low precedence to high precedence in the
+following order.
+Operators with the same precedence associate left to right.
+.Bl -tag -width "expr1 <= expr2"
+.It Ar expr1 Li \&| Ar expr2
+Return
+.Ar expr1
+if it is neither the empty string nor numeric zero.
+Otherwise return
+.Ar expr2
+if it is non-empty and non-zero.
+If both sides are null or zero, return
+.Li 0 .
+.It Ar expr1 Li & Ar expr2
+Return
+.Ar expr1
+if both operands are non-empty and non-zero.
+Otherwise return
+.Li 0 .
+.It Ar expr1 Li = Ar expr2
+.It Ar expr1 Li != Ar expr2
+.It Ar expr1 Li \&< Ar expr2
+.It Ar expr1 Li \&<= Ar expr2
+.It Ar expr1 Li \&> Ar expr2
+.It Ar expr1 Li \&>= Ar expr2
+If both operands are valid integers, compare them numerically.
+Otherwise compare them as strings using the current locale collation rules.
+The result is
+.Li 1
+for true and
+.Li 0
+for false.
+.It Ar expr1 Li + Ar expr2
+.It Ar expr1 Li - Ar expr2
+.It Ar expr1 Li * Ar expr2
+.It Ar expr1 Li / Ar expr2
+.It Ar expr1 Li % Ar expr2
+Perform checked arithmetic on
+.Vt intmax_t .
+Division and remainder by zero are rejected.
+Overflow terminates the utility with an error.
+.It Ar expr1 Li : Ar expr2
+Match
+.Ar expr1
+against the basic regular expression
+.Ar expr2 .
+The match is anchored at the start of the string.
+If the pattern contains a capturing subexpression and the match succeeds,
+the first captured substring is returned.
+If the pattern has no capturing subexpression and the match succeeds,
+the length of the match is returned.
+On a failed match, the result is the empty string when the pattern has a
+capturing subexpression, otherwise
+.Li 0 .
+.El
+.Pp
+Parentheses may be used for grouping.
+Because
+.Nm
+does not lexically separate operators from operands, a token that is
+identical to an operator must be disambiguated by shell quoting or by
+rewriting the expression.
+.Sh SEMANTICS
+By default, integer operands must be base-10 strings consisting of an
+optional leading minus sign followed by digits.
+In compatibility mode,
+.Fl e ,
+leading white space and a leading plus sign are accepted, and the empty
+string is treated as zero in numeric context.
+.Pp
+This Linux port supports
+.Fl -
+for POSIX-style end-of-options handling.
+It does not implement FreeBSD
+.Xr check_utility_compat 3
+probing or the historical
+.Ev EXPR_COMPAT
+environment switch.
+.Sh EXIT STATUS
+.Bl -tag -width indent -compact
+.It 0
+The final value is neither empty nor zero.
+.It 1
+The final value is the empty string or numeric zero.
+.It 2
+The expression is invalid or evaluation failed.
+.El
+.Sh DIAGNOSTICS
+Errors are reported on standard error.
+The implementation emits explicit diagnostics for syntax errors, invalid
+decimal operands, arithmetic overflow, division by zero, regular-expression
+compilation failures, and write failures.
+.Sh EXAMPLES
+.Bl -bullet
+.It
+Increment a shell variable:
+.Dl n=$(expr "$n" + 1)
+.It
+Safely handle a leading negative operand:
+.Dl n=$(expr -- "$n" + 1)
+.It
+Return the basename component of a path:
+.Dl expr "//$path" : '.*/\e(.*\e)'
+.It
+Return the length of a shell variable:
+.Dl expr \&( "X$text" : '.*' \&) - 1
+.El
+.Sh SEE ALSO
+.Xr sh 1 ,
+.Xr test 1 ,
+.Xr regex 3
+.Sh STANDARDS
+The strict parsing mode follows the POSIX utility syntax model for option
+handling and preserves the historical
+.Nm
+operator set.
+Compatibility mode
+.Pq Fl e
+is a local extension for FreeBSD-script migration.
