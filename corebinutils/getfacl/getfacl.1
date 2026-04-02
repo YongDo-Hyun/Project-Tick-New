@@ -1,0 +1,108 @@
+.\"-
+.\" Copyright (c) 2000, 2001, 2002 Robert N. M. Watson
+.\" All rights reserved.
+.\"
+.\" Copyright (c) 2026
+.\"  Project Tick. All rights reserved.
+.\"
+.\" This software was developed by Robert Watson for the TrustedBSD Project.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.Dd February 28, 2026
+.Dt GETFACL 1
+.Os
+.Sh NAME
+.Nm getfacl
+.Nd show Linux POSIX ACL information
+.Sh SYNOPSIS
+.Nm
+.Op Fl dhnqs
+.Op Ar file ...
+.Sh DESCRIPTION
+The
+.Nm
+utility writes Linux POSIX ACL information for each
+.Ar file
+to standard output.
+This port reads ACLs directly from the Linux xattrs
+.Pa system.posix_acl_access
+and
+.Pa system.posix_acl_default .
+If an access ACL xattr is absent, the base ACL is synthesized from the file
+mode bits.
+.Pp
+The following options are available:
+.Bl -tag -width indent
+.It Fl d , Fl -default
+Show the default ACL instead of the access ACL.
+If no default ACL xattr exists, only the header is printed unless
+.Fl q
+or
+.Fl s
+suppresses output.
+.It Fl h
+Do not follow symbolic links.
+On Linux, POSIX ACLs are not supported on symbolic link inodes, so this port
+returns an explicit error when
+.Fl h
+targets a symbolic link.
+.It Fl n , Fl -numeric
+Display numeric user and group identifiers instead of resolving names.
+.It Fl q , Fl -omit-header
+Suppress the commented file, owner, and group header.
+.It Fl s , Fl -skip-base
+Skip access ACLs that are trivial and can be represented entirely by the file
+mode bits.
+For default ACLs, suppress output when no default ACL xattr exists.
+.It Fl i
+Unsupported on Linux in this port.
+This flag was specific to FreeBSD NFSv4 ACL output and exits with an error.
+.It Fl v
+Unsupported on Linux in this port.
+This flag was specific to FreeBSD NFSv4 ACL output and exits with an error.
+.El
+.Pp
+If no
+.Ar file
+operand is provided, or if an operand is
+.Fl - ,
+.Nm
+reads pathnames from standard input, one per line.
+.Sh EXIT STATUS
+.Ex -std
+.Sh SEE ALSO
+.Xr chmod 1 ,
+.Xr setfacl 1 ,
+.Xr getxattr 2 ,
+.Xr lgetxattr 2 ,
+.Xr stat 2 ,
+.Xr xattr 7
+.Sh HISTORY
+Extended Attribute and Access Control List support was developed as part of
+the
+.Tn TrustedBSD
+Project.
+This Linux port replaces the original FreeBSD ACL library dependencies with a
+Linux-native xattr parser.
+.Sh AUTHORS
+.An Robert N M Watson
