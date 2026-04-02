@@ -1,0 +1,83 @@
+/* SPDX-FileCopyrightText: 2026 Project Tick
+ * SPDX-FileContributor: Project Tick
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ *   MeshMC - A Custom Launcher for Minecraft
+ *   Copyright (C) 2026 Project Tick
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+#include "BrightTheme.h"
+
+#include <QObject>
+
+QString BrightTheme::id()
+{
+	return "bright";
+}
+
+QString BrightTheme::name()
+{
+	return QObject::tr("Bright");
+}
+
+QString BrightTheme::tooltip()
+{
+	return QObject::tr("A bright Fusion-based theme with green accents");
+}
+
+bool BrightTheme::hasColorScheme()
+{
+	return true;
+}
+
+QPalette BrightTheme::colorScheme()
+{
+	QPalette brightPalette;
+	brightPalette.setColor(QPalette::Window, QColor(255, 255, 255));
+	brightPalette.setColor(QPalette::WindowText, QColor(49, 49, 49));
+	brightPalette.setColor(QPalette::Base, QColor(250, 250, 250));
+	brightPalette.setColor(QPalette::AlternateBase, QColor(239, 240, 241));
+	brightPalette.setColor(QPalette::ToolTipBase, QColor(49, 49, 49));
+	brightPalette.setColor(QPalette::ToolTipText, QColor(239, 240, 241));
+	brightPalette.setColor(QPalette::Text, QColor(49, 49, 49));
+	brightPalette.setColor(QPalette::Button, QColor(255, 255, 255));
+	brightPalette.setColor(QPalette::ButtonText, QColor(49, 49, 49));
+	brightPalette.setColor(QPalette::BrightText, Qt::red);
+	brightPalette.setColor(QPalette::Link, QColor(37, 137, 164));
+	brightPalette.setColor(QPalette::Highlight, QColor(137, 207, 84));
+	brightPalette.setColor(QPalette::HighlightedText, QColor(239, 240, 241));
+	return fadeInactive(brightPalette, fadeAmount(), fadeColor());
+}
+
+double BrightTheme::fadeAmount()
+{
+	return 0.5;
+}
+
+QColor BrightTheme::fadeColor()
+{
+	return QColor(255, 255, 255);
+}
+
+bool BrightTheme::hasStyleSheet()
+{
+	return false;
+}
+
+QString BrightTheme::appStyleSheet()
+{
+	return QString();
+}

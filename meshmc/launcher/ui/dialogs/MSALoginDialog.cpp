@@ -1,0 +1,147 @@
+/* SPDX-FileCopyrightText: 2026 Project Tick
+ * SPDX-FileContributor: Project Tick
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ *   MeshMC - A Custom Launcher for Minecraft
+ *   Copyright (C) 2026 Project Tick
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ *  This file incorporates work covered by the following copyright and
+ *  permission notice:
+ *
+ * Copyright 2013-2021 MultiMC Contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "MSALoginDialog.h"
+#include "ui_MSALoginDialog.h"
+
+#include "minecraft/auth/AccountTask.h"
+
+#include <QtWidgets/QPushButton>
+#include <QUrl>
+
+MSALoginDialog::MSALoginDialog(QWidget* parent)
+	: QDialog(parent), ui(new Ui::MSALoginDialog)
+{
+	ui->setupUi(this);
+	ui->progressBar->setVisible(false);
+
+	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+}
+
+int MSALoginDialog::exec()
+{
+	setUserInputsEnabled(false);
+	ui->progressBar->setVisible(true);
+	ui->progressBar->setMaximum(0); // Indeterminate progress
+	ui->label->setText(tr("Opening your browser for Microsoft login..."));
+
+	// Setup the login task and start it
+	m_account = MinecraftAccount::createBlankMSA();
+	m_loginTask = m_account->loginMSA();
+	connect(m_loginTask.get(), &Task::failed, this,
+			&MSALoginDialog::onTaskFailed);
+	connect(m_loginTask.get(), &Task::succeeded, this,
+			&MSALoginDialog::onTaskSucceeded);
+	connect(m_loginTask.get(), &Task::status, this,
+			&MSALoginDialog::onTaskStatus);
+	connect(m_loginTask.get(), &Task::progress, this,
+			&MSALoginDialog::onTaskProgress);
+	connect(m_loginTask.get(), &AccountTask::authorizeWithBrowser, this,
+			&MSALoginDialog::onAuthorizeWithBrowser);
+	m_loginTask->start();
+
+	return QDialog::exec();
+}
+
+MSALoginDialog::~MSALoginDialog()
+{
+	delete ui;
+}
+
+void MSALoginDialog::onAuthorizeWithBrowser(const QUrl& url)
+{
+	QString urlString = url.toString();
+	QString linkString =
+		QString("<a href=\"%1\">%2</a>").arg(urlString, tr("here"));
+	ui->label->setText(
+		tr("<p>A browser window will open for Microsoft login.</p>"
+		   "<p>If it doesn't open automatically, click %1.</p>")
+			.arg(linkString));
+}
+
+void MSALoginDialog::setUserInputsEnabled(bool enable)
+{
+	ui->buttonBox->setEnabled(enable);
+}
+
+void MSALoginDialog::onTaskFailed(const QString& reason)
+{
+	// Set message
+	auto lines = reason.split('\n');
+	QString processed;
+	for (auto line : lines) {
+		if (line.size()) {
+			processed += "<font color='red'>" + line + "</font><br />";
+		} else {
+			processed += "<br />";
+		}
+	}
+	ui->label->setText(processed);
+
+	// Re-enable user-interaction
+	setUserInputsEnabled(true);
+	ui->progressBar->setVisible(false);
+}
+
+void MSALoginDialog::onTaskSucceeded()
+{
+	QDialog::accept();
+}
+
+void MSALoginDialog::onTaskStatus(const QString& status)
+{
+	ui->label->setText(status);
+}
+
+void MSALoginDialog::onTaskProgress(qint64 current, qint64 total)
+{
+	ui->progressBar->setMaximum(total);
+	ui->progressBar->setValue(current);
+}
+
+// Public interface
+MinecraftAccountPtr MSALoginDialog::newAccount(QWidget* parent, QString msg)
+{
+	MSALoginDialog dlg(parent);
+	dlg.ui->label->setText(msg);
+	if (dlg.exec() == QDialog::Accepted) {
+		return dlg.m_account;
+	}
+	return nullptr;
+}

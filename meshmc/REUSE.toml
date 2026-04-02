@@ -1,0 +1,73 @@
+version = 1
+
+[[annotations]]
+path = [
+  ".gitignore",
+  ".gitattributes",
+  ".gitmodules",
+  ".github/**",
+  ".envrc",
+  ".markdownlint.yaml",
+  ".markdownlintignore",
+  "Containerfile",
+  "default.nix",
+  "flake.lock",
+  "flake.nix",
+  "shell.nix",
+  "vcpkg-configuration.json",
+  "vcpkg.json",
+  ".clang-format",
+  ".clang-tidy"
+]
+SPDX-License-Identifier = "CC0-1.0"
+SPDX-FileCopyrightText = "NONE"
+
+[[annotations]]
+path = ["launcher/package/**"]
+SPDX-License-Identifier = "GPL-3.0-or-later"
+SPDX-FileCopyrightText = "2026 Project Tick"
+
+[[annotations]]
+path = ["**/*.md", "doc/**"]
+SPDX-License-Identifier = "CC0-1.0"
+SPDX-FileCopyrightText = "2026 Project Tick"
+
+[[annotations]]
+path = ["cmake/**", "**/CMakeLists.txt"]
+SPDX-License-Identifier = "BSD-3-Clause"
+SPDX-FileCopyrightText = "Various authors"
+
+[[annotations]]
+path = [
+  "branding/**",
+  "launcher/resources/**"
+]
+SPDX-License-Identifier = "CC0-1.0"
+SPDX-FileCopyrightText = "2026 Project Tick"
+
+[[annotations]]
+path = [
+  "**/testdata/**"
+]
+SPDX-License-Identifier = "CC0-1.0"
+SPDX-FileCopyrightText = "NONE"
+
+[[annotations]]
+path = ["**/*.ui"]
+SPDX-License-Identifier = "GPL-3.0-or-later"
+SPDX-FileCopyrightText = "2026 Project Tick"
+
+[[annotations]]
+path = ["libraries/**/.gitignore"]
+SPDX-License-Identifier = "CC0-1.0"
+SPDX-FileCopyrightText = "NONE"
+
+[[annotations]]
+path = ["CMakePresets.json"]
+SPDX-License-Identifier = "GPL-3.0-or-later"
+SPDX-FileCopyrightText = "2026 Project Tick"
+
+[[annotations]]
+path = ["nix/**"]
+SPDX-License-Identifier = "GPL-3.0-or-later"
+SPDX-FileCopyrightText = "2026 Project Tick"

@@ -1,0 +1,66 @@
+/* SPDX-FileCopyrightText: 2026 Project Tick
+ * SPDX-FileContributor: Project Tick
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ *   MeshMC - A Custom Launcher for Minecraft
+ *   Copyright (C) 2026 Project Tick
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+#pragma once
+
+#include <QString>
+#include <QRegularExpression>
+
+class Filter
+{
+  public:
+	virtual ~Filter();
+	virtual bool accepts(const QString& value) = 0;
+};
+
+class ContainsFilter : public Filter
+{
+  public:
+	ContainsFilter(const QString& pattern);
+	virtual ~ContainsFilter();
+	bool accepts(const QString& value) override;
+
+  private:
+	QString pattern;
+};
+
+class ExactFilter : public Filter
+{
+  public:
+	ExactFilter(const QString& pattern);
+	virtual ~ExactFilter();
+	bool accepts(const QString& value) override;
+
+  private:
+	QString pattern;
+};
+
+class RegexpFilter : public Filter
+{
+  public:
+	RegexpFilter(const QString& regexp, bool invert);
+	virtual ~RegexpFilter();
+	bool accepts(const QString& value) override;
+
+  private:
+	QRegularExpression pattern;
+	bool invert = false;
+};

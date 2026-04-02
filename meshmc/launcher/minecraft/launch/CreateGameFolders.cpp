@@ -1,0 +1,50 @@
+/* SPDX-FileCopyrightText: 2026 Project Tick
+ * SPDX-FileContributor: Project Tick
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ *   MeshMC - A Custom Launcher for Minecraft
+ *   Copyright (C) 2026 Project Tick
+ *
+ *   This program is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   This program is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+#include "CreateGameFolders.h"
+#include "minecraft/MinecraftInstance.h"
+#include "launch/LaunchTask.h"
+#include "FileSystem.h"
+
+CreateGameFolders::CreateGameFolders(LaunchTask* parent) : LaunchStep(parent) {}
+
+void CreateGameFolders::executeTask()
+{
+	auto instance = m_parent->instance();
+	std::shared_ptr<MinecraftInstance> minecraftInstance =
+		std::dynamic_pointer_cast<MinecraftInstance>(instance);
+
+	if (!FS::ensureFolderPathExists(minecraftInstance->gameRoot())) {
+		emit logLine("Couldn't create the main game folder",
+					 MessageLevel::Error);
+		emitFailed(tr("Couldn't create the main game folder"));
+		return;
+	}
+
+	// HACK: this is a workaround for MCL-3732 - 'server-resource-packs' folder
+	// is created.
+	if (!FS::ensureFolderPathExists(FS::PathCombine(
+			minecraftInstance->gameRoot(), "server-resource-packs"))) {
+		emit logLine("Couldn't create the 'server-resource-packs' folder",
+					 MessageLevel::Error);
+	}
+	emitSucceeded();
+}
