@@ -1,17 +1,32 @@
 name: "cmark: Fuzz"
 
 on:
+  push:
+    branches: [master]
+    paths:
+      - 'cmark/**'
+      - '.github/workflows/cmark-fuzz.yml'
   pull_request:
     paths:
       - 'cmark/**'
       - '.github/workflows/cmark-fuzz.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: cmark-fuzz-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
-  Fuzzing:
+  fuzzing:
+    name: Fuzzing
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - name: Build Fuzzers
+        id: build
         uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
         with:
           oss-fuzz-project-name: 'cmark'
@@ -23,8 +38,8 @@ jobs:
           fuzz-seconds: 600
           dry-run: false
       - name: Upload Crash
-        uses: actions/upload-artifact@v7
-        if: failure()
+        uses: actions/upload-artifact@v4
+        if: failure() && steps.build.outcome == 'success'
         with:
-          name: artifacts
+          name: cmark-fuzz-artifacts
           path: ./out/artifacts

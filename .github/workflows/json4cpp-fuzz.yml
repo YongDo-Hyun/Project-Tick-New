@@ -1,15 +1,27 @@
-name: "json4cpp: CIFuzz"
+name: "json4cpp: Fuzz"
 
 on:
+  push:
+    branches: [master, develop]
+    paths:
+      - 'json4cpp/**'
+      - '.github/workflows/json4cpp-fuzz.yml'
   pull_request:
     paths:
       - 'json4cpp/**'
+      - '.github/workflows/json4cpp-fuzz.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: json4cpp-fuzz-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  Fuzzing:
+  fuzzing:
+    name: Fuzzing
     runs-on: ubuntu-22.04
     steps:
     - name: Harden Runner
@@ -35,5 +47,5 @@ jobs:
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
       if: failure() && steps.build.outcome == 'success'
       with:
-        name: artifacts
+        name: json4cpp-fuzz-artifacts
         path: ./out/artifacts

@@ -1,13 +1,11 @@
-name: "json4cpp: Scorecard supply-chain security"
+name: "Scorecard supply-chain security"
 
 on:
   branch_protection_rule:
   schedule:
     - cron: '20 7 * * 2'
   push:
-    branches: ["develop"]
-    paths:
-      - 'json4cpp/**'
+    branches: [master, main, develop]
 
 permissions:
   contents: read

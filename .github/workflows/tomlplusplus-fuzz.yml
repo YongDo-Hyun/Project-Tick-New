@@ -1,19 +1,27 @@
-name: "tomlplusplus: CIFuzz"
+name: "tomlplusplus: Fuzz"
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
     paths:
       - 'tomlplusplus/**'
+      - '.github/workflows/tomlplusplus-fuzz.yml'
   pull_request:
     paths:
       - 'tomlplusplus/**'
+      - '.github/workflows/tomlplusplus-fuzz.yml'
+  workflow_dispatch:
 
-permissions: {}
+concurrency:
+  group: tomlplusplus-fuzz-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
-  Fuzzing:
+  fuzzing:
+    name: Fuzzing
     runs-on: ubuntu-latest
     permissions:
       security-events: write
@@ -35,7 +43,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: failure() && steps.build.outcome == 'success'
       with:
-        name: artifacts
+        name: tomlplusplus-fuzz-artifacts
         path: ./out/artifacts
     - name: Upload Sarif
       if: always() && steps.build.outcome == 'success'
