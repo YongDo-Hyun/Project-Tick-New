@@ -97,8 +97,10 @@ def main():
 			toml_h = re.sub('([^ \t])[ \t]+\n', r'\1\n', toml_h)
 			# explicit 'strip this' blocks
 			toml_h = re.sub(r'(?:\n[ \t]*)?//[#!][ \t]*[{][{].*?//[#!][ \t]*[}][}].*?\n', '\n', toml_h, flags=re.S)
+			# REUSE-IgnoreStart
 			# spdx license identifiers
 			toml_h = re.sub(r'^\s*//\s*SPDX-License-Identifier:.+?$', '', toml_h, 0, re.I | re.M)
+			# REUSE-IgnoreEnd
 			# double blank lines
 			toml_h = re.sub('\n(?:[ \t]*\n[ \t]*)+\n', '\n\n', toml_h)
 			# magic comments
@@ -148,10 +150,12 @@ def main():
 
 	# build the preamble (license etc)
 	preamble = []
+# REUSE-IgnoreStart
 	preamble.append(rf'''
 // toml++ v{version}
 // https://github.com/marzer/tomlplusplus
 // SPDX-License-Identifier: MIT''')
+# REUSE-IgnoreEnd
 	preamble.append(r'''
 // -         THIS FILE WAS ASSEMBLED FROM MULTIPLE HEADER FILES BY A SCRIPT - PLEASE DON'T EDIT IT DIRECTLY            -
 //

@@ -32,6 +32,8 @@ static char *trim_whitespace(const char *start, const char *end)
 	return xstrndup(start, end - start);
 }
 
+// REUSE-IgnoreStart
+
 static char *find_spdx_identifier(const char *buf, size_t size)
 {
 	static const char *keys[] = {
@@ -182,6 +184,8 @@ cleanup:
 	free(codeowners_path);
 	free(maintainers_path);
 }
+
+// REUSE-IgnoreEnd
 
 static unsigned long ref_age(const struct refinfo *ref)
 {
