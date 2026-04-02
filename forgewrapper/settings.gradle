@@ -1,0 +1,3 @@
+rootProject.name = 'ForgeWrapper'
+
+include 'jigsaw'
