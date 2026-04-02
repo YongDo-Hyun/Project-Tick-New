@@ -1,0 +1,213 @@
+name: Repack Existing Images
+
+on:
+  push:
+    branches: ["trunk"]
+    paths:
+      - "dockerfiles/**"
+      - ".github/workflows/build.yml"
+      - "README.md"
+  schedule:
+    - cron: "17 3 * * *"
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.make.outputs.matrix }}
+      count: ${{ steps.make.outputs.count }}
+    steps:
+      - id: make
+        run: |
+          set -euo pipefail
+
+          APT_CUSTOM='set -eu; apt-get update; PKGS="dpkg-dev ninja-build scdoc appstream lcov libdbus-1-dev libinih-dev libsystemd-dev"; if apt-cache show libxcb-cursor-dev >/dev/null 2>&1; then PKGS="$PKGS libxcb-cursor-dev"; elif apt-cache show libxcb-cursor0-dev >/dev/null 2>&1; then PKGS="$PKGS libxcb-cursor0-dev"; fi; if apt-cache show openjdk-21-jdk >/dev/null 2>&1; then PKGS="$PKGS openjdk-21-jdk"; elif apt-cache show openjdk-17-jdk >/dev/null 2>&1; then PKGS="$PKGS openjdk-17-jdk"; else PKGS="$PKGS default-jdk"; fi; if apt-cache show qt6-base-dev >/dev/null 2>&1 && apt-cache show qt6-declarative-dev >/dev/null 2>&1 && apt-cache show qt6-tools-dev >/dev/null 2>&1; then PKGS="$PKGS qt6-base-dev qt6-declarative-dev qt6-tools-dev qt6-tools-dev-tools"; else echo "Qt6 dev packages are required but not available" >&2; exit 1; fi; if apt-cache show libtiff6 >/dev/null 2>&1; then PKGS="$PKGS libtiff6"; elif apt-cache show libtiff5 >/dev/null 2>&1; then PKGS="$PKGS libtiff5"; else PKGS="$PKGS libtiff-dev"; fi; apt-get install -y --no-install-recommends $PKGS'
+          APK_CUSTOM='set -eu; apk update; apk add --no-cache qt6-qtbase-dev qt6-qtdeclarative-dev qt6-qttools-dev; for p in ninja scdoc appstream libxcb openjdk21-jdk lcov dbus-dev inih-dev tiff-dev; do apk add --no-cache "$p" || true; done'
+          DNF_CUSTOM='set -eu; dnf -y install dnf-plugins-core || true; dnf config-manager --set-enabled crb || dnf config-manager --set-enabled powertools || dnf config-manager --set-enabled ol10_codeready_builder || dnf config-manager --set-enabled ol9_codeready_builder || dnf config-manager --set-enabled ol8_codeready_builder || true; dnf -y install epel-release || dnf -y install epel-next-release || dnf -y install oracle-epel-release-el9 || dnf -y install oracle-epel-release-el8 || true; dnf -y makecache || true; dnf -y install qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qttools-devel || dnf -y install qt6-qtbase qt6-qtdeclarative qt6-qttools || { echo "Qt6 dev packages are required but not available" >&2; exit 1; }; for p in appstream libxcb-devel dbus-devel systemd-devel libtiff ninja-build ninja inih-devel libinih-devel lcov; do dnf -y install "$p" || true; done; dnf -y install java-21-openjdk-devel || dnf -y install java-17-openjdk-devel || dnf -y install java-latest-openjdk-devel || true; dnf -y install scdoc || (dnf -y install cargo git && cargo install --locked scdoc && ln -sf /root/.cargo/bin/scdoc /usr/local/bin/scdoc) || true'
+          YUM_CUSTOM='yum install -y ninja-build scdoc lcov dbus-devel systemd-devel libtiff qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qttools-devel && (yum install -y java-21-openjdk-devel || yum install -y java-17-openjdk-devel)'
+          ZYPPER_CUSTOM='set -eu; zypper --non-interactive refresh; zypper --non-interactive install --no-recommends qt6-base-devel qt6-declarative-devel qt6-tools-devel; for p in ninja scdoc appstream libxcb-devel java-21-openjdk-devel lcov dbus-1-devel inih-devel systemd-devel libtiff; do zypper --non-interactive install --no-recommends "$p" || true; done'
+          PACMAN_CUSTOM='set -eu; pacman -Syu --noconfirm; pacman -S --noconfirm --needed qt6-base qt6-declarative qt6-tools; for p in base-devel ninja scdoc appstream libxcb jdk21-openjdk lcov dbus inih systemd-libs libtiff; do pacman -S --noconfirm --needed "$p" || true; done'
+          XBPS_CUSTOM='set -eu; xbps-install -Suy -y || xbps-install -Sy -y; xbps-install -y qt6-base-devel qt6-declarative-devel qt6-tools-devel || xbps-install -y qt6-base qt6-declarative qt6-tools || { echo "Qt6 dev packages are required but not available" >&2; exit 1; }; for p in ninja scdoc appstream libxcb-devel openjdk21 lcov dbus-devel inih-devel tiff-devel; do xbps-install -y "$p" || true; done'
+          NIX_CUSTOM='set -eu; nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs || true; nix-channel --update; nix-env -iA nixpkgs.qt6.full || nix-env -iA nixpkgs.qt6.qtbase nixpkgs.qt6.qtdeclarative nixpkgs.qt6.qttools || { echo "Qt6 dev packages are required but not available" >&2; exit 1; }; nix-env -iA nixpkgs.ninja nixpkgs.scdoc nixpkgs.appstream nixpkgs.jdk21 nixpkgs.lcov nixpkgs.dbus nixpkgs.inih nixpkgs.systemd nixpkgs.libtiff || true'
+          EMERGE_CUSTOM='set -eu; emerge --sync || true; emerge dev-qt/qtbase:6 dev-qt/qtdeclarative:6 dev-qt/qttools:6 || { echo "Qt6 dev packages are required but not available" >&2; exit 1; }; for p in dev-util/ninja app-text/scdoc sys-apps/dbus dev-libs/inih sys-apps/systemd media-libs/tiff dev-util/lcov virtual/jdk; do emerge "$p" || true; done'
+
+          rows=""
+          packages=""
+          custom_install=""
+          update_cmd=""
+          clean_cmd=""
+
+          set_profile() {
+            local manager="$1"
+            packages=""
+            custom_install=""
+            update_cmd=""
+            clean_cmd=""
+
+            case "$manager" in
+              apt)
+                custom_install="$APT_CUSTOM"
+                clean_cmd='rm -rf /var/lib/apt/lists/*'
+                ;;
+              apk)
+                custom_install="$APK_CUSTOM"
+                clean_cmd='true'
+                ;;
+              dnf)
+                custom_install="$DNF_CUSTOM"
+                clean_cmd='dnf clean all || true'
+                ;;
+              yum)
+                custom_install="$YUM_CUSTOM"
+                clean_cmd='yum clean all || true'
+                ;;
+              zypper)
+                custom_install="$ZYPPER_CUSTOM"
+                clean_cmd='zypper clean --all || true'
+                ;;
+              pacman)
+                custom_install="$PACMAN_CUSTOM"
+                clean_cmd='pacman -Scc --noconfirm || true'
+                ;;
+              xbps)
+                custom_install="$XBPS_CUSTOM"
+                clean_cmd='xbps-remove -O || true'
+                ;;
+              nix)
+                custom_install="$NIX_CUSTOM"
+                clean_cmd='nix-collect-garbage -d || true'
+                ;;
+              emerge)
+                custom_install="$EMERGE_CUSTOM"
+                clean_cmd='true'
+                ;;
+              *)
+                echo "Unsupported manager: $manager" >&2
+                exit 2
+                ;;
+            esac
+          }
+
+          add_row() {
+            local id="$1"
+            local dockerfile="$2"
+            local target_name="$3"
+            local manager="$4"
+
+            set_profile "$manager"
+
+            row=$(jq -cn \
+              --arg id "$id" \
+              --arg dockerfile "$dockerfile" \
+              --arg target_name "$target_name" \
+              --arg target_tag "latest" \
+              --arg packages "$packages" \
+              --arg custom_install "$custom_install" \
+              --arg update_cmd "$update_cmd" \
+              --arg clean_cmd "$clean_cmd" \
+              '{id:$id,dockerfile:$dockerfile,target_name:$target_name,target_tag:$target_tag,packages:$packages,custom_install:$custom_install,update_cmd:$update_cmd,clean_cmd:$clean_cmd}')
+
+            if [[ -z "$rows" ]]; then
+              rows="$row"
+            else
+              rows="$rows"$'\n'"$row"
+            fi
+          }
+
+          entries=(
+            "debian-bookworm-slim|dockerfiles/debian-bookworm-slim.Dockerfile|debian/bookworm-slim|apt"
+            "debian-bookworm|dockerfiles/debian-bookworm.Dockerfile|debian/bookworm|apt"
+            "debian-trixie-slim|dockerfiles/debian-trixie-slim.Dockerfile|debian/trixie-slim|apt"
+            "debian-stable-slim|dockerfiles/debian-stable-slim.Dockerfile|debian/stable-slim|apt"
+            "ubuntu-2404|dockerfiles/ubuntu-2404.Dockerfile|ubuntu/24.04|apt"
+            "ubuntu-2204|dockerfiles/ubuntu-2204.Dockerfile|ubuntu/22.04|apt"
+            "ubuntu-latest|dockerfiles/ubuntu-latest.Dockerfile|ubuntu/latest|apt"
+            "devuan-daedalus|dockerfiles/devuan-daedalus.Dockerfile|devuan/daedalus|apt"
+            "kali-rolling|dockerfiles/kali-rolling.Dockerfile|kali/rolling|apt"
+            "alpine-322|dockerfiles/alpine-322.Dockerfile|alpine/3.22|apk"
+            "alpine-321|dockerfiles/alpine-321.Dockerfile|alpine/3.21|apk"
+            "alpine-320|dockerfiles/alpine-320.Dockerfile|alpine/3.20|apk"
+            "alpine-319|dockerfiles/alpine-319.Dockerfile|alpine/3.19|apk"
+            "alpine-latest|dockerfiles/alpine-latest.Dockerfile|alpine/latest|apk"
+            "fedora-42|dockerfiles/fedora-42.Dockerfile|fedora/42|dnf"
+            "fedora-41|dockerfiles/fedora-41.Dockerfile|fedora/41|dnf"
+            "fedora-40|dockerfiles/fedora-40.Dockerfile|fedora/40|dnf"
+            "fedora-latest|dockerfiles/fedora-latest.Dockerfile|fedora/latest|dnf"
+            "centos-stream10|dockerfiles/centos-stream10.Dockerfile|centos-stream/10|dnf"
+            "centos-stream9|dockerfiles/centos-stream9.Dockerfile|centos-stream/9|dnf"
+            "rocky-10|dockerfiles/rocky-10.Dockerfile|rocky/10|dnf"
+            "rocky-9|dockerfiles/rocky-9.Dockerfile|rocky/9|dnf"
+            "alma-10|dockerfiles/alma-10.Dockerfile|alma/10|dnf"
+            "alma-9|dockerfiles/alma-9.Dockerfile|alma/9|dnf"
+            "oraclelinux-10|dockerfiles/oraclelinux-10.Dockerfile|oraclelinux/10|dnf"
+            "oraclelinux-9|dockerfiles/oraclelinux-9.Dockerfile|oraclelinux/9|dnf"
+            "oraclelinux-8|dockerfiles/oraclelinux-8.Dockerfile|oraclelinux/8|dnf"
+            "amazonlinux-2023|dockerfiles/amazonlinux-2023.Dockerfile|amazonlinux/2023|dnf"
+            "opensuse-leap-156|dockerfiles/opensuse-leap-156.Dockerfile|opensuse-leap/15.6|zypper"
+            "opensuse-leap-155|dockerfiles/opensuse-leap-155.Dockerfile|opensuse-leap/15.5|zypper"
+            "opensuse-tumbleweed|dockerfiles/opensuse-tumbleweed.Dockerfile|opensuse-tumbleweed/latest|zypper"
+            "arch-latest|dockerfiles/arch-latest.Dockerfile|arch/latest|pacman"
+            "void-latest|dockerfiles/void-latest.Dockerfile|void/latest|xbps"
+            "nix-latest|dockerfiles/nix-latest.Dockerfile|nix/latest|nix"
+            "gentoo-stage3|dockerfiles/gentoo-stage3.Dockerfile|gentoo/stage3|emerge"
+          )
+
+          for entry in "${entries[@]}"; do
+            IFS='|' read -r id dockerfile target_name manager <<<"$entry"
+            add_row "$id" "$dockerfile" "$target_name" "$manager"
+          done
+
+          matrix=$(printf '%s\n' "$rows" | jq -cs '{include:.}')
+          count=$(echo "$matrix" | jq -r '.include | length')
+          matrix_compact=$(echo "$matrix" | jq -c .)
+          echo "matrix=$matrix_compact" >> "$GITHUB_OUTPUT"
+          echo "count=$count" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: prepare
+    if: needs.prepare.outputs.count != '0'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute image tags
+        id: tagmeta
+        shell: bash
+        run: |
+          set -euo pipefail
+          short_sha="${GITHUB_SHA::12}"
+          ts="$(date -u +%Y%m%d-%H%M%S)"
+          echo "sha_tag=sha-${short_sha}" >> "$GITHUB_OUTPUT"
+          echo "immutable_tag=${ts}-r${GITHUB_RUN_ID}-a${GITHUB_RUN_ATTEMPT}-${short_sha}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: true
+          provenance: false
+          tags: |
+            ghcr.io/project-tick-infra/images/${{ matrix.target_name }}:${{ matrix.target_tag }}
+            ghcr.io/project-tick-infra/images/${{ matrix.target_name }}:${{ steps.tagmeta.outputs.sha_tag }}
+            ghcr.io/project-tick-infra/images/${{ matrix.target_name }}:${{ steps.tagmeta.outputs.immutable_tag }}
+          build-args: |
+            PACKAGES=${{ matrix.packages }}
+            CUSTOM_INSTALL=${{ matrix.custom_install }}
+            UPDATE_CMD=${{ matrix.update_cmd }}
+            CLEAN_CMD=${{ matrix.clean_cmd }}
