@@ -1,0 +1,11 @@
+.git/
+.idea/
+
+caches/
+.idea/
+__pycache__/
+public/
+
+launcher/
+upstream/
+config/
