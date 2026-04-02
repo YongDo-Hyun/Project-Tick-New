@@ -1,0 +1,16 @@
+name: "uvim: Check Links"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * 0'
+
+jobs:
+  lychee:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Run Lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --verbose --config uvim/ci/lychee.toml uvim/

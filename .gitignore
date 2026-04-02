@@ -54,3 +54,7 @@ Desktop.ini
 
 # Dependency directories
 node_modules/
+
+
+#Ignore vscode AI rules
+.github/instructions/codacy.instructions.md

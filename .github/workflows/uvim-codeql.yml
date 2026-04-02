@@ -1,0 +1,49 @@
+name: "uvim: CodeQL"
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'uvim/**'
+  pull_request:
+    branches: [master]
+    paths:
+      - 'uvim/**'
+  schedule:
+    - cron: '0 18 * * 1'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    permissions:
+      contents: read
+      security-events: write
+
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['cpp', 'python']
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v4
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v4
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v4
