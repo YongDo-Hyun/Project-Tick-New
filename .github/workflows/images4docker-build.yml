@@ -80,6 +80,6 @@ jobs:
           push: true
           provenance: false
           tags: |
-            ghcr.io/${{ github.repository_owner }}/images/${{ matrix.name }}:latest
-            ghcr.io/${{ github.repository_owner }}/images/${{ matrix.name }}:${{ steps.tagmeta.outputs.sha_tag }}
-            ghcr.io/${{ github.repository_owner }}/images/${{ matrix.name }}:${{ steps.tagmeta.outputs.immutable_tag }}
+            ghcr.io/project-tick/project-tick/${{ matrix.name }}:latest
+            ghcr.io/project-tick/project-tick/${{ matrix.name }}:${{ steps.tagmeta.outputs.sha_tag }}
+            ghcr.io/project-tick/project-tick/${{ matrix.name }}:${{ steps.tagmeta.outputs.immutable_tag }}
