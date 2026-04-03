@@ -1,4 +1,4 @@
-README.txt for version 9.2 of MNV: MNV is not Vim.
+README.txt for version 10.0 of MNV: MNV is not Vim.
 
 
 WHAT IS MNV?

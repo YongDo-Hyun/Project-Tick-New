@@ -1,4 +1,4 @@
-README_bindos.txt for version 9.2 of MNV: MNV is not Vim.
+README_bindos.txt for version 10.0 of MNV: MNV is not Vim.
 
 See "README.txt" for general information about MNV.
 See "README_dos.txt" for installation instructions for MS-DOS and MS-Windows.

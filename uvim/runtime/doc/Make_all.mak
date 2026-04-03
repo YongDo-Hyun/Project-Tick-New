@@ -46,6 +46,7 @@ DOCS = \
 	index.txt \
 	insert.txt \
 	intro.txt \
+	license.txt \
 	map.txt \
 	mbyte.txt \
 	message.txt \
@@ -80,6 +81,7 @@ DOCS = \
 	pi_zip.txt \
 	popup.txt \
 	print.txt \
+	projecttick.txt \
 	quickfix.txt \
 	quickref.txt \
 	quotes.txt \
@@ -91,7 +93,6 @@ DOCS = \
 	scroll.txt \
 	sign.txt \
 	spell.txt \
-	sponsor.txt \
 	starting.txt \
 	syntax.txt \
 	tabpage.txt \
@@ -102,7 +103,6 @@ DOCS = \
 	textprop.txt \
 	tips.txt \
 	todo.txt \
-	uganda.txt \
 	undo.txt \
 	userfunc.txt \
 	usr_01.txt \
@@ -148,6 +148,7 @@ DOCS = \
 	version7.txt \
 	version8.txt \
 	version9.txt \
+	version10.txt \
 	vi_diff.txt \
 	mnv9.txt \
 	mnv9class.txt \
@@ -202,6 +203,7 @@ HTMLS = \
 	index.html \
 	insert.html \
 	intro.html \
+	license.html \
 	map.html \
 	mbyte.html \
 	message.html \
@@ -236,6 +238,7 @@ HTMLS = \
 	pi_zip.html \
 	popup.html \
 	print.html \
+	projecttick.html \
 	quickfix.html \
 	quickref.html \
 	quotes.html \
@@ -247,7 +250,6 @@ HTMLS = \
 	scroll.html \
 	sign.html \
 	spell.html \
-	sponsor.html \
 	starting.html \
 	syntax.html \
 	tabpage.html \
@@ -258,7 +260,6 @@ HTMLS = \
 	textprop.html \
 	tips.html \
 	todo.html \
-	uganda.html \
 	undo.html \
 	userfunc.html \
 	usr_01.html \
@@ -304,6 +305,7 @@ HTMLS = \
 	version7.html \
 	version8.html \
 	version9.html \
+	version10.html \
 	vi_diff.html \
 	vietnamese.html \
 	mnvindex.html \

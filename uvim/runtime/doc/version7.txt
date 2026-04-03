@@ -1,4 +1,4 @@
-*version7.txt*	For MNV version 9.2.  Last change: 2026 Feb 14
+*version7.txt*	For MNV version 10.0.  Last change: 2026 Feb 14
 
 
 		  MNV REFERENCE MANUAL	  by Bram Moolenaar
@@ -10434,7 +10434,7 @@ Solution:   Adjust the MingW makefiles. (Jon Maken)
 Files:	    src/Make_ming.mak, src/GmnvExt/Make_ming.mak
 
 Patch 7.3.013
-Problem:    Dynamic loading with Ruby doesn't work for 1.9.2.
+Problem:    Dynamic loading with Ruby doesn't work for 1.10.0.
 Solution:   Handle rb_str2cstr differently.  Also support dynamic loading on
 	    Unix. (Jon Maken)
 Files:	    src/if_ruby.c

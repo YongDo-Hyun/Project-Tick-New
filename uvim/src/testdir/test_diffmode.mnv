@@ -1871,10 +1871,7 @@ endfunc
 func Test_diff_manipulations()
   set diff
   split 0
-  sil! norm R
-doobdeuR
-doobdeuR
-doobdeu
+  sil! norm RdoobdeuRdoobdeuRdoobdeu
 
   set nodiff
   %bwipe!
@@ -2123,9 +2120,9 @@ func Test_diffexpr_with_diff_func()
   END
   call writefile(lines, 'XsetupDiffFunc.mnv', 'D')
 
-  call writefilMNV'zero', 'one', 'two', 'three'], 'Xdifffunc1.txt', 'D')
+  call writefile(['zero', 'one', 'two', 'three'], 'Xdifffunc1.txt', 'D')
   call writefile(['one', 'twox', 'three', 'four'], 'Xdifffunc2.txt', 'D')
-MNV
+
   let buf = RunMNVInTerminal('-S XsetupDiffFunc.mnv', {'rows': 12})
   call VerifyScreenDump(buf, 'Test_difffunc_diffexpr_1', {})
   call StopMNVInTerminal(buf)
@@ -2232,7 +2229,7 @@ func Test_diff_overlapped_diff_blocks_will_be_merged()
       endif
     endfunc
   END
-  call writefilMNVines, 'XdiffSetup', 'D')
+  call writefile(lines, 'XdiffSetup', 'D')
 
   call WriteDiffFiles(0, [], [])
   let buf = RunMNVInTerminal('-d -S XdiffSetup Xdifile1 Xdifile2', {})
@@ -2259,11 +2256,11 @@ func Test_diff_overlapped_diff_blocks_will_be_merged()
   call writefile(["x", "x", "c"], "Xdinew1")
   call writefile(["1c1", "1a2"], "Xdiout1")
   call term_sendkeys(buf, ":set diffexpr=DiffExprStub()\<CR>:")
-  call VeriMNVoth(buf, "Test_diff_overlapped_2.03", "")
+  call VerifyBoth(buf, "Test_diff_overlapped_2.03", "")
   call term_sendkeys(buf, ":set diffexpr&\<CR>:")
 
   call StopMNVInTerminal(buf)
-  wincmd cMNV
+  wincmd c
 
   call WriteDiffFiles3(0, [], [], [])
   let buf = RunMNVInTerminal('-d -S XdiffSetup Xdifile1 Xdifile2 Xdifile3', {})
@@ -2439,7 +2436,7 @@ func Test_diff_overlapped_diff_blocks_will_be_merged()
 
   " File 3 has 2 overlaps. An add and another add. First overlap's expansion hits
   " the 2nd one. Make sure we adjust the diff block to have more lines.
-  call WritMNVffFiles3(buf, ["foo", "a", "b", "c", "d", "bar"], ["foo", "w", "x", "y", "z", "u", "bar"], ["foo", "1", "a", "b", "3", "4", "d", "bar"])
+  call WriteDiffFiles3(buf, ["foo", "a", "b", "c", "d", "bar"], ["foo", "w", "x", "y", "z", "u", "bar"], ["foo", "1", "a", "b", "3", "4", "d", "bar"])
   call VerifyBoth(buf, "Test_diff_overlapped_3.44", "")
 
   call StopMNVInTerminal(buf)
@@ -2455,7 +2452,7 @@ func Test_diff_topline_noscroll()
     call setline(1, range(1,10) + range(50,60))
     windo diffthis
     norm! G
-    exe "norm! MNV<C-y>"
+    exe "norm! 30\<C-y>"
   END
   call writefile(content, 'Xcontent', 'D')
   let buf = RunMNVInTerminal('-S Xcontent', {'rows': 20})
@@ -2466,7 +2463,7 @@ func Test_diff_topline_noscroll()
   call term_sendkeys(buf, "\<C-W>p")
   call term_wait(buf)
   call VerifyScreenDump(buf, 'Test_diff_topline_3', {})
-  call termMNVndkeys(buf, "\<C-W>p")
+  call term_sendkeys(buf, "\<C-W>p")
   call term_wait(buf)
   call VerifyScreenDump(buf, 'Test_diff_topline_4', {})
   call StopMNVInTerminal(buf)
@@ -2474,7 +2471,7 @@ endfunc
 
 " Test inline highlighting which shows what's different within each diff block
 func Test_diff_inline()
-  CheckScreenduMNV
+  CheckScreendump
 
   call WriteDiffFiles(0, [], [])
   let buf = RunMNVInTerminal('-d Xdifile1 Xdifile2', {})
@@ -2589,14 +2586,14 @@ func Test_diff_inline()
   call VerifyInternal(buf, "Test_diff_inline_multiline_07", " diffopt+=inline:char")
   call VerifyInternal(buf, "Test_diff_inline_multiline_08", " diffopt+=inline:char,iwhite")
   call VerifyInternal(buf, "Test_diff_inline_multiline_09", " diffopt+=inline:char,iwhiteeol")
-  call VeriMNVnternal(buf, "Test_diff_inline_multiline_10", " diffopt+=inline:char,iwhiteall")
+  call VerifyInternal(buf, "Test_diff_inline_multiline_10", " diffopt+=inline:char,iwhiteall")
   call term_sendkeys(buf, ":windo set nolist\<CR>")
 
   call StopMNVInTerminal(buf)
 endfunc
 
 func Test_diff_inline_multibuffer()
-  CheckScreenduMNV
+  CheckScreendump
 
   call WriteDiffFiles3(0, [], [], [])
   let buf = RunMNVInTerminal('-d Xdifile1 Xdifile2 Xdifile3', {})
@@ -2643,7 +2640,7 @@ func Test_diff_inline_multibuffer()
   call VerifyInternal(buf, "Test_diff_inline_multibuffer_06", " diffopt+=inline:char")
   call term_sendkeys(buf, ":diffoff\<CR>")
   call VerifyInternal(buf, "Test_diff_inline_multibuffer_07", " diffopt+=inline:char")
-  call termMNVndkeys(buf, ":diffthis\<CR>")
+  call term_sendkeys(buf, ":diffthis\<CR>")
   call VerifyInternal(buf, "Test_diff_inline_multibuffer_06", " diffopt+=inline:char")
 
   call StopMNVInTerminal(buf)
@@ -2656,10 +2653,10 @@ func Test_diff_inline_multibuffer_empty_block()
 
   call writefile(['anchor1', '1234567890abcde', 'anchor2'], 'Xdifile1')
   call writefile(['anchor1', '1234567--0abc-e', 'anchor2'], 'Xdifile2')
-  call writefilMNV'anchor1', 'anchor2'], 'Xdifile3')
+  call writefile(['anchor1', 'anchor2'], 'Xdifile3')
   call writefile(['anchor1', '1???????90abcd?', 'anchor2'], 'Xdifile4')
 
-  let buf =MNVnMNVInTerminal('-d Xdifile1 Xdifile2 Xdifile3 Xdifile4', {})
+  let buf = RunMNVInTerminal('-d Xdifile1 Xdifile2 Xdifile3 Xdifile4', {})
   call VerifyInternal(buf, "Test_diff_inline_multibuffer_empty_block_01", " diffopt+=inline:char")
 
   call StopMNVInTerminal(buf)
@@ -2667,7 +2664,7 @@ endfunc
 
 func Test_diffget_diffput_linematch()
   CheckScreendump
-  call delete('MNVifile1.swp')
+  call delete('.Xdifile1.swp')
   call delete('.Xdifile2.swp')
   call WriteDiffFiles(0, [], [])
   let buf = RunMNVInTerminal('-d Xdifile1 Xdifile2', {})
@@ -2866,7 +2863,7 @@ func Test_diffget_diffput_linematch()
   " put from window 2 using dp line 17
   call term_sendkeys(buf, "2\<c-w>w")
   call term_sendkeys(buf, "17gg")
-  call termMNVndkeys(buf, ":diffput\<CR>")
+  call term_sendkeys(buf, ":diffput\<CR>")
   call VerifyScreenDump(buf, 'Test_diff_get_put_linematch_19', {})
   " clean up
   call StopMNVInTerminal(buf)
@@ -2874,7 +2871,7 @@ endfunc
 
 func Test_linematch_diff()
   CheckScreendump
-  call delete('MNVifile1.swp')
+  call delete('.Xdifile1.swp')
   call delete('.Xdifile2.swp')
   call WriteDiffFiles(0, [], [])
   let buf = RunMNVInTerminal('-d Xdifile1 Xdifile2', {})
@@ -2894,7 +2891,7 @@ func Test_linematch_diff()
   " test that filler is always implicitly set by linematch
   call term_sendkeys(buf, ":set diffopt-=filler\<CR>")
   call term_sendkeys(buf, ":\<CR>") " clear cmdline
-  call VeriMNVcreenDump(buf, 'Test_linematch_diff1', {})
+  call VerifyScreenDump(buf, 'Test_linematch_diff1', {})
 
   " clean up
   call StopMNVInTerminal(buf)
@@ -2902,7 +2899,7 @@ endfunc
 
 func Test_linematch_diff_iwhite()
   CheckScreendump
-  call delete('MNVifile1.swp')
+  call delete('.Xdifile1.swp')
   call delete('.Xdifile2.swp')
   call WriteDiffFiles(0, [], [])
   let buf = RunMNVInTerminal('-d Xdifile1 Xdifile2', {})
@@ -2921,7 +2918,7 @@ func Test_linematch_diff_iwhite()
       \ '  // }',
       \ '}'])
   call VerifyScreenDump(buf, 'Test_linematch_diff_iwhite1', {})
-  call termMNVndkeys(buf, ":set diffopt+=iwhiteall\<CR>")
+  call term_sendkeys(buf, ":set diffopt+=iwhiteall\<CR>")
   call VerifyScreenDump(buf, 'Test_linematch_diff_iwhite2', {})
   " clean up
   call StopMNVInTerminal(buf)
@@ -2929,7 +2926,7 @@ endfunc
 
 func Test_linematch_diff_grouping()
   CheckScreendump
-  call delete('MNVifile1.swp')
+  call delete('.Xdifile1.swp')
   call delete('.Xdifile2.swp')
   call WriteDiffFiles(0, [], [])
   let buf = RunMNVInTerminal('-d Xdifile1 Xdifile2', {})
@@ -2959,7 +2956,7 @@ func Test_linematch_diff_grouping()
       \ '?A',
       \ '?B',
       \ '?C',
-      \ '?CMNV
+      \ '?C'])
   call VerifyScreenDump(buf, 'Test_linematch_diff_grouping2', {})
   " clean up
   call StopMNVInTerminal(buf)
@@ -2967,7 +2964,7 @@ endfunc
 
 func Test_linematch_diff_scroll()
   CheckScreendump
-  call delete('MNVifile1.swp')
+  call delete('.Xdifile1.swp')
   call delete('.Xdifile2.swp')
   call WriteDiffFiles(0, [], [])
   let buf = RunMNVInTerminal('-d Xdifile1 Xdifile2', {})
@@ -2991,7 +2988,7 @@ func Test_linematch_diff_scroll()
   call VerifyScreenDump(buf, 'Test_linematch_diff_grouping_scroll0', {})
   call term_sendkeys(buf, "3\<c-e>")
   call VerifyScreenDump(buf, 'Test_linematch_diff_grouping_scroll1', {})
-  call termMNVndkeys(buf, "3\<c-e>")
+  call term_sendkeys(buf, "3\<c-e>")
   call VerifyScreenDump(buf, 'Test_linematch_diff_grouping_scroll2', {})
   " clean up
   call StopMNVInTerminal(buf)
@@ -2999,7 +2996,7 @@ endfunc
 
 func Test_linematch_line_limit_exceeded()
   CheckScreendump
-  call delete('MNVifile1.swp')
+  call delete('.Xdifile1.swp')
   call delete('.Xdifile2.swp')
   call WriteDiffFiles(0, [], [])
   let buf = RunMNVInTerminal('-d Xdifile1 Xdifile2', {})
@@ -3041,7 +3038,7 @@ func Test_linematch_line_limit_exceeded()
   call VerifyScreenDump(buf, 'Test_linematch_line_limit_exceeded1', {})
   " after increasing the count to 30, the limit is not exceeded, and the
   " alignment algorithm will run on the largest diff block here
-  call termMNVndkeys(buf, ":set diffopt+=linematch:30\<CR>")
+  call term_sendkeys(buf, ":set diffopt+=linematch:30\<CR>")
   call VerifyScreenDump(buf, 'Test_linematch_line_limit_exceeded2', {})
   " clean up
   call StopMNVInTerminal(buf)
@@ -3050,7 +3047,7 @@ endfunc
 func Test_linematch_3diffs()
   CheckScreendump
   call delete('.Xdifile1.swp')
-  call delete('MNVifile2.swp')
+  call delete('.Xdifile2.swp')
   call delete('.Xdifile3.swp')
   call WriteDiffFiles3(0, [], [], [])
   let buf = RunMNVInTerminal('-d Xdifile1 Xdifile2 Xdifile3', {})
@@ -3079,7 +3076,7 @@ func Test_linematch_3diffs()
         \ "  common line",
         \ "      BBB",
         \ "      BBB",
-        \ "MNV   BBB"])
+        \ "      BBB"])
   call VerifyScreenDump(buf, 'Test_linematch_3diffs1', {})
   " clean up
   call StopMNVInTerminal(buf)
@@ -3099,11 +3096,11 @@ func Test_linematch_3diffs_sanity_check()
   END
   call writefile(lines, 'Xlinematch_3diffs.mnv', 'D')
   call writefile(['abcd', 'def', 'hij'], 'Xfile_linematch1', 'D')
-  call writefilMNV'defq', 'hijk', 'nopq'], 'Xfile_linematch2', 'D')
+  call writefile(['defq', 'hijk', 'nopq'], 'Xfile_linematch2', 'D')
   call writefile(['hijklm', 'nopqr', 'stuv'], 'Xfile_linematch3', 'D')
   call WriteDiffFiles3(0, [], [], [])
   let buf = RunMNVInTerminal('-d -S Xlinematch_3diffs.mnv Xfile_linematch1 Xfile_linematch2 Xfile_linematch3', {})
-  call VeriMNVcreenDump(buf, 'Test_linematch_3diffs2', {})
+  call VerifyScreenDump(buf, 'Test_linematch_3diffs2', {})
 
   " clean up
   call StopMNVInTerminal(buf)
@@ -3115,7 +3112,7 @@ func Test_diffanchors()
       \ ["anchorA1", "1", "2", "3",
       \  "100", "101", "102", "anchorB", "103", "104", "105"],
       \ ["100", "101", "102", "anchorB", "103", "104", "105",
-      \  "anchoMNV", "1", "2", "3"],
+      \  "anchorA2", "1", "2", "3"],
       \ ["100", "anchorB", "103",
       \  "anchorA3", "1", "2", "3"])
   let buf = RunMNVInTerminal('-d Xdifile1 Xdifile2 Xdifile3', {})
@@ -3167,7 +3164,7 @@ func Test_diffanchors()
   call VerifyInternal(buf, "Test_diff_anchors_02", " diffopt+=anchor")
 
   " Test multiple diff anchors on the same line in file 1.
-  call term_sendkeys(buf, ":1wincmd w\<CR>:setlocal dia=1,1\<CMNV)
+  call term_sendkeys(buf, ":1wincmd w\<CR>:setlocal dia=1,1\<CR>")
   call VerifyInternal(buf, "Test_diff_anchors_04", " diffopt+=anchor")
 
   " Test that if one file has fewer diff anchors than others. MNV should only
@@ -3187,7 +3184,7 @@ func Test_diffanchors()
 
   " Intentionally set an invalid anchor with wrong line number. Should fall
   " back to treat it as if no anchors are used at all.
-  call termMNVndkeys(buf, ":1wincmd w\<CR>:setlocal dia=1,10,8,2,1000 | silent! diffupdate\<CR>:")
+  call term_sendkeys(buf, ":1wincmd w\<CR>:setlocal dia=1,10,8,2,1000 | silent! diffupdate\<CR>:")
   call VerifyScreenDump(buf, "Test_diff_anchors_00", {})
 
   call StopMNVInTerminal(buf)
@@ -3199,7 +3196,7 @@ func Test_diffanchors_scrollbind_topline()
   CheckScreendump
 
   " Simple overlapped line anchored to be adjacent to each other
-  call WriteDifMNVles(0,
+  call WriteDiffFiles(0,
       \ ["anchor1", "diff1a", "anchor2"],
       \ ["anchor1", "diff2a", "anchor2"])
   let buf = RunMNVInTerminal('-d Xdifile1 Xdifile2', {})
@@ -3220,7 +3217,7 @@ func Test_diffanchors_scrollbind_topline()
   call VerifyInternal(buf, "Test_diff_anchors_scrollbind_topline_05", " diffopt+=anchor diffopt-=filler")
   call term_sendkeys(buf, "\<Esc>\<C-E>")
   call VerifyScreenDump(buf, "Test_diff_anchors_scrollbind_topline_06", {})
-  call termMNVndkeys(buf, "\<C-E>")
+  call term_sendkeys(buf, "\<C-E>")
   call VerifyScreenDump(buf, "Test_diff_anchors_scrollbind_topline_07", {})
 
   call StopMNVInTerminal(buf)
@@ -3231,7 +3228,7 @@ func Test_diffanchors_scrollbind_topline2()
 
   " More-complicated case with 3 files and multiple overlapping diff blocks
   call WriteDiffFiles3(0,
-      \ ["anchoMNV],
+      \ ["anchor1"],
       \ ["diff2a", "diff2b", "diff2c", "diff2d", "anchor2"],
       \ ["diff3a", "diff3c", "diff3d", "anchor3", "diff3e"])
   let buf = RunMNVInTerminal('-d Xdifile1 Xdifile2 Xdifile3', {})
@@ -3260,7 +3257,7 @@ func Test_diffanchors_scrollbind_topline2()
   call VerifyScreenDump(buf, "Test_diff_anchors_scrollbind_topline_15", {})
   call term_sendkeys(buf, "\<C-E>")
   call VerifyScreenDump(buf, "Test_diff_anchors_scrollbind_topline_16", {})
-  call termMNVndkeys(buf, "\<C-E>")
+  call term_sendkeys(buf, "\<C-E>")
   call VerifyScreenDump(buf, "Test_diff_anchors_scrollbind_topline_17", {})
 
   call StopMNVInTerminal(buf)
@@ -3563,16 +3560,16 @@ func Test_diff_add_prop_in_autocmd()
     autocmd OptionSet diff call prop_add(1, 1, #{type: 'myprop', length: 100})
     set diffexpr=MyDiff()
   END
-  call writefilMNVines, 'Xtest_diff_add_prop_in_autocmd', 'D')
+  call writefile(lines, 'Xtest_diff_add_prop_in_autocmd', 'D')
   call writefile(['foo', 'bar', 'baz'], 'Xdiffsplit_file', 'D')
 
   let buf = RunMNVInTerminal('-S Xtest_diff_add_prop_in_autocmd', {})
-  call termMNVndkeys(buf, ":diffsplit Xdiffsplit_file\<CR>")
+  call term_sendkeys(buf, ":diffsplit Xdiffsplit_file\<CR>")
   call VerifyScreenDump(buf, 'Test_diff_add_prop_in_autocmd_01', {})
 
   call StopMNVInTerminal(buf)
 endfunc
-MNV
+
 " this was causing a use-after-free by calling winframe_remove() recursively
 func Test_diffexpr_wipe_buffers()
   CheckRunMNVInTerminal
@@ -3595,11 +3592,11 @@ func Test_diffexpr_wipe_buffers()
     wincm w
     hid
     %bw!
-  ENDMNV
+  END
   call writefile(lines, 'Xtest_diffexpr_wipe', 'D')
 
   let buf = RunMNVInTerminal('Xtest_diffexpr_wipe', {})
-  call termMNVndkeys(buf, ":so\<CR>")
+  call term_sendkeys(buf, ":so\<CR>")
   call WaitForAssert({-> assert_match('4 buffers wiped out', term_getline(buf, 20))})
 
   call StopMNVInTerminal(buf)
@@ -3614,7 +3611,7 @@ func Test_diffput_to_empty_buf()
     windo diffthis
     windo set cursorline nofoldenable
     wincmd t
-  ENDMNV
+  END
   call writefile(lines, 'Xtest_diffput_to_empty_buf', 'D')
 
   let buf = RunMNVInTerminal('-S Xtest_diffput_to_empty_buf', {})
@@ -3625,7 +3622,7 @@ func Test_diffput_to_empty_buf()
   call VerifyScreenDump(buf, 'Test_diffput_to_empty_buf_02', {})
   call term_sendkeys(buf, ":redraw!\<CR>")
   call VerifyScreenDump(buf, 'Test_diffput_to_empty_buf_02', {})
-  call termMNVndkeys(buf, 'j')
+  call term_sendkeys(buf, 'j')
   call VerifyScreenDump(buf, 'Test_diffput_to_empty_buf_03', {})
 
   call StopMNVInTerminal(buf)

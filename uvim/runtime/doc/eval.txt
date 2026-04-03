@@ -1,4 +1,4 @@
-*eval.txt*	For MNV version 9.2.  Last change: 2026 Feb 14
+*eval.txt*	For MNV version 10.0.  Last change: 2026 Feb 14
 
 
 		  MNV REFERENCE MANUAL	  by Bram Moolenaar
@@ -5207,7 +5207,7 @@ script authors.  Currently, it only includes very few functions, but it may
 grow over time.
 
 The functions are available as |MNV9-script| as well as using legacy MNV
-script (to be used for non MNV 9.0 versions and Neomnv).
+script (to be used for non MNV 10.0 versions and NeoVim).
 
 							*dist#mnv* *dist#mnv9*
 The functions make use of the autoloaded prefix "dist#mnv" (for legacy MNV

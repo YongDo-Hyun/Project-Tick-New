@@ -1,4 +1,4 @@
-README_dos.txt for version 9.2 of MNV: MNV is not Vim.
+README_dos.txt for version 10.0 of MNV: MNV is not Vim.
 
 This file explains the installation of MNV on MS-Windows systems.
 See "README.txt" for general information about MNV.
@@ -89,7 +89,7 @@ Remarks:
   won't show a menubar.  Then you need to set the $MNV environment variable to
   point to the top directory of your MNV files.  Example:
     set MNV=C:\editors\mnv
-  MNV version 9.2 will look for your mnvrc file in $MNV, and for the runtime
+  MNV version 10.0 will look for your mnvrc file in $MNV, and for the runtime
   files in $MNV/mnv92.  See ":help $MNV" for more information.
 
 - To avoid confusion between distributed files of different versions and your
@@ -101,10 +101,10 @@ Remarks:
 	C:\mnv\mnvfiles\ftplugin\*.mnv	Filetype plugins
 	C:\mnv\...			Other files you made.
   Distributed files:
-	C:\mnv\mnv92\mnv.exe		The MNV version 9.2 executable.
-	C:\mnv\mnv92\doc\*.txt		The version 9.2 documentation files.
-	C:\mnv\mnv92\bugreport.mnv	A MNV version 9.2 script.
-	C:\mnv\mnv92\...		Other version 9.2 distributed files.
+	C:\mnv\mnv92\mnv.exe		The MNV version 10.0 executable.
+	C:\mnv\mnv92\doc\*.txt		The version 10.0 documentation files.
+	C:\mnv\mnv92\bugreport.mnv	A MNV version 10.0 script.
+	C:\mnv\mnv92\...		Other version 10.0 distributed files.
   In this case the $MNV environment variable would be set like this:
 	set MNV=C:\mnv
   Then $MNVRUNTIME will automatically be set to "$MNV\mnv92".  Don't add

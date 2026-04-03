@@ -387,8 +387,8 @@ func Run_regexp_multibyte_magic()
     b ã¡ã‚«ãƒ¨ã¯
     c x Â¬â‚¬x
     d å¤©ä½¿x
-    e ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½y
-    f ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½z
+    e ü’…™¸y
+    f ü’Š¯z
     g aå•·bb
     j 0123â¤x
     k combinations

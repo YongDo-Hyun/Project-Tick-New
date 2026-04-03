@@ -4,7 +4,7 @@
 # Maintainer:   Zoltan Arpadffy <zoltan.arpadffy@gmail.com>
 # Last change:  2025-07-04  Steven M. Schweda <sms@antinode.info>
 #
-# This script has been tested on VMS 6.2 to 9.2 on VAX, ALPHA, IA64 and X86_64
+# This script has been tested on VMS 6.2 to 10.0 on VAX, ALPHA, IA64 and X86_64
 # with MMS and MMK
 #
 # The following could be built:

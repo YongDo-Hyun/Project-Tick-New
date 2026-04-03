@@ -3101,6 +3101,19 @@ parse_command_modifiers(
 			cmod->cmod_split |= WSP_ABOVE;
 			continue;
 
+	    case 'm':	if (checkforcmd_noparen(&eap->cmd, "mnv9cmd", 4))
+			{
+			    if (ends_excmd2(p, eap->cmd))
+			    {
+				*errormsg =
+				      _(e_mnv9cmd_must_be_followed_by_command);
+				return FAIL;
+			    }
+			    cmod->cmod_flags |= CMOD_MNV9CMD;
+			    continue;
+			}
+			break;
+
 	    case 'n':	if (checkforcmd_noparen(&eap->cmd, "noautocmd", 3))
 			{
 			    cmod->cmod_flags |= CMOD_NOAUTOCMD;
@@ -3167,17 +3180,6 @@ parse_command_modifiers(
 	    case 'v':	if (checkforcmd_noparen(&eap->cmd, "vertical", 4))
 			{
 			    cmod->cmod_split |= WSP_VERT;
-			    continue;
-			}
-			if (checkforcmd_noparen(&eap->cmd, "mnv9cmd", 4))
-			{
-			    if (ends_excmd2(p, eap->cmd))
-			    {
-				*errormsg =
-				      _(e_mnv9cmd_must_be_followed_by_command);
-				return FAIL;
-			    }
-			    cmod->cmod_flags |= CMOD_MNV9CMD;
 			    continue;
 			}
 			if (!checkforcmd_noparen(&p, "verbose", 4))

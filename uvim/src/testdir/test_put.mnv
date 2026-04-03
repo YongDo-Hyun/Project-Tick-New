@@ -229,9 +229,7 @@ func Test_put_visual_mode()
   set selection=exclusive
   exe "norm o\t"
   m0
-  sil! norm 
-p
-p
+  sil! norm pp
 
   bwipe!
   set selection&
@@ -248,7 +246,7 @@ func Test_put_visual_block_mode()
   set ve=
 endfunc
 
-func Test_MNV_other_window()
+func Test_put_other_window()
   CheckScreendump
   CheckRunMNVInTerminal
 
@@ -259,16 +257,16 @@ func Test_MNV_other_window()
       put ='  two more text'
       put ='  three more text'
       put ='  four more text'
-  ENDMNV
+  END
   call writefile(lines, 'Xtest_put_other', 'D')
   let buf = RunMNVInTerminal('-S Xtest_put_other', #{rows: 10})
 
-  call VeriMNVcreenDump(buf, 'Test_put_other_window_1', {})
+  call VerifyScreenDump(buf, 'Test_put_other_window_1', {})
 
   call StopMNVInTerminal(buf)
 endfunc
 
-func Test_MNV_in_last_displayed_line()
+func Test_put_in_last_displayed_line()
   CheckScreendump
   CheckRunMNVInTerminal
 
@@ -278,11 +276,11 @@ func Test_MNV_in_last_displayed_line()
       @a = 'x'->repeat(&columns * 2 - 2)
       range(&lines)->setline(1)
       feedkeys('G"ap')
-  ENDMNV
+  END
   call writefile(lines, 'Xtest_put_last_line', 'D')
   let buf = RunMNVInTerminal('-S Xtest_put_last_line', #{rows: 10})
 
-  call VeriMNVcreenDump(buf, 'Test_put_in_last_displayed_line_1', {})
+  call VerifyScreenDump(buf, 'Test_put_in_last_displayed_line_1', {})
 
   call StopMNVInTerminal(buf)
 endfunc

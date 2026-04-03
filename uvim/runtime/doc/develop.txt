@@ -1,4 +1,4 @@
-*develop.txt*	For MNV version 9.2.  Last change: 2026 Feb 14
+*develop.txt*	For MNV version 10.0.  Last change: 2026 Feb 14
 
 
 		  MNV REFERENCE MANUAL	  by Bram Moolenaar
@@ -726,7 +726,7 @@ OK:	    do
 ==============================================================================
 5. Policy	*design-policy* *new-features* *deprecated-features*
 
-The time between either a new minor (e.g. 9.2.0) or major (e.g. 10.0) version
+The time between either a new minor (e.g. 10.0.0) or major (e.g. 10.0) version
 is released is called a development cycle.  Within the development cycle each
 single change to the C core will receive a new increased human-readable patch
 number in order to reference each specific patch release.  A typical

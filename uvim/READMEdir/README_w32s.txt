@@ -1,4 +1,4 @@
-README_w32s.txt for version 9.2 of MNV: MNV is not Vim.
+README_w32s.txt for version 10.0 of MNV: MNV is not Vim.
 
 This file used to explain the installation of MNV on MS-Windows 3.1 and 3.11
 systems.  However, support for MS-Windows 3.1 and 3.11 has been removed in

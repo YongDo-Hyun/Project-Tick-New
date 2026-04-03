@@ -16,7 +16,7 @@ HKCR,CLSID\{51EEE242-AD87-11d3-9C1E-0090278BBD99}\InProcServer32
 HKCR,*\shellex\ContextMenuHandlers\gmnv
 HKLM,"SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved",{51EEE242-AD87-11d3-9C1E-0090278BBD99}
 HKLM,Software\MNV\Gmnv
-HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\MNV 9.2"
+HKLM,"Software\Microsoft\Windows\CurrentVersion\Uninstall\MNV 10.0"
 
 [Strings]
 ThisDll="gmnvext.dll"

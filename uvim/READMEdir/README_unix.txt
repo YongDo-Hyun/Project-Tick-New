@@ -1,4 +1,4 @@
-README_unix.txt for version 9.2 of MNV: MNV is not Vim.
+README_unix.txt for version 10.0 of MNV: MNV is not Vim.
 
 This file explains the installation of MNV on Unix systems.
 See "README.txt" for general information about MNV.

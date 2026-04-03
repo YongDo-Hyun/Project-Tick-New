@@ -1,4 +1,4 @@
-*os_390.txt*	For MNV version 9.2.  Last change: 2026 Feb 14
+*os_390.txt*	For MNV version 10.0.  Last change: 2026 Feb 14
 
 
 		  MNV REFERENCE MANUAL	  by Ralf Schandl

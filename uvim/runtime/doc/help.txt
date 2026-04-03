@@ -1,4 +1,4 @@
-*help.txt*	For MNV version 9.2.  Last change: 2026 Feb 14
+*help.txt*	For MNV version 10.0.  Last change: 2026 Feb 14
 
 			MNV - main help file
 									 k
@@ -40,6 +40,10 @@ MNV stands for MNV is not Vim.  Most of MNV was made by Bram Moolenaar, but only
 through the help of many others.  See |credits|.
 ------------------------------------------------------------------------------
 						*doc-file-list* *Q_ct*
+
+PROJECT TICK:
+|projecttick| Rationale of Project Tick
+
 BASIC:
 |quickref|	Overview of the most common commands you will use
 |tutor|		30-minute interactive course for beginners
@@ -112,6 +116,7 @@ General subjects ~
 |todo.txt|	known problems and desired extensions
 |develop.txt|	development of MNV
 |debug.txt|	debugging MNV itself
+|license.txt| projects license
 
 Basic editing ~
 |starting.txt|	starting MNV, MNV command arguments, initialisation
@@ -209,6 +214,7 @@ Versions ~
 |version7.txt|	Differences between MNV version 6.4 and 7.x
 |version8.txt|	Differences between MNV version 7.4 and 8.x
 |version9.txt|	Differences between MNV version 8.2 and 9.0
+|version10.txt|	Differences between MNV version 10
 						*sys-file-list*
 Remarks about specific systems ~
 |os_390.txt|	OS/390 Unix

@@ -14,14 +14,14 @@ endfunc
 
 func Test_increment_dbcs_1()
   set nrformats+=alpha
-  call setline(1, ["ï¿½R1"])
+  call setline(1, ["ŽR1"])
   exec "norm! 0\<C-A>"
-  call assert_equal(["ï¿½R2"], getline(1, '$'))
+  call assert_equal(["ŽR2"], getline(1, '$'))
   call assert_equal([0, 1, 3, 0], getpos('.'))
 
-  call setline(1, ["ï¿½`ï¿½aï¿½b0xDEï¿½e"])
+  call setline(1, ["‚`‚a‚b0xDE‚e"])
   exec "norm! 0\<C-X>"
-  call assert_equal(["ï¿½`ï¿½aï¿½b0xDDï¿½e"], getline(1, '$'))
+  call assert_equal(["‚`‚a‚b0xDD‚e"], getline(1, '$'))
   call assert_equal([0, 1, 10, 0], getpos('.'))
 endfunc
 

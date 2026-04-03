@@ -16,11 +16,11 @@
 #define MNV_TOSTR(a)			MNV_TOSTR_(a)
 
 // Values that change for a new release.
-#define MNV_VERSION_MAJOR		9
-#define MNV_VERSION_MINOR		2
-#define MNV_VERSION_BUILD		286
-#define MNV_VERSION_BUILD_BCD		0x11e
-#define MNV_VERSION_DATE_ONLY		"2026 Feb 14"
+#define MNV_VERSION_MAJOR		10
+#define MNV_VERSION_MINOR		0
+#define MNV_VERSION_BUILD		287
+#define MNV_VERSION_BUILD_BCD		0x11f
+#define MNV_VERSION_DATE_ONLY		"2026 Apr 3"
 
 // Values based on the above
 #define MNV_VERSION_MAJOR_STR		MNV_TOSTR(MNV_VERSION_MAJOR)

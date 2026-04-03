@@ -1,4 +1,4 @@
-README_extra.txt for version 9.2 of MNV: MNV is not Vim.
+README_extra.txt for version 10.0 of MNV: MNV is not Vim.
 
 These extra files of MNV are for special purposes.  This README explains what
 the files are for.  For general information about MNV, see the "README.txt"

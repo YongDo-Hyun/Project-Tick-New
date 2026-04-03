@@ -1,4 +1,4 @@
-*rileft.txt*	For MNV version 9.2.  Last change: 2026 Feb 14
+*rileft.txt*	For MNV version 10.0.  Last change: 2026 Feb 14
 
 
 		  MNV REFERENCE MANUAL	  by Avner Lottem

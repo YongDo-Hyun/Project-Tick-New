@@ -1,4 +1,4 @@
-*mnv9class.txt*	For MNV version 9.2.  Last change: 2026 Mar 07
+*mnv9class.txt*	For MNV version 10.0.  Last change: 2026 Mar 07
 
 
 		  MNV REFERENCE MANUAL	  by Bram Moolenaar

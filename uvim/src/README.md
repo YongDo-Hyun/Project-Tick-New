@@ -234,4 +234,4 @@ If you would like to help making MNV better, see the
 file.
 
 
-This is `README.md` for version 9.2 of the MNV source code.
+This is `README.md` for version 10.0 of the MNV source code.

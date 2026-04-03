@@ -1,6 +1,6 @@
 " MNV syntax file
 " Informix Structured Query Language (SQL) and Stored Procedure Language (SPL)
-" Language:	SQL, SPL (Informix Dynamic Server 2000 v9.2)
+" Language:	SQL, SPL (Informix Dynamic Server 2000 v10.0)
 " Maintainer:	Dean Hill <dhill@hotmail.com>
 " Last Change:	2004 Aug 30
 

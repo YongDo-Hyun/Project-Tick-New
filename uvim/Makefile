@@ -97,8 +97,8 @@ syntaxtest:
 #    To do all this you need the Unix archive and compiled binaries.
 #    Before creating an archive first delete all backup files, *.orig, etc.
 
-MAJOR = 9
-MINOR = 2
+MAJOR = 10
+MINOR = 0
 
 # CHECKLIST for creating a new version:
 #

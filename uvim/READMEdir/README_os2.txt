@@ -1,4 +1,4 @@
-README_os2.txt for version 9.2 of MNV: MNV is not Vim.
+README_os2.txt for version 10.0 of MNV: MNV is not Vim.
 
 This file used to explain the installation of MNV on OS/2 systems.
 However, support for OS/2 has been removed in patch 7.4.1008.

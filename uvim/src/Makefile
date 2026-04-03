@@ -983,8 +983,8 @@ TOOLS = xxd/xxd$(EXEEXT)
 MAN1DIR = /man1
 
 ### MNV version (adjusted by a script)
-MNVMAJOR = 9
-MNVMINOR = 2
+MNVMAJOR = 10
+MNVMINOR = 0
 
 ### Location of MNV files (should not need to be changed, and  {{{1
 ### some things might not work when they are changed!)

@@ -15,6 +15,6 @@ REGEDIT4
 [HKEY_LOCAL_MACHINE\Software\MNV\Gmnv]
    "path"="gmnv.exe"
 
-[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\MNV 9.2]
-   "DisplayName"="MNV 9.2: Edit with MNV popup menu entry"
+[HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall\MNV 10.0]
+   "DisplayName"="MNV 10.0: Edit with MNV popup menu entry"
    "UninstallString"="uninstall.exe"

@@ -1,4 +1,4 @@
-*change.txt*	For MNV version 9.2.  Last change: 2026 Mar 31
+*change.txt*	For MNV version 10.0.  Last change: 2026 Mar 31
 
 
 		  MNV REFERENCE MANUAL	  by Bram Moolenaar

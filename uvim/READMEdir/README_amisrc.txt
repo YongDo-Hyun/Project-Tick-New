@@ -1,4 +1,4 @@
-README_amisrc.txt for version 9.2 of MNV: MNV is not Vim.
+README_amisrc.txt for version 10.0 of MNV: MNV is not Vim.
 
 See "README.txt" for general information about MNV.
 See "README_ami.txt" for installation instructions for the Amiga.

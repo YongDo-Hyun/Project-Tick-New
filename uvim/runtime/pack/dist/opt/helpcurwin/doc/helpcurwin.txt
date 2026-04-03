@@ -19,7 +19,7 @@ The helpcurwin optional package enables opening help in the current window.
 			applicable help file at the tag {subject}.
 			For example: >
 
-			  :HelpCurwin version9.2
+			  :HelpCurwin version10.0
 <
 			It should otherwise behave like :help {subject}.
 
@@ -35,7 +35,7 @@ for example: >vi
 
 The underlying `:def` function may also be used, for example: >mnv
 
-	:mnv9cmd helpcurwin#Open('version9.2')
+	:mnv9cmd helpcurwin#Open('version10.0')
 <
 This may be useful from other scripts where you want to bring up help on
 {subject} in the current window.

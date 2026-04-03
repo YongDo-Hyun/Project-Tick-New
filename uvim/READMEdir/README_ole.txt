@@ -1,4 +1,4 @@
-README_ole.txt for version 9.2 of MNV: MNV is not Vim.
+README_ole.txt for version 10.0 of MNV: MNV is not Vim.
 
 This archive contains gmnv.exe with OLE interface.
 This version of gmnv.exe can also load a number of interface dynamically (you

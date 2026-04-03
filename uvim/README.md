@@ -156,4 +156,4 @@ Most of MNV was created by Bram Moolenaar `<Bram@mnv.org>`
 Send any other comments, patches, flowers and suggestions to the mnv-dev mailing list:
 	`<mnv-dev@mnv.org>`
 
-This is `README.md` for version 9.2 of MNV: MNV is not Vim.
+This is `README.md` for version 10.0 of MNV: MNV is not Vim.

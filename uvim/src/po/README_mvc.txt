@@ -2,7 +2,7 @@ TRANSLATING MNV MESSAGES
 
 This file explains how to create and maintain po files using a number of
 GnuWin packages.  You will need gettext, libiconv and libexpat.  As of
-January 2024 the versions known to work are gettext 0.14.4, libiconv 1.9.2-1
+January 2024 the versions known to work are gettext 0.14.4, libiconv 1.10.0-1
 and expat 2.5.0.  Gettext and libiconv can be found at:
 
 	http://gnuwin32.sourceforge.net/

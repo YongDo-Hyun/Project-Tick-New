@@ -1,0 +1,60 @@
+*version10.txt*	For MNV version 10.0.  Last change: 2026 Apr 3
+
+
+		  MNV REFERENCE MANUAL	  by Bram Moolenaar
+
+
+				*mnv-10.0* *mnv-10* *version-10.0* *version10.0*
+Welcome to MNV 10! Several years have passed since the previous version.  We
+are no longer Vim.  We've rebranded  Project Tick, making  it more free with
+MNV! This file lists all the  new features and changes  to existing features
+since MNV 10.0. We have  updated  all Vim  references with MNV and  tried to
+comply with the requirements of the VIM license as much  as possible. At the
+same time, since the VIM license is GPL 2+ compliant, we will distribute the
+project under GPL 3+. Because it's more free that way.
+
+Use this command to see the full version and features information of the MNV
+program you are using: >
+	:version
+
+NEW FEATURES					|new-10|
+   MNV script enhancements			|new-mnv-script-10|
+   Command line completion in a popup menu	|new-popup-compl|
+   Updated colorschemes				|new-colorschemes-10|
+   Various new items				|new-items-10|
+
+INCOMPATIBLE CHANGES				|incompatible-10|
+
+IMPROVEMENTS					|improvements-10|
+
+COMPILE TIME CHANGES				|compile-changes-10|
+
+PATCHES						|patches-10|
+
+
+See |vi_diff.txt| for an overview of differences between Vi and MNV 10.0.
+See |version4.txt|, |version5.txt|, |version6.txt|, |version7.txt|,
+|version8.txt| and |version9.txt| for differences between MNV versions.
+
+							*Mehmet Samet Duman*
+MNV version 10.0 is dedicated to Mehmet Samet Duman, who passed away in
+February 2022 when the release was being prepared.  Sven was a long time
+supporter of MNV. He registered the mnv.org domain and created the first MNV
+website.  We will remember him!
+
+==============================================================================
+NEW FEATURES						*new-10*
+
+==============================================================================
+INCOMPATIBLE CHANGES				*incompatible-10*
+
+==============================================================================
+IMPROVEMENTS						*improvements-10*
+
+==============================================================================
+COMPILE TIME CHANGES					*compile-changes-10*
+
+==============================================================================
+PATCHES						*patches-10* *bug-fixes-10*
+
+ mnv:tw=78:ts=8:noet:ft=help:norl:fdm=manual:nofoldenable

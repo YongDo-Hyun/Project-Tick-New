@@ -1,4 +1,4 @@
-README_haiku.txt for version 9.2 of MNV: MNV is not Vim.
+README_haiku.txt for version 10.0 of MNV: MNV is not Vim.
 
 This file explains the installation of MNV on Haiku operating system.
 See "README.txt" for general information about MNV.

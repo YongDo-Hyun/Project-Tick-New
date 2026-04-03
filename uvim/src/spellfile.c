@@ -261,7 +261,7 @@
 #define SAL_COLLAPSE		2
 #define SAL_REM_ACCENTS		4
 
-#define MNVSPELLMAGIC "MNVspell"  // string at start of MNV spell file
+#define MNVSPELLMAGIC "VIMspell"  // string at start of MNV spell file
 #define MNVSPELLMAGICL 8
 #define MNVSPELLVERSION 50
 
