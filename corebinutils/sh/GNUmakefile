@@ -8,7 +8,7 @@ CC ?= cc
 AWK ?= awk
 CPPFLAGS += -D_GNU_SOURCE -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 \
 	-I"$(CURDIR)" -I"$(CURDIR)/build/gen" -I"$(CURDIR)/../kill" \
-	-I"$(CURDIR)/../../usr.bin/printf" -I"$(CURDIR)/../../bin/test"
+	-I"$(CURDIR)/../contrib/printf" -I"$(CURDIR)/../test"
 CFLAGS ?= -O2
 CFLAGS += -g -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare
 LDFLAGS ?=
@@ -22,13 +22,13 @@ GENDIR := $(CURDIR)/build/gen
 OUTDIR := $(CURDIR)/out
 TARGET := $(OUTDIR)/sh
 TEST_RUNNER := $(TOOLDIR)/run-default-sigpipe
-LIBEDITDIR := $(CURDIR)/../../contrib/libedit
-LIBEDIT_GENDIR := $(GENDIR)/libedit
-VISDIR := $(CURDIR)/../../contrib/libc-vis
+LIBEDITDIR := $(CURDIR)/../contrib/libedit
+LIBEDIT_GENDIR := $(GENDIR)/../contrib/libedit
+VISDIR := $(CURDIR)/../contrib/libc-vis
 
 KILLDIR := $(CURDIR)/../kill
-TESTDIR := $(CURDIR)/../../bin/test
-PRINTFDIR := $(CURDIR)/../../usr.bin/printf
+TESTDIR := $(CURDIR)/../test
+PRINTFDIR := $(CURDIR)/../contrib/printf
 
 CPPFLAGS += -I"$(LIBEDIT_GENDIR)" -I"$(LIBEDITDIR)"
 LIBEDIT_CPPFLAGS := $(CPPFLAGS) $(EDITLINE_CPPFLAGS) -include "$(CURDIR)/compat.h" -I"$(VISDIR)"

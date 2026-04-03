@@ -21,7 +21,7 @@ testcmd_exit(int status)
 
 #define exit testcmd_exit
 #define main testcmd_main
-#include "../../bin/test/test.c"
+#include "../test/test.c"
 #undef main
 #undef exit
 
