@@ -13,5 +13,6 @@ caches/
 cache/
 __pycache__
 config.sh
-launcher
+launchermeta
 upstream
+venv

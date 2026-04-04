@@ -44,6 +44,10 @@ python -m meta.run.update_fabric || fail_in
 python -m meta.run.update_quilt || fail_in
 python -m meta.run.update_liteloader || fail_in
 python -m meta.run.update_java || fail_in
+python -m meta.run.update_risugami || fail_in
+python -m meta.run.update_stationloader || fail_in
+python -m meta.run.update_optifine || fail_in
+python -m meta.run.update_modloadermp || fail_in
 
 if [ "${DEPLOY_TO_GIT}" = true ]; then
     upstream_git add mojang/version_manifest_v2.json mojang/java_all.json mojang/versions/* || fail_in
@@ -52,6 +56,10 @@ if [ "${DEPLOY_TO_GIT}" = true ]; then
     upstream_git add fabric/loader-installer-json/*.json fabric/meta-v2/*.json fabric/jars/*.json || fail_in
     upstream_git add quilt/loader-installer-json/*.json quilt/meta-v3/*.json quilt/jars/*.json || fail_in
     upstream_git add liteloader/*.json || fail_in
+    upstream_git add optifine/*.json || fail_in
+    upstream_git add risugami/*.json || fail_in
+    upstream_git add station-loader/*.json || fail_in
+    upstream_git add modloadermp/*.json || fail_in
     upstream_git add java_runtime/adoptium/available_releases.json java_runtime/adoptium/versions/*.json java_runtime/azul/packages.json java_runtime/azul/versions/*.json java_runtime/ibm/available_releases.json java_runtime/ibm/versions/*.json || fail_in
     if ! upstream_git diff --cached --exit-code; then
         upstream_git commit -a -m "Update Date ${currentDate} Time ${currentHour}:${currentMinute}:${currentSecond}" || fail_in
@@ -68,6 +76,10 @@ python -m meta.run.generate_fabric || fail_out
 python -m meta.run.generate_quilt || fail_out
 python -m meta.run.generate_liteloader || fail_out
 python -m meta.run.generate_java || fail_out
+python -m meta.run.generate_risugami || fail_in
+python -m meta.run.generate_stationloader || fail_in
+python -m meta.run.generate_optifine || fail_in
+python -m meta.run.generate_modloadermp || fail_in
 python -m meta.run.index || fail_out
 
 if [ "${DEPLOY_TO_GIT}" = true ]; then
@@ -78,6 +90,9 @@ if [ "${DEPLOY_TO_GIT}" = true ]; then
     launcher_git add org.quiltmc.quilt-loader/* || fail_out
     launcher_git add org.quiltmc.hashed/* 2>/dev/null || true
     launcher_git add com.mumfrey.liteloader/* || fail_out
+    launcher_git add net.optifine/* || fail_out
+    launcher_git add risugami/* || fail_out
+    launcher_git add station-loader/* || fail_out
     launcher_git add net.minecraft.java/* net.adoptium.java/* com.azul.java/* com.ibm.java/* || fail_out
 
     if ! launcher_git diff --cached --exit-code; then
