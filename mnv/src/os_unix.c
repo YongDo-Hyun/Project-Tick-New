@@ -4622,6 +4622,7 @@ mch_report_winsize(int fd, int rows, int cols)
     void
 mch_set_shellsize(void)
 {
+#ifdef HAVE_TGETENT
     if (*T_CWS)
     {
 	/*
@@ -4633,6 +4634,7 @@ mch_set_shellsize(void)
 	out_flush();
 	screen_start();			// don't know where cursor is now
     }
+#endif
 }
 
 #endif // VMS

@@ -2,7 +2,6 @@
 
 [![CI](https://github.com/Project-Tick/Project-Tick/actions/workflows/meshmc-build.yml/badge.svg)](https://github.com/Project-Tick/Project-Tick/actions)
 [![License](https://img.shields.io/badge/license-mixed-blue)](LICENSES/)
-[![CLA assistant](https://cla-assistant.io/readme/badge/Project-Tick/Project-Tick)](https://cla-assistant.io/Project-Tick/Project-Tick)
 
 Welcome to Project Tick.
 
@@ -16,10 +15,10 @@ tool, or application that can be built and used standalone or as part
 of the larger system.
 
 Core areas include:
-- System tools and utilities (`corebinutils`, `systeminfo`, `uvim`)
-- Libraries (`ptlibzippy`, `json4cpp`, `tomlplusplus`, `libnbtplusplus`)
-- Applications (`projt-launcher`, modpacks, tools)
-- Infrastructure and integration (`meta`, `tools`, `dockerimages`)
+- System tools and utilities (`corebinutils`, `mnv`)
+- Libraries (`neozip`, `json4cpp`, `tomlplusplus`, `libnbtplusplus`)
+- Applications (`meshmc`, modpacks, tools)
+- Infrastructure and integration (`meta`, `ci`, `dockerimages`)
 
 Project Tick focuses on reproducible builds, minimal dependencies,
 and full control over the software stack.
