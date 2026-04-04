@@ -29,10 +29,22 @@ if (fs.existsSync(revFile)) {
 }
 const VERSION = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf-8")).version;
 
-// 2. Compile LESS → CSS
+// 2. Compile LESS → CSS using Less JS API (avoids ESM extensionless bin issue)
 console.log("Compiling LESS...");
 const lessFile = path.join(ROOT, "src/styles/index.less");
-const cssOutput = execSync(`npx lessc ${lessFile}`, { encoding: "utf-8" });
+const helperFile = path.join(ROOT, ".less-compile.mjs");
+fs.writeFileSync(helperFile, `
+import less from "less";
+import { readFileSync } from "fs";
+const src = readFileSync(process.argv[2], "utf-8");
+const out = await less.render(src, { filename: process.argv[2] });
+process.stdout.write(out.css);
+`);
+const cssOutput = execSync(`node ${helperFile} ${lessFile}`, {
+    encoding: "utf-8",
+    cwd: ROOT,
+});
+fs.unlinkSync(helperFile);
 
 // 3. Build JS bundle with esbuild
 console.log("Bundling JS...");
