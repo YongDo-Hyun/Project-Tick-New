@@ -1,4 +1,4 @@
-name: "uvim: Check Links"
+name: "mnv: Check Links"
 
 on:
   workflow_dispatch:
@@ -13,4 +13,4 @@ jobs:
       - name: Run Lychee
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --verbose --config uvim/ci/lychee.toml uvim/
+          args: --verbose --config mnv/ci/lychee.toml mnv/

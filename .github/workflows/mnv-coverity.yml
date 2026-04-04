@@ -1,4 +1,4 @@
-name: "uvim: Coverity"
+name: "mnv: Coverity"
 
 on:
   schedule:
@@ -10,7 +10,7 @@ permissions:
 
 defaults:
   run:
-    working-directory: uvim
+    working-directory: mnv
 
 jobs:
   scan:

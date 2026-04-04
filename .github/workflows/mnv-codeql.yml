@@ -1,14 +1,14 @@
-name: "uvim: CodeQL"
+name: "mnv: CodeQL"
 
 on:
   push:
     branches: [master]
     paths:
-      - 'uvim/**'
+      - 'mnv/**'
   pull_request:
     branches: [master]
     paths:
-      - 'uvim/**'
+      - 'mnv/**'
   schedule:
     - cron: '0 18 * * 1'
 

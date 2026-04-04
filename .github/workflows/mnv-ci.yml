@@ -1,20 +1,20 @@
-name: "uvim: CI"
+name: "mnv: CI"
 
 on:
   push:
     branches: ['**']
     paths:
-      - 'uvim/**'
-      - '.github/workflows/uvim-ci.yml'
-      - '.github/actions/uvim/**'
+      - 'mnv/**'
+      - '.github/workflows/mnv-ci.yml'
+      - '.github/actions/mnv/**'
   pull_request:
     paths:
-      - 'uvim/**'
-      - '.github/workflows/uvim-ci.yml'
-      - '.github/actions/uvim/**'
+      - 'mnv/**'
+      - '.github/workflows/mnv-ci.yml'
+      - '.github/actions/mnv/**'
 
 concurrency:
-  group: uvim-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+  group: mnv-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
   cancel-in-progress: true
 
 permissions:
@@ -80,7 +80,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: uvim
+        working-directory: mnv
 
     steps:
       - name: Checkout repository
@@ -130,7 +130,7 @@ jobs:
 
       - name: Upload test artifacts
         if: failure()
-        uses: ./.github/actions/uvim/test_artifacts
+        uses: ./.github/actions/mnv/test_artifacts
 
   macos:
     runs-on: ${{ matrix.runner }}
@@ -150,7 +150,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: uvim
+        working-directory: mnv
 
     steps:
       - name: Checkout repository
