@@ -154,3 +154,8 @@ SPDX-FileCopyrightText = "MultiMC Contributors & PolyMC Contributors & PrismLaun
 path = ["images4docker/**"]
 SPDX-License-Identifier = "GPL-3.0-or-later"
 SPDX-FileCopyrightText = "Project Tick"
+
+[[annotations]]
+path = ["ofborg/**"]
+SPDX-License-Identifier = "MIT"
+SPDX-FileCopyrightText = "NixOS Contributors & Project Tick"

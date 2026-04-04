@@ -13,7 +13,7 @@
     },
     "rabbitmq": {
         "ssl": true,
-        "host": "events.tickborg.project-tick.net",
+        "host": "events.tickborg.projecttick.net",
         "virtualhost": "tickborg",
         "username": "...",
         "password": "..."

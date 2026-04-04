@@ -121,6 +121,7 @@ impl JobActions {
             attempted_attrs: None,
             skipped_attrs: None,
             status: BuildStatus::Failure,
+            push: self.job.push.clone(),
         };
 
         let result_exchange = self.result_exchange.clone();
@@ -209,6 +210,7 @@ impl JobActions {
             skipped_attrs: Some(not_attempted_attrs),
             attempted_attrs: None,
             status: BuildStatus::Skipped,
+            push: self.job.push.clone(),
         };
 
         let result_exchange = self.result_exchange.clone();
@@ -249,6 +251,7 @@ impl JobActions {
             status,
             attempted_attrs: Some(attempted_attrs),
             skipped_attrs: Some(not_attempted_attrs),
+            push: self.job.push.clone(),
         };
 
         let result_exchange = self.result_exchange.clone();
@@ -301,7 +304,12 @@ impl notifyworker::SimpleNotifyWorker for BuildWorker {
             dyn notifyworker::NotificationReceiver + std::marker::Send + std::marker::Sync,
         >,
     ) {
-        let span = debug_span!("job", pr = ?job.pr.number);
+        let is_push = job.is_push();
+        let span = if is_push {
+            debug_span!("job", push_branch = ?job.push.as_ref().map(|p| &p.branch), sha = %job.pr.head_sha)
+        } else {
+            debug_span!("job", pr = ?job.pr.number)
+        };
         let _enter = span.enter();
 
         let actions = self.actions(job, notifier);
@@ -312,10 +320,19 @@ impl notifyworker::SimpleNotifyWorker for BuildWorker {
             return;
         }
 
-        info!(
-            "Working on https://github.com/{}/pull/{}",
-            actions.job.repo.full_name, actions.job.pr.number
-        );
+        if is_push {
+            let push = actions.job.push.as_ref().unwrap();
+            info!(
+                "Working on push to {}:{} ({})",
+                actions.job.repo.full_name, push.branch, push.head_sha
+            );
+        } else {
+            info!(
+                "Working on https://github.com/{}/pull/{}",
+                actions.job.repo.full_name, actions.job.pr.number
+            );
+        }
+
         let project = self.cloner.project(
             &actions.job.repo.full_name,
             actions.job.repo.clone_url.clone(),
@@ -331,22 +348,38 @@ impl notifyworker::SimpleNotifyWorker for BuildWorker {
 
         let refpath = co.checkout_origin_ref(target_branch.as_ref()).unwrap();
 
-        if co.fetch_pr(actions.job.pr.number).is_err() {
-            info!("Failed to fetch {}", actions.job.pr.number);
-            actions.pr_head_missing().await;
-            return;
-        }
+        if is_push {
+            // For push builds: the commit is already on the branch, just verify it exists
+            if !co.commit_exists(actions.job.pr.head_sha.as_ref()) {
+                info!("Push commit {} doesn't exist after fetch", actions.job.pr.head_sha);
+                actions.commit_missing().await;
+                return;
+            }
+            // Checkout the exact pushed commit
+            if co.checkout_ref(actions.job.pr.head_sha.as_ref()).is_err() {
+                info!("Failed to checkout push commit {}", actions.job.pr.head_sha);
+                actions.merge_failed().await;
+                return;
+            }
+        } else {
+            // For PR builds: fetch PR ref, verify commit, merge
+            if co.fetch_pr(actions.job.pr.number).is_err() {
+                info!("Failed to fetch {}", actions.job.pr.number);
+                actions.pr_head_missing().await;
+                return;
+            }
 
-        if !co.commit_exists(actions.job.pr.head_sha.as_ref()) {
-            info!("Commit {} doesn't exist", actions.job.pr.head_sha);
-            actions.commit_missing().await;
-            return;
-        }
+            if !co.commit_exists(actions.job.pr.head_sha.as_ref()) {
+                info!("Commit {} doesn't exist", actions.job.pr.head_sha);
+                actions.commit_missing().await;
+                return;
+            }
 
-        if co.merge_commit(actions.job.pr.head_sha.as_ref()).is_err() {
-            info!("Failed to merge {}", actions.job.pr.head_sha);
-            actions.merge_failed().await;
-            return;
+            if co.merge_commit(actions.job.pr.head_sha.as_ref()).is_err() {
+                info!("Failed to merge {}", actions.job.pr.head_sha);
+                actions.merge_failed().await;
+                return;
+            }
         }
 
         // Determine which projects to build from the requested attrs
@@ -528,6 +561,7 @@ mod tests {
             logs: Some((Some(String::from("logs")), Some(String::from("build.log")))),
             statusreport: Some((Some(String::from("build-results")), None)),
             request_id: "bogus-request-id".to_owned(),
+            push: None,
         };
 
         let dummyreceiver = Arc::new(notifyworker::DummyNotificationReceiver::new());
@@ -574,6 +608,7 @@ mod tests {
             logs: Some((Some(String::from("logs")), Some(String::from("build.log")))),
             statusreport: Some((Some(String::from("build-results")), None)),
             request_id: "bogus-request-id".to_owned(),
+            push: None,
         };
 
         let dummyreceiver = Arc::new(notifyworker::DummyNotificationReceiver::new());

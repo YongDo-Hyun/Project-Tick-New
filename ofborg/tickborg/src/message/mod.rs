@@ -4,4 +4,4 @@ pub mod buildresult;
 mod common;
 pub mod evaluationjob;
 
-pub use self::common::{Pr, Repo};
+pub use self::common::{Pr, PushTrigger, Repo};

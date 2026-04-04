@@ -42,6 +42,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         logs: Some((Some("logs".to_owned()), Some(logbackrk.to_lowercase()))),
         statusreport: Some((None, Some("scratch".to_owned()))),
         request_id: "bogus-request-id".to_owned(),
+        push: None,
     };
 
     {

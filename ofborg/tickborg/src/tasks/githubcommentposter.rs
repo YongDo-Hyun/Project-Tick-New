@@ -71,7 +71,11 @@ impl worker::SimpleWorker for GitHubCommentPoster {
             }
         };
 
-        let span = debug_span!("job", pr = ?pr.number);
+        let span = if pr.number == 0 {
+            debug_span!("job", push_sha = %pr.head_sha)
+        } else {
+            debug_span!("job", pr = ?pr.number)
+        };
         let _enter = span.enter();
 
         for check in checks {
@@ -111,17 +115,40 @@ fn job_to_check(job: &BuildJob, architecture: &str, timestamp: DateTime<Utc>) ->
         all_attrs = vec![String::from("(unknown attributes)")];
     }
 
+    let details_key = if job.is_push() {
+        format!(
+            "push.{}",
+            job.push
+                .as_ref()
+                .map(|p| p.branch.replace('/', "-"))
+                .unwrap_or_default()
+        )
+    } else {
+        format!("{}", job.pr.number)
+    };
+
+    let name = if job.is_push() {
+        let branch = job
+            .push
+            .as_ref()
+            .map(|p| p.branch.as_str())
+            .unwrap_or("unknown");
+        format!("{} on {architecture} (push to {branch})", all_attrs.join(", "))
+    } else {
+        format!("{} on {architecture}", all_attrs.join(", "))
+    };
+
     CheckRunOptions {
-        name: format!("{} on {architecture}", all_attrs.join(", ")),
+        name,
         actions: None,
         completed_at: None,
         started_at: Some(timestamp.to_rfc3339_opts(chrono::SecondsFormat::Secs, true)),
         conclusion: None,
         details_url: Some(format!(
-            "https://logs.tickborg.project-tick.net/?key={}/{}.{}",
+            "https://logs.tickborg.projecttick.net/?key={}/{}.{}",
             &job.repo.owner.to_lowercase(),
             &job.repo.name.to_lowercase(),
-            job.pr.number,
+            details_key,
         )),
         external_id: None,
         head_sha: job.pr.head_sha.clone(),
@@ -180,17 +207,47 @@ fn result_to_check(result: &LegacyBuildResult, timestamp: DateTime<Utc>) -> Chec
         String::from("No partial log is available.")
     };
 
+    let is_push = result.push.is_some();
+
+    let details_key = if is_push {
+        format!(
+            "push.{}",
+            result
+                .push
+                .as_ref()
+                .map(|p| p.branch.replace('/', "-"))
+                .unwrap_or_default()
+        )
+    } else {
+        format!("{}", result.pr.number)
+    };
+
+    let name = if is_push {
+        let branch = result
+            .push
+            .as_ref()
+            .map(|p| p.branch.as_str())
+            .unwrap_or("unknown");
+        format!(
+            "{} on {} (push to {branch})",
+            all_attrs.join(", "),
+            result.system
+        )
+    } else {
+        format!("{} on {}", all_attrs.join(", "), result.system)
+    };
+
     CheckRunOptions {
-        name: format!("{} on {}", all_attrs.join(", "), result.system),
+        name,
         actions: None,
         completed_at: Some(timestamp.to_rfc3339_opts(chrono::SecondsFormat::Secs, true)),
         started_at: None,
         conclusion: Some(conclusion),
         details_url: Some(format!(
-            "https://logs.tickborg.project-tick.net/?key={}/{}.{}&attempt_id={}",
+            "https://logs.tickborg.projecttick.net/?key={}/{}.{}&attempt_id={}",
             &result.repo.owner.to_lowercase(),
             &result.repo.name.to_lowercase(),
-            result.pr.number,
+            details_key,
             result.attempt_id,
         )),
         external_id: Some(result.attempt_id.clone()),
@@ -244,6 +301,7 @@ mod tests {
 
             request_id: "bogus-request-id".to_owned(),
             attrs: vec!["foo".to_owned(), "bar".to_owned()],
+            push: None,
         };
 
         let timestamp = Utc.with_ymd_and_hms(2023, 4, 20, 13, 37, 42).unwrap();
@@ -256,7 +314,7 @@ mod tests {
                 completed_at: None,
                 status: Some(CheckRunState::Queued),
                 conclusion: None,
-                details_url: Some("https://logs.tickborg.project-tick.net/?key=project-tick/Project-Tick.2345".to_string()),
+                details_url: Some("https://logs.tickborg.projecttick.net/?key=project-tick/Project-Tick.2345".to_string()),
                 external_id: None,
                 head_sha: "abc123".to_string(),
                 output: None,
@@ -296,6 +354,7 @@ mod tests {
             attempted_attrs: Some(vec!["foo".to_owned()]),
             skipped_attrs: Some(vec!["bar".to_owned()]),
             status: BuildStatus::Success,
+            push: None,
         };
 
         let timestamp = Utc.with_ymd_and_hms(2023, 4, 20, 13, 37, 42).unwrap();
@@ -310,7 +369,7 @@ mod tests {
                 status: Some(CheckRunState::Completed),
                 conclusion: Some(Conclusion::Success),
                 details_url: Some(
-                    "https://logs.tickborg.project-tick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid"
+                    "https://logs.tickborg.projecttick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid"
                         .to_string()
                 ),
                 external_id: Some("neatattemptid".to_string()),
@@ -378,6 +437,7 @@ patching script interpreter paths in /nix/store/pcja75y9isdvgz5i00pkrpif9rxzxc29
             attempted_attrs: Some(vec!["foo".to_owned()]),
             skipped_attrs: None,
             status: BuildStatus::Failure,
+            push: None,
         };
 
         let timestamp = Utc.with_ymd_and_hms(2023, 4, 20, 13, 37, 42).unwrap();
@@ -392,7 +452,7 @@ patching script interpreter paths in /nix/store/pcja75y9isdvgz5i00pkrpif9rxzxc29
                 status: Some(CheckRunState::Completed),
                 conclusion: Some(Conclusion::Neutral),
                 details_url: Some(
-                    "https://logs.tickborg.project-tick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid"
+                    "https://logs.tickborg.projecttick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid"
                         .to_string()
                 ),
                 external_id: Some("neatattemptid".to_string()),
@@ -457,6 +517,7 @@ patching script interpreter paths in /nix/store/pcja75y9isdvgz5i00pkrpif9rxzxc29
             attempted_attrs: Some(vec!["foo".to_owned()]),
             skipped_attrs: None,
             status: BuildStatus::TimedOut,
+            push: None,
         };
 
         let timestamp = Utc.with_ymd_and_hms(2023, 4, 20, 13, 37, 42).unwrap();
@@ -471,7 +532,7 @@ patching script interpreter paths in /nix/store/pcja75y9isdvgz5i00pkrpif9rxzxc29
                 status: Some(CheckRunState::Completed),
                 conclusion: Some(Conclusion::Neutral),
                 details_url: Some(
-                    "https://logs.tickborg.project-tick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid"
+                    "https://logs.tickborg.projecttick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid"
                         .to_string()
                 ),
                 external_id: Some("neatattemptid".to_string()),
@@ -537,6 +598,7 @@ error: build of '/nix/store/l1limh50lx2cx45yb2gqpv7k8xl1mik2-gdb-8.1.drv' failed
             attempted_attrs: None,
             skipped_attrs: None,
             status: BuildStatus::Success,
+            push: None,
         };
 
         let timestamp = Utc.with_ymd_and_hms(2023, 4, 20, 13, 37, 42).unwrap();
@@ -551,7 +613,7 @@ error: build of '/nix/store/l1limh50lx2cx45yb2gqpv7k8xl1mik2-gdb-8.1.drv' failed
                 status: Some(CheckRunState::Completed),
                 conclusion: Some(Conclusion::Success),
                 details_url: Some(
-                    "https://logs.tickborg.project-tick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid"
+                    "https://logs.tickborg.projecttick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid"
                         .to_string()
                 ),
                 external_id: Some("neatattemptid".to_string()),
@@ -615,6 +677,7 @@ patching script interpreter paths in /nix/store/pcja75y9isdvgz5i00pkrpif9rxzxc29
             attempted_attrs: None,
             skipped_attrs: None,
             status: BuildStatus::Failure,
+            push: None,
         };
 
         let timestamp = Utc.with_ymd_and_hms(2023, 4, 20, 13, 37, 42).unwrap();
@@ -629,7 +692,7 @@ patching script interpreter paths in /nix/store/pcja75y9isdvgz5i00pkrpif9rxzxc29
                 status: Some(CheckRunState::Completed),
                 conclusion: Some(Conclusion::Neutral),
                 details_url: Some(
-                    "https://logs.tickborg.project-tick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid"
+                    "https://logs.tickborg.projecttick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid"
                         .to_string()
                 ),
                 external_id: Some("neatattemptid".to_string()),
@@ -682,6 +745,7 @@ patching script interpreter paths in /nix/store/pcja75y9isdvgz5i00pkrpif9rxzxc29
             attempted_attrs: None,
             skipped_attrs: Some(vec!["not-attempted".to_owned()]),
             status: BuildStatus::Skipped,
+            push: None,
         };
 
         let timestamp = Utc.with_ymd_and_hms(2023, 4, 20, 13, 37, 42).unwrap();
@@ -695,7 +759,7 @@ patching script interpreter paths in /nix/store/pcja75y9isdvgz5i00pkrpif9rxzxc29
                 completed_at: Some("2023-04-20T13:37:42Z".to_string()),
                 status: Some(CheckRunState::Completed),
                 conclusion: Some(Conclusion::Skipped),
-                details_url: Some("https://logs.tickborg.project-tick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid".to_string()),
+                details_url: Some("https://logs.tickborg.projecttick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid".to_string()),
                 external_id: Some("neatattemptid".to_string()),
                 head_sha: "abc123".to_string(),
                 output: Some(Output {
@@ -735,6 +799,7 @@ foo
             attempted_attrs: None,
             skipped_attrs: Some(vec!["not-attempted".to_owned()]),
             status: BuildStatus::Skipped,
+            push: None,
         };
 
         let timestamp = Utc.with_ymd_and_hms(2023, 4, 20, 13, 37, 42).unwrap();
@@ -748,7 +813,7 @@ foo
                 completed_at: Some("2023-04-20T13:37:42Z".to_string()),
                 status: Some(CheckRunState::Completed),
                 conclusion: Some(Conclusion::Skipped),
-                details_url: Some("https://logs.tickborg.project-tick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid".to_string()),
+                details_url: Some("https://logs.tickborg.projecttick.net/?key=project-tick/Project-Tick.2345&attempt_id=neatattemptid".to_string()),
                 external_id: Some("neatattemptid".to_string()),
                 head_sha: "abc123".to_string(),
                 output: Some(Output {

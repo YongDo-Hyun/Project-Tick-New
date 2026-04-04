@@ -87,6 +87,24 @@ async fn setup_amqp(chan: &mut Channel) -> Result<(), Box<dyn Error + Send + Syn
         no_wait: false,
     })
     .await?;
+
+    let queue_name = String::from("push-build-inputs");
+    chan.declare_queue(easyamqp::QueueConfig {
+        queue: queue_name.clone(),
+        passive: false,
+        durable: true,
+        exclusive: false,
+        auto_delete: false,
+        no_wait: false,
+    })
+    .await?;
+    chan.bind_queue(easyamqp::BindQueueConfig {
+        queue: queue_name.clone(),
+        exchange: "github-events".to_owned(),
+        routing_key: Some(String::from("push.*")),
+        no_wait: false,
+    })
+    .await?;
     Ok(())
 }
 

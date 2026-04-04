@@ -30,6 +30,8 @@ pub struct Config {
     pub mass_rebuilder: Option<MassRebuilder>,
     /// Configuration for the builder
     pub builder: Option<Builder>,
+    /// Configuration for the push filter
+    pub push_filter: Option<PushFilter>,
     /// Configuration for the log message collector
     pub log_message_collector: Option<LogMessageCollector>,
     /// Configuration for the stats server
@@ -57,7 +59,7 @@ fn default_logs_path() -> String {
 }
 
 fn default_serve_root() -> String {
-    "https://logs.tickborg.project-tick.net/logfile".into()
+    "https://logs.tickborg.projecttick.net/logfile".into()
 }
 
 /// Configuration for logapi
@@ -110,6 +112,18 @@ pub struct MassRebuilder {
 pub struct Builder {
     /// RabbitMQ broker to connect to
     pub rabbitmq: RabbitMqConfig,
+}
+
+/// Configuration for the push filter
+#[derive(serde::Serialize, serde::Deserialize, Debug)]
+#[serde(deny_unknown_fields)]
+pub struct PushFilter {
+    /// RabbitMQ broker to connect to
+    pub rabbitmq: RabbitMqConfig,
+    /// Default projects/attrs to build when no changed projects are detected.
+    /// If empty and no projects detected, push builds are skipped.
+    #[serde(default)]
+    pub default_attrs: Vec<String>,
 }
 
 /// Configuration for the log message collector

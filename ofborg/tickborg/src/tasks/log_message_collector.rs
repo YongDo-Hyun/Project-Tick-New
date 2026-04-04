@@ -215,7 +215,7 @@ impl worker::SimpleWorker for LogMessageCollector {
 
                 // Make sure the log content exists by opening its handle.
                 // This (hopefully) prevents builds that produce no output (for any reason) from
-                // having their logs.tickborg.project-tick.net link complaining about a 404.
+                // having their logs.tickborg.projecttick.net link complaining about a 404.
                 let _ = self.handle_for(&job.from).unwrap();
             }
             MsgType::Msg(ref message) => {
@@ -448,6 +448,7 @@ mod tests {
                             status: BuildStatus::Success,
                             attempted_attrs: Some(vec!["foo".to_owned()]),
                             skipped_attrs: Some(vec!["bar".to_owned()]),
+                            push: None,
                         }))
                     })
                     .await

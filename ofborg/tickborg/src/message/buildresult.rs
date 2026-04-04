@@ -1,4 +1,4 @@
-use crate::message::{Pr, Repo};
+use crate::message::{Pr, PushTrigger, Repo};
 
 use hubcaps::checks::Conclusion;
 
@@ -48,6 +48,7 @@ pub struct LegacyBuildResult {
     pub status: BuildStatus,
     pub skipped_attrs: Option<Vec<String>>,
     pub attempted_attrs: Option<Vec<String>>,
+    pub push: Option<PushTrigger>,
 }
 
 #[derive(serde::Serialize, serde::Deserialize, Debug)]
@@ -70,6 +71,8 @@ pub enum BuildResult {
         status: BuildStatus,
         skipped_attrs: Option<Vec<String>>,
         attempted_attrs: Option<Vec<String>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        push: Option<PushTrigger>,
     },
     Legacy {
         repo: Repo,
@@ -82,6 +85,8 @@ pub enum BuildResult {
         status: Option<BuildStatus>,
         skipped_attrs: Option<Vec<String>>,
         attempted_attrs: Option<Vec<String>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        push: Option<PushTrigger>,
     },
 }
 
@@ -100,6 +105,7 @@ impl BuildResult {
                 ref request_id,
                 ref attempted_attrs,
                 ref skipped_attrs,
+                ref push,
                 ..
             } => LegacyBuildResult {
                 repo: repo.to_owned(),
@@ -111,6 +117,7 @@ impl BuildResult {
                 status: self.status(),
                 attempted_attrs: attempted_attrs.to_owned(),
                 skipped_attrs: skipped_attrs.to_owned(),
+                push: push.to_owned(),
             },
             BuildResult::V1 {
                 ref repo,
@@ -121,6 +128,7 @@ impl BuildResult {
                 ref request_id,
                 ref attempted_attrs,
                 ref skipped_attrs,
+                ref push,
                 ..
             } => LegacyBuildResult {
                 repo: repo.to_owned(),
@@ -132,6 +140,7 @@ impl BuildResult {
                 status: self.status(),
                 attempted_attrs: attempted_attrs.to_owned(),
                 skipped_attrs: skipped_attrs.to_owned(),
+                push: push.to_owned(),
             },
         }
     }
@@ -141,6 +150,17 @@ impl BuildResult {
             BuildResult::Legacy { pr, .. } => pr.to_owned(),
             BuildResult::V1 { pr, .. } => pr.to_owned(),
         }
+    }
+
+    pub fn push(&self) -> Option<PushTrigger> {
+        match self {
+            BuildResult::Legacy { push, .. } => push.to_owned(),
+            BuildResult::V1 { push, .. } => push.to_owned(),
+        }
+    }
+
+    pub fn is_push(&self) -> bool {
+        self.push().is_some()
     }
 
     pub fn status(&self) -> BuildStatus {
