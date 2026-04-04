@@ -118,8 +118,8 @@ runs:
       run: |
         if [ '${{ inputs.sparkle-ed25519-key }}' != '' ]; then
           echo '${{ inputs.sparkle-ed25519-key }}' > ed25519-priv.pem
-          signature_zip=$(/opt/homebrew/opt/openssl@3/bin/openssl pkeyutl -sign -rawin -in ${{ github.workspace }}/MeshMC.zip -inkey ed25519-priv.pem | openssl base64 | tr -d \\n)
-          signature_dmg=$(/opt/homebrew/opt/openssl@3/bin/openssl pkeyutl -sign -rawin -in ${{ github.workspace }}/MeshMC.dmg -inkey ed25519-priv.pem | openssl base64 | tr -d \\n) 
+          signature_zip=$(/opt/homebrew/opt/openssl@3/bin/openssl pkeyutl -sign -rawin -in ${{ github.workspace }}/meshmc/MeshMC.zip -inkey ed25519-priv.pem | openssl base64 | tr -d \\n)
+          signature_dmg=$(/opt/homebrew/opt/openssl@3/bin/openssl pkeyutl -sign -rawin -in ${{ github.workspace }}/meshmc/MeshMC.dmg -inkey ed25519-priv.pem | openssl base64 | tr -d \\n) 
           rm ed25519-priv.pem
           cat >> $GITHUB_STEP_SUMMARY << EOF
         ### Artifact Information :information_source:
