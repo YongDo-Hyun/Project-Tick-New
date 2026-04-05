@@ -1004,7 +1004,7 @@ load_pack_plugin(char_u *fname)
     source_all_matches(pat);
 
     {
-	char_u *cmd = mnv_strsave((char_u *)"g:did_load_filetypes");
+	char_u *cmd = mnv_strsave((char_u *)"get(g:, 'did_load_filetypes', 0)");
 
 	// If runtime/filetype.mnv wasn't loaded yet, the scripts will be
 	// found when it loads.

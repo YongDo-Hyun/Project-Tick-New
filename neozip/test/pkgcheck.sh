@@ -108,7 +108,8 @@ rm -rf btmp2 pkgtmp2
 mkdir btmp2 pkgtmp2
 export DESTDIR=$(pwd)/pkgtmp2
 cd btmp2
-  cmake -G Ninja ${CMAKE_ARGS} ..
+  # configure always enables WITH_ALL_FALLBACKS; match that in cmake
+  cmake -G Ninja -DWITH_ALL_FALLBACKS=ON ${CMAKE_ARGS} ..
   ninja -v
   ninja install
 cd ..

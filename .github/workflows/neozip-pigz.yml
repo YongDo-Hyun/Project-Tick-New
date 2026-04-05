@@ -42,7 +42,7 @@ jobs:
           cmake ${{ matrix.cmake-args }} \
             -DCMAKE_BUILD_TYPE=Release \
             -DBUILD_SHARED_LIBS=OFF \
-            -DZLIB_ROOT=../../neozip \
+            -DZLIB_ROOT=../.. \
             -DWITH_CODE_COVERAGE=OFF \
             -DWITH_MAINTAINER_WARNINGS=ON
         working-directory: neozip/test/pigz

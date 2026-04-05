@@ -23,6 +23,7 @@ jobs:
         with:
           oss-fuzz-project-name: 'cmark'
           dry-run: false
+          project-src-path: cmark
       - name: Run Fuzzers
         uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
         with:

@@ -101,9 +101,9 @@ runs:
         ls -la "$INSTALL_APPIMAGE_DIR"
 
         if [[ "${{ github.ref_type }}" == "tag" ]]; then
-          APPIMAGE_DEST="MeshMC-Linux-$APPIMAGE_ARCH.AppImage"
+          APPIMAGE_DEST="meshmc/MeshMC-Linux-$APPIMAGE_ARCH.AppImage"
         else
-          APPIMAGE_DEST="MeshMC-Linux-$VERSION-${{ inputs.build-type }}-$APPIMAGE_ARCH.AppImage"
+          APPIMAGE_DEST="meshmc/MeshMC-Linux-$VERSION-${{ inputs.build-type }}-$APPIMAGE_ARCH.AppImage"
         fi
 
         mkappimage \

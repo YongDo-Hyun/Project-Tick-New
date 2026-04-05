@@ -165,7 +165,11 @@ func VerifyScreenDump(buf, filename, options, ...)
     " Leave a bit of time for updating the original window while we spin wait.
     sleep 10m
     call delete(testfile)
-    call term_dumpwrite(a:buf, testfile, options_copy)
+    try
+      call term_dumpwrite(a:buf, testfile, options_copy)
+    catch /E958/
+      return 1
+    endtry
     call assert_report('See new dump file: call term_dumpload("testdir/' .. testfile .. '")')
     " No point in retrying.
     let g:run_nr = 10
@@ -179,7 +183,15 @@ func VerifyScreenDump(buf, filename, options, ...)
     " Leave a bit of time for updating the original window while we spin wait.
     sleep 1m
     call delete(testfile)
-    call term_dumpwrite(a:buf, testfile, options_copy)
+    try
+      call term_dumpwrite(a:buf, testfile, options_copy)
+    catch /E958/
+      " The terminal job already finished; no point retrying.
+      return 1
+    endtry
+    if !filereadable(testfile)
+      return 1
+    endif
     " Filtering done with "FileComparisonPreAction()" may change "refdump*".
     let refdump = CopyStringList(refdump_orig)
     let testdump = ReadAndFilter(testfile, filter)

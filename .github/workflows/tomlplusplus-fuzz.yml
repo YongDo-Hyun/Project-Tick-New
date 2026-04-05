@@ -24,6 +24,7 @@ jobs:
       with:
         oss-fuzz-project-name: 'tomlplusplus'
         language: c++
+        project-src-path: tomlplusplus
     - name: Run Fuzzers
       uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
       with:
