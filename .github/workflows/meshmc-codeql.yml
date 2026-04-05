@@ -38,6 +38,7 @@ jobs:
       - name: Setup dependencies
         uses: ./.github/actions/meshmc/setup-dependencies
         with:
+          artifact-name: meshmc-codeql-deps
           build-type: Debug
           qt-version: 6.9.3
 

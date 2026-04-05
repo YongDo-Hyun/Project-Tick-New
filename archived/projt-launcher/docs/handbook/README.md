@@ -1,6 +1,6 @@
 # Handbook
 
-Documentation for Project Tick contributors and players.
+Documentation for Project Tick and players.
 Latest Version: 0.0.5-1
 
 ## For Players

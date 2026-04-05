@@ -1,4 +1,4 @@
-# Copyright (C) Project Tick Contributors
+# Copyright (C) Project Tick
 # SPDX-License-Identifier: MIT
 #
 # Fast lint & commit checks — called from ci.yml before builds start.

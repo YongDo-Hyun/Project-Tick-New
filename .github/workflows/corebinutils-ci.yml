@@ -38,9 +38,9 @@ jobs:
       - name: Build
         run: |
           if [ -f GNUmakefile ]; then
-            make -f GNUmakefile -j$(nproc) || true
+            make -f GNUmakefile -j"$(nproc)" || true
           else
-            make -j$(nproc) || true
+            make -j"$(nproc)" || true
           fi
 
   build-freebsd:

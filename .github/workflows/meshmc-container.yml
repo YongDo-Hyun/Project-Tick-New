@@ -153,6 +153,7 @@ jobs:
         env:
           IMAGE_NAME: ${{ needs.build.outputs.image-name }}
         run: |
+          # shellcheck disable=SC2046
           while read -r tag; do
             podman manifest create "$tag" \
               $(printf "$IMAGE_NAME@sha256:%s " *)

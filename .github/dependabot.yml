@@ -1,0 +1,130 @@
+# Copyright (C) Project Tick
+# SPDX-License-Identifier: MIT
+
+version: 2
+
+updates:
+  # ── GitHub Actions ──────────────────────────────────────────────
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # ── npm (CI scripts) ───────────────────────────────────────────
+  - package-ecosystem: "npm"
+    directory: "/ci/github-script"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      npm_and_yarn:
+        patterns:
+          - "*"
+    labels:
+      - "dependencies"
+      - "javascript"
+
+  # ── Gradle (ForgeWrapper) ──────────────────────────────────────
+  - package-ecosystem: "gradle"
+    directory: "/forgewrapper"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      gradle:
+        patterns:
+          - "*"
+    labels:
+      - "dependencies"
+      - "java"
+
+  # ── Cargo (ofborg) ─────────────────────────────────────────────
+  - package-ecosystem: "cargo"
+    directory: "/ofborg"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      cargo:
+        patterns:
+          - "*"
+    labels:
+      - "dependencies"
+      - "rust"
+
+  # ── pip (meta) ─────────────────────────────────────────────────
+  - package-ecosystem: "pip"
+    directory: "/meta"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "python"
+
+  # ── pip (json4cpp docs) ────────────────────────────────────────
+  - package-ecosystem: "pip"
+    directory: "/json4cpp/docs/mkdocs"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "python"
+
+  # ── pip (tomlplusplus tools) ───────────────────────────────────
+  - package-ecosystem: "pip"
+    directory: "/tomlplusplus/tools"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "python"
+
+  # ── Docker (ofborg) ────────────────────────────────────────────
+  - package-ecosystem: "docker"
+    directory: "/ofborg"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "docker"
+
+  # ── Git submodules ─────────────────────────────────────────────
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "submodule"

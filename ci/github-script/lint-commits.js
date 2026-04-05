@@ -86,6 +86,15 @@ async function checkCommitMessages({ github, context, core, repoPath }) {
     return
   }
 
+  // Skip commit lint for automated bot PRs (e.g. Dependabot)
+  const prAuthor = pr.user?.login || ''
+  if (prAuthor === 'dependabot[bot]') {
+    core.info(
+      `PR author is "${prAuthor}". Skipping commit message checks for bot PRs.`,
+    )
+    return
+  }
+
   const commits = await getCommitDetailsForPR({ core, pr, repoPath })
 
   const failures = new Set()

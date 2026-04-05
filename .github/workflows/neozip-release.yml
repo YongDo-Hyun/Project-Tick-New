@@ -84,7 +84,7 @@ jobs:
 
     - name: Set environment variables
       shell: bash
-      run: echo "tag=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+      run: echo "tag=${GITHUB_REF/refs\/tags\//}" >> "$GITHUB_ENV"
 
     - name: Install Windows 11 SDK (ARM)
       if: matrix.name == 'Windows MSVC ARM' || matrix.name == 'Windows MSVC ARM Compat'
@@ -126,3 +126,45 @@ jobs:
         overwrite: true
       env:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+  source_and_upload:
+    name: Source Archives
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set version
+        run: echo "VERSION=${{ github.ref_name }}" >> "$GITHUB_ENV"
+        working-directory: .
+
+      - name: Prepare source tree
+        id: prepare
+        working-directory: .
+        run: |
+          set -euo pipefail
+          SRC_STAGE="source-stage"
+          mkdir -p "$SRC_STAGE"
+          cp -a neozip "$SRC_STAGE/neozip"
+          echo "source-dir=$SRC_STAGE/neozip" >> "$GITHUB_OUTPUT"
+
+      - name: Package source archives
+        uses: ./.github/actions/package-source
+        with:
+          project: neozip
+          version: ${{ env.VERSION }}
+          source-dir: ${{ steps.prepare.outputs.source-dir }}
+          output-dir: release-artifacts
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-private-key-id: ${{ secrets.GPG_PRIVATE_KEY_ID }}
+
+      - name: Upload source archives to release
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.ref }}
+          draft: false
+          fail_on_unmatched_files: false
+          files: release-artifacts/*

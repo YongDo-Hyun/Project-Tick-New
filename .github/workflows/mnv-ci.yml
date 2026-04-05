@@ -112,12 +112,12 @@ jobs:
               --enable-tclinterp \
               --enable-gui=gtk3
           fi
-          make -j$(nproc)
+          make -j"$(nproc)"
 
       - name: Test
         timeout-minutes: 25
         run: |
-          make $TEST
+          make "$TEST"
 
       - name: Upload test artifacts
         if: failure()
@@ -163,9 +163,9 @@ jobs:
               --enable-luainterp \
               --enable-tclinterp
           fi
-          make -j$(sysctl -n hw.logicalcpu)
+          make -j"$(sysctl -n hw.logicalcpu)"
 
       - name: Test
         timeout-minutes: 25
         run: |
-          make $TEST
+          make "$TEST"

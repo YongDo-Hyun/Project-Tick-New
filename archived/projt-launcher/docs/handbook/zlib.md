@@ -112,7 +112,7 @@ Jean-loup Gailly, Mark Adler
 **Modifications:**
 ```
 Copyright © 2026
-Project Tick contributors
+Project Tick
 ```
 
 ---

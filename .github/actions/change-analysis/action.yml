@@ -1,4 +1,4 @@
-# Copyright (C) Project Tick Contributors
+# Copyright (C) Project Tick
 # SPDX-License-Identifier: MIT
 #
 # Composite action — analyzes changed directories and parses commit messages.

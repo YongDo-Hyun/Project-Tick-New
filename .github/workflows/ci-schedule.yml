@@ -1,4 +1,4 @@
-# Copyright (C) Project Tick Contributors
+# Copyright (C) Project Tick
 # SPDX-License-Identifier: MIT
 #
 # ╔══════════════════════════════════════════════════════════════════╗
@@ -224,10 +224,12 @@ jobs:
         run: |
           set -euo pipefail
 
-          echo "## Scheduled CI Report — ${{ needs.gate.outputs.group }}" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Job | Result |" >> "$GITHUB_STEP_SUMMARY"
-          echo "|-----|--------|" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "## Scheduled CI Report — ${{ needs.gate.outputs.group }}"
+            echo ""
+            echo "| Job | Result |"
+            echo "|-----|--------|"
+          } >> "$GITHUB_STEP_SUMMARY"
 
           FAILED=false
           report() {

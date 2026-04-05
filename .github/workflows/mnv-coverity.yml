@@ -55,31 +55,32 @@ jobs:
         if: env.TOKEN
         working-directory: ${{ github.workspace }}
         run: |
-          echo "$(pwd)/cov-scan/bin" >> $GITHUB_PATH
-          (
+          echo "$(pwd)/cov-scan/bin" >> "$GITHUB_PATH"
+          {
           echo "NPROC=$(getconf _NPROCESSORS_ONLN)"
           echo "CONFOPT=--enable-perlinterp --enable-python3interp --enable-rubyinterp --enable-luainterp --enable-tclinterp"
-          ) >> $GITHUB_ENV
+          } >> "$GITHUB_ENV"
 
       - name: Configure
         if: env.TOKEN
         run: |
+          # shellcheck disable=SC2086
           ./configure --with-features=huge ${CONFOPT} --enable-fail-if-missing
           sed -i -f ci/config.mk.sed src/auto/config.mk
-          sed -i -f ci/config.mk.${CC}.sed src/auto/config.mk
+          sed -i -f "ci/config.mk.${CC}.sed" src/auto/config.mk
           sed -i 's/-O2 \?//' src/auto/config.mk
 
       - name: Build/scan vim
         if: env.TOKEN
         run: |
-          cov-build --dir cov-int make -j${NPROC}
+          cov-build --dir cov-int make -j"${NPROC}"
 
       - name: Submit results
         if: env.TOKEN
         run: |
           tar zcf cov-scan.tgz cov-int
-          curl --form token=$TOKEN \
-            --form email=$EMAIL \
+          curl --form "token=$TOKEN" \
+            --form "email=$EMAIL" \
             --form file=@cov-scan.tgz \
             --form version="$(git rev-parse HEAD)" \
             --form description="Automatic GHA scan" \

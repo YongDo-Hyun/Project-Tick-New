@@ -80,7 +80,7 @@ Available binaries:
 [package]
 name = "tickborg"
 version = "0.1.0"
-authors = ["Project Tick Contributors"]
+authors = ["Project Tick"]
 build = "build.rs"
 edition = "2024"
 description = "Distributed CI bot for Project Tick monorepo"

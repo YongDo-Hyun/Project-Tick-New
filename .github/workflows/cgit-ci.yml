@@ -44,10 +44,10 @@ jobs:
       - name: Build git
         run: |
           cd git
-          make -j$(nproc 2>/dev/null || sysctl -n hw.logicalcpu) prefix=/usr/local NO_GETTEXT=1
+          make -j"$(nproc 2>/dev/null || sysctl -n hw.logicalcpu)" prefix=/usr/local NO_GETTEXT=1
 
       - name: Build cgit
-        run: make -j$(nproc 2>/dev/null || sysctl -n hw.logicalcpu)
+        run: make -j"$(nproc 2>/dev/null || sysctl -n hw.logicalcpu)"
 
       - name: Run tests
         run: make test || true

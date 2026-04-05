@@ -15,6 +15,8 @@ jobs:
           - name: Ubuntu GCC
             os: ubuntu-latest
             compiler: gcc
+            cflags: ""
+            ldflags: ""
             configure-args: --warn
 
           - name: Ubuntu Clang

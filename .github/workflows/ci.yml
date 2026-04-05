@@ -1,4 +1,4 @@
-# Copyright (C) Project Tick Contributors
+# Copyright (C) Project Tick
 # SPDX-License-Identifier: MIT
 #
 # ╔══════════════════════════════════════════════════════════════════╗
@@ -38,12 +38,12 @@ permissions:
 
 concurrency:
   group: >-
-    ci-${{
+    ci-${{ github.event_name }}-${{
       github.event_name == 'merge_group' && github.event.merge_group.head_ref ||
-      github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) ||
+      (github.event_name == 'pull_request' || github.event_name == 'pull_request_target') && format('pr-{0}', github.event.pull_request.number) ||
       github.ref
     }}
-  cancel-in-progress: ${{ github.event_name != 'merge_group' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 # ════════════════════════════════════════════════════════════════════
 # Environment — shared across all jobs
@@ -118,25 +118,30 @@ jobs:
 
       - name: Classify event
         id: classify
+        env:
+          GH_HEAD_REF: ${{ github.head_ref }}
+          GH_BASE_REF: ${{ github.base_ref }}
         run: |
+          # shellcheck disable=SC2129
           set -euo pipefail
 
           REF="${GITHUB_REF:-}"
           EVENT="${{ github.event_name }}"
           ACTOR="${{ github.actor }}"
-          HEAD_REF="${{ github.head_ref || '' }}"
-          BASE_REF="${{ github.base_ref || '' }}"
+          HEAD_REF="${GH_HEAD_REF:-}"
 
           # ── Booleans ──────────────────────────────────────────
-          echo "is_push=$([[ "$EVENT" == "push" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-          echo "is_pr=$([[ "$EVENT" == "pull_request" || "$EVENT" == "pull_request_target" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-          echo "is_merge_queue=$([[ "$EVENT" == "merge_group" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-          echo "is_tag=$([[ "$REF" == refs/tags/* ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-          echo "is_release_tag=$([[ "$REF" =~ ^refs/tags/(meshmc|neozip|mnv|cmark|forgewrapper)- ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-          echo "is_backport=$([[ "$HEAD_REF" == backport-* || "$HEAD_REF" == backport/* ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-          echo "is_dependabot=$([[ "$ACTOR" == "dependabot[bot]" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-          echo "is_master=$([[ "$REF" == "refs/heads/master" || "$REF" == "refs/heads/main" ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
-          echo "is_scheduled=false" >> "$GITHUB_OUTPUT"
+          {
+            echo "is_push=$([[ "$EVENT" == "push" ]] && echo true || echo false)"
+            echo "is_pr=$([[ "$EVENT" == "pull_request" || "$EVENT" == "pull_request_target" ]] && echo true || echo false)"
+            echo "is_merge_queue=$([[ "$EVENT" == "merge_group" ]] && echo true || echo false)"
+            echo "is_tag=$([[ "$REF" == refs/tags/* ]] && echo true || echo false)"
+            echo "is_release_tag=$([[ "$REF" =~ ^refs/tags/(meshmc|neozip|mnv|cmark|forgewrapper)- ]] && echo true || echo false)"
+            echo "is_backport=$([[ "$HEAD_REF" == backport-* || "$HEAD_REF" == backport/* ]] && echo true || echo false)"
+            echo "is_dependabot=$([[ "$ACTOR" == "dependabot[bot]" ]] && echo true || echo false)"
+            echo "is_master=$([[ "$REF" == "refs/heads/master" || "$REF" == "refs/heads/main" ]] && echo true || echo false)"
+            echo "is_scheduled=false"
+          } >> "$GITHUB_OUTPUT"
 
           # ── Run level ─────────────────────────────────────────
           # full    = merge queue, tags, master push, manual force-all
@@ -595,24 +600,6 @@ jobs:
   # ║  STAGE 7 — Release (tag pushes only)                          ║
   # ╚════════════════════════════════════════════════════════════════╝
 
-  meshmc-release:
-    name: "MeshMC Release"
-    needs: [gate, meshmc]
-    if: >-
-      always() &&
-      !cancelled() &&
-      needs.gate.outputs.is_tag == 'true' &&
-      startsWith(github.ref, 'refs/tags/meshmc-')
-    uses: ./.github/workflows/meshmc-build.yml
-    with:
-      build-type: Release
-      environment: Release
-    permissions:
-      contents: read
-      id-token: write
-      packages: write
-    secrets: inherit
-
   neozip-release:
     name: "NeoZip Release"
     needs: gate
@@ -663,12 +650,15 @@ jobs:
     steps:
       - name: Evaluate results
         run: |
+          # shellcheck disable=SC2129
           set -euo pipefail
 
-          echo "## CI Verdict" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "| Job | Result |" >> "$GITHUB_STEP_SUMMARY"
-          echo "|-----|--------|" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "## CI Verdict"
+            echo ""
+            echo "| Job | Result |"
+            echo "|-----|--------|"
+          } >> "$GITHUB_STEP_SUMMARY"
 
           FAILED=false
 
