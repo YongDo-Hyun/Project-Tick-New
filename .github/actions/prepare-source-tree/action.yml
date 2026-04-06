@@ -1,0 +1,60 @@
+# Copyright (C) Project Tick
+# SPDX-License-Identifier: MIT
+name: Prepare Source Tree
+description: >
+  Copy a project directory into a clean staging area, optionally bundle
+  docs/handbook/<project> and an extra library directory into the tree.
+
+inputs:
+  project:
+    description: "Project directory name (e.g. meshmc, neozip)"
+    required: true
+  bundle-handbook:
+    description: "Bundle docs/handbook/<project> into the source tree if it exists"
+    required: false
+    default: "true"
+  bundle-library-src:
+    description: "Extra directory to bundle into the source tree (e.g. libnbtplusplus)"
+    required: false
+    default: ""
+  bundle-library-dst:
+    description: "Destination path inside the source tree for the bundled library (e.g. libraries/libnbtplusplus)"
+    required: false
+    default: ""
+
+outputs:
+  source-dir:
+    description: "Path to the prepared source tree ready for archiving"
+    value: ${{ steps.prepare.outputs.source-dir }}
+
+runs:
+  using: composite
+  steps:
+    - name: Prepare source tree
+      id: prepare
+      shell: bash
+      env:
+        PROJECT: ${{ inputs.project }}
+        BUNDLE_HANDBOOK: ${{ inputs.bundle-handbook }}
+        BUNDLE_LIB_SRC: ${{ inputs.bundle-library-src }}
+        BUNDLE_LIB_DST: ${{ inputs.bundle-library-dst }}
+      run: |
+        set -euo pipefail
+
+        SRC_STAGE="source-stage"
+        mkdir -p "$SRC_STAGE"
+        cp -a "$PROJECT" "$SRC_STAGE/$PROJECT"
+
+        # Optionally bundle docs/handbook/<project>
+        if [ "$BUNDLE_HANDBOOK" = "true" ] && [ -d "docs/handbook/$PROJECT" ]; then
+          mkdir -p "$SRC_STAGE/$PROJECT/docs/handbook"
+          cp -a "docs/handbook/$PROJECT/." "$SRC_STAGE/$PROJECT/docs/handbook/"
+        fi
+
+        # Optionally bundle an extra library directory
+        if [ -n "$BUNDLE_LIB_SRC" ] && [ -n "$BUNDLE_LIB_DST" ]; then
+          mkdir -p "$SRC_STAGE/$PROJECT/$BUNDLE_LIB_DST"
+          cp -a "$BUNDLE_LIB_SRC/." "$SRC_STAGE/$PROJECT/$BUNDLE_LIB_DST/"
+        fi
+
+        echo "source-dir=$SRC_STAGE/$PROJECT" >> "$GITHUB_OUTPUT"
