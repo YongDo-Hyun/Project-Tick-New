@@ -1,0 +1,136 @@
+PROJECT TICK NETWORK SERVICE LICENSE
+Version 2, 2 February 2026
+
+---------------------------------------------------------------------------
+
+Copyright (C) 2026 Project Tick
+<https://projecttick.org/>
+
+Permission is hereby granted to any person or entity accessing or
+interacting with a network-accessible service governed by this License
+(the "Service") to use the Service subject to the terms and conditions
+set forth below.
+
+This License governs access to and use of network services, hosted
+deployments, and remotely accessible functionality.
+
+This License does not apply to software source code, datasets, media,
+or documentation, which may be licensed under separate terms.
+
+---------------------------------------------------------------------------
+
+1. Definitions
+
+"Service" means any network-accessible system, application, platform,
+API, endpoint, or hosted functionality made available by the licensor.
+
+"User" means any person or entity accessing or interacting with the
+Service, directly or indirectly.
+
+"API" means any programmatic interface, endpoint, or protocol exposed
+by the Service.
+
+"Commercial Use" means use of the Service in connection with
+monetization, paid access, advertising, subscription services,
+commercial products, or revenue-generating activities.
+
+"Abuse" means use of the Service in a manner that degrades, exploits,
+circumvents, or interferes with the normal operation, availability,
+or intended purpose of the Service.
+
+---------------------------------------------------------------------------
+
+2. Permitted Use
+
+Unless otherwise explicitly stated by the service operator, Users MAY:
+
+a) Access and use the Service for its intended purpose;
+b) Integrate with the Service using documented APIs;
+c) Build applications or services that interact with the Service,
+   subject to compliance with this License.
+
+---------------------------------------------------------------------------
+
+3. Restrictions
+
+Users MUST NOT:
+
+a) Circumvent authentication, access controls, rate limits, or usage
+   restrictions implemented by the Service;
+b) Scrape, harvest, or systematically extract data beyond what is
+   reasonably required for the intended use of the Service;
+c) Use the Service in a manner that constitutes Abuse;
+d) Reverse engineer, replicate, or substitute the Service itself.
+
+---------------------------------------------------------------------------
+
+4. Artificial Intelligence and Automated Use
+
+Unless otherwise explicitly authorized by the service operator:
+
+a) The Service MUST NOT be used for automated data harvesting,
+   model training, or large-scale analysis intended to replicate,
+   substitute, or compete with the Service;
+
+b) Automated access by bots, agents, or AI Systems must comply with
+   documented usage policies and technical limitations;
+
+c) Outputs obtained from the Service MUST NOT be used to enable
+   reconstruction of the Service’s internal logic, datasets, or
+   proprietary behavior.
+
+---------------------------------------------------------------------------
+
+5. Commercial Use
+
+Commercial Use of the Service MAY require a separate agreement,
+subscription, or license, as determined by the service operator.
+
+Nothing in this License grants an unconditional right to commercial
+use of the Service.
+
+---------------------------------------------------------------------------
+
+6. Service Availability and Changes
+
+The service operator MAY modify, suspend, or discontinue the Service,
+in whole or in part, at any time.
+
+No obligation is assumed to maintain backward compatibility,
+availability, or feature parity.
+
+---------------------------------------------------------------------------
+
+7. No Transfer of Rights
+
+This License grants no ownership or intellectual property rights in
+the Service, its implementation, or underlying systems.
+
+---------------------------------------------------------------------------
+
+8. No Warranty
+
+THE SERVICE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+AVAILABILITY, RELIABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+NON-INFRINGEMENT.
+
+---------------------------------------------------------------------------
+
+9. Limitation of Liability
+
+IN NO EVENT SHALL THE SERVICE OPERATOR BE LIABLE FOR ANY DAMAGES
+ARISING OUT OF OR IN CONNECTION WITH USE OF THE SERVICE.
+
+---------------------------------------------------------------------------
+
+10. Termination
+
+Any violation of this License may result in suspension or termination
+of access to the Service without notice.
+
+---------------------------------------------------------------------------
+
+END OF TERMS AND CONDITIONS
+
+---------------------------------------------------------------------------

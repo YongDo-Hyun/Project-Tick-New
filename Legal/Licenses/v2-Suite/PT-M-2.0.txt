@@ -1,0 +1,132 @@
+PROJECT TICK MEDIA LICENSE
+Version 2, 2 February 2026
+
+---------------------------------------------------------------------------
+
+Copyright (C) 2026 Project Tick
+<https://projecttick.org/>
+
+Permission is hereby granted to any person or entity obtaining a copy
+of the licensed media assets (the "Media") to use the Media subject to
+the terms and conditions set forth below.
+
+This License governs the use, modification, distribution, and display
+of non-code media assets.
+
+This License does not apply to software source code, datasets, or
+documentation, which may be licensed under separate terms.
+
+---------------------------------------------------------------------------
+
+1. Definitions
+
+"Media" means any visual, audio, or audiovisual asset, including but
+not limited to images, icons, logos, illustrations, textures, fonts,
+audio files, video files, animations, and user interface assets,
+provided under this License.
+
+"Derived Media" means any modification, adaptation, transformation,
+or combination of the Media that results in a new media asset.
+
+"Artificial Intelligence System" ("AI System") means any system,
+model, or process capable of generating, modifying, or analyzing
+media content using automated or machine learning techniques.
+
+"Reconstruction" means the ability of an AI System or other process
+to reproduce or generate media content that is substantially similar
+to the original Media in a recognizable form.
+
+"Commercial Use" means use of the Media in connection with
+monetization, paid access, advertising, subscription services,
+commercial products, or revenue-generating activities.
+
+---------------------------------------------------------------------------
+
+2. Permitted Uses
+
+Unless otherwise explicitly stated by the copyright holder, the Media
+MAY be used for:
+
+a) Viewing, displaying, and embedding the Media;
+b) Modifying or creating Derived Media;
+c) Distribution of the Media or Derived Media;
+d) Commercial and non-commercial purposes;
+e) Inclusion in software, websites, applications, or other products.
+
+---------------------------------------------------------------------------
+
+3. Attribution
+
+Any public use or distribution of the Media or Derived Media must
+include appropriate attribution acknowledging the original source,
+unless the Media is explicitly marked as attribution-free.
+
+---------------------------------------------------------------------------
+
+4. Redistribution
+
+The Media or Derived Media MAY be redistributed, provided that:
+
+a) Attribution requirements are preserved;
+b) Any modifications are clearly indicated;
+c) The redistribution does not misrepresent the origin of the Media.
+
+---------------------------------------------------------------------------
+
+5. Artificial Intelligence Use
+
+Unless otherwise explicitly stated by the copyright holder:
+
+a) The Media MAY be used as input to AI Systems for analysis,
+   classification, or transformation purposes;
+
+b) The Media MAY be used for training or fine-tuning AI Systems,
+   provided that such use does not enable Reconstruction of the Media;
+
+c) AI Systems trained on the Media MUST NOT enable Reconstruction of
+   the Media or generate substantially similar outputs;
+
+d) Use of the Media for training AI Systems intended primarily to
+   generate competing or substitute media assets is NOT permitted
+   unless expressly authorized by the copyright holder.
+
+---------------------------------------------------------------------------
+
+6. Prohibited Uses
+
+The Media MUST NOT be used for:
+
+a) Misrepresentation of authorship or origin;
+b) Use in a manner that infringes trademarks, publicity rights,
+   or applicable laws;
+c) Extraction or use intended to enable Reconstruction where such
+   Reconstruction is restricted.
+
+---------------------------------------------------------------------------
+
+7. No Patent or Trademark Grant
+
+This License does not grant any express or implied patent or trademark
+rights, except as necessary for permitted use of the Media.
+
+---------------------------------------------------------------------------
+
+8. No Warranty
+
+THE MEDIA IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+NON-INFRINGEMENT.
+
+---------------------------------------------------------------------------
+
+9. Termination
+
+Any violation of this License automatically and immediately terminates
+the permissions granted herein.
+
+---------------------------------------------------------------------------
+
+END OF TERMS AND CONDITIONS
+
+---------------------------------------------------------------------------

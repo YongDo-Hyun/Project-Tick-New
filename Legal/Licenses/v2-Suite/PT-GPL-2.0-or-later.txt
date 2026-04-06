@@ -1,0 +1,846 @@
+PROJECT TICK GENERAL PUBLIC LICENSE
+Version 2, 2 February 2026
+
+---------------------------------------------------------------------------
+
+Copyright (C) 2026 Project Tick <https://projecttick.org/>
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
+This License applies only to Works that explicitly state that
+they are licensed under "PT-GPL-2.0-or-later".
+
+---------------------------------------------------------------------------
+
+Preamble
+
+---------------------------------------------------------------------------
+
+The Project Tick General Public License is a copyright-based copyleft
+license intended for software programs, as designated by the applicable
+copyright holder. Unless expressly stated otherwise, this License
+applies to the Work solely in its capacity as software.
+
+This License is designed to ensure that recipients of a covered Work
+can effectively access, study, modify, and share that Work, under
+uniform and non-discriminatory terms that preserve those same freedoms
+for all downstream recipients.
+
+Where a covered Work is conveyed, access to its preferred form for
+modification must be provided in accordance with this License. A copy
+of this License must accompany all conveyances of the Work.
+
+Each contributor to a covered Work grants a non-exclusive, worldwide,
+royalty-free patent license limited to what is necessary to exercise
+the rights granted under this License with respect to that contributor’s
+contributions.
+
+This License establishes a single and uniform set of rights and
+obligations. Certain obligations related to network-based operation
+apply only where the copyright holder has expressly enabled them by an
+Explicit Network Use Notice, as defined in this License.
+
+Where a Work is licensed under "PT-GPL-2.0-or-later", the licensee
+may, at their option, apply the terms of this License or any Later
+Version published by Project Tick. No obligation exists to adopt a
+Later Version, and the choice of applicable version rests solely
+with the licensee. Any recipient who receives a Work under this
+option may likewise exercise the same choice with respect to that
+Work.
+
+The binding terms governing use, modification, operation, and
+conveyance of covered Works are set forth below.
+
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+------------------------ TERMS AND CONDITIONS -----------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+------------------ PART I — CORE RIGHTS AND OBLIGATIONS -------------------
+The provisions of this Part define the essential permissions, conditions, -
+and obligations of this License. Compliance with this Part is mandatory for
+any use, modification, operation, or conveyance of a covered Work. --------
+---------------------------------------------------------------------------
+
+I. Definitions.
+
+"This License" refers to the Project Tick General Public License,
+Version 2, as applied under the "or later" option where specified.
+
+"Compatible License" means a license that is compatible with this
+License under applicable copyright law, without imposing additional
+restrictions on the exercise of the rights granted under this License.
+
+"Copyright" refers to laws similar to copyright that apply to other
+types of Works, such as semiconductor chips.
+
+"Work" means a software program licensed under this License.
+Each licensee is referred to as "you". "Recipients" may be
+individuals or organizations.
+
+"Later Version" means any subsequent version of the Project Tick
+General Public License published by Project Tick.
+
+To "modify" a Work means to copy from or adapt all or part of the
+Work in a fashion requiring copyright permission, other than the
+making of an exact copy.  The resulting Work is called a "modified
+version" of the earlier Work or a Work "based on" the earlier Work.
+
+To "convey" a Work means any kind of propagation that enables other
+parties to make or receive copies of the Work. Mere interaction with
+a user through a computer network, without the transfer of a copy,
+does not by itself constitute conveying.
+
+"Explicit Network Use Notice" means a clear and prominent notice
+placed by the copyright holder stating that operation of the Work
+through a computer network shall be treated as conveying for the
+purposes of source availability. The presence or absence of an
+Explicit Network Use Notice does not alter the scope of rights
+granted under this License, but only determines whether specific
+source availability obligations related to network-based operation
+are triggered.
+
+To "operate" a Work means to run, deploy, or make functional use
+of the Work for the primary purpose of providing its functionality
+or output to third parties as a service or system, whether directly
+or indirectly, including through a computer network, where such parties
+are not under the direct control of the operator.
+
+A "Library Work" is a Work that is designed to provide reusable
+functionality intended to be linked, imported, or otherwise combined
+with other independent Works, without, by its nature, forming a single
+Combined Work merely by being present.
+
+A "Combined Work" is a Work produced by linking, importing, or
+otherwise combining a Library Work with another independent Work,
+whether statically or dynamically.
+
+An interactive user interface displays "Appropriate Legal Notices"
+to the extent that it includes a convenient and prominently visible
+feature that (1) displays an appropriate copyright notice, and (2)
+tells the user that there is no warranty for the Work (except to the
+extent that warranties are provided), that licensees may convey the
+Work under this License, and how to view a copy of this License.
+
+---------------------------------------------------------------------------
+
+II. Source Code and Corresponding Resource.
+
+"Source Code" means the preferred form of the Work for making
+modifications to it. It includes all files, definitions, scripts,
+build instructions, and materials necessary to understand, modify,
+build, install, and run the Work in practice, in a form that is
+reasonably suitable for editing. "Object Code" means any form of
+the Work that is not Source Code. Deliberate obfuscation, minification,
+code generation output without the corresponding human-readable input,
+or any other transformation that materially impairs the readability,
+auditability, or modifiability of the Work shall not be considered
+Source Code. "Standard Interface" refers to either a formal standard
+defined by a recognized standards organization, or, where applicable,
+an interface that is widely used and publicly documented among
+practitioners working in the relevant language, platform, or
+ecosystem. The "System Libraries" of an executable Work include
+components that (1) are included as part of the normal packaging
+of a Main Component, but are not part of the Work itself, and (2)
+serve only to enable use of the Work with that Main Component or
+with an implementation of a Standard Interface. In this context,
+a "Main Component" refers to a kernel, operating system, window
+system, compiler, runtime, or object code interpreter used to run
+the Work. For a Work conveyed in object code or other non-source form,
+"Corresponding Resource" means all Source Code required to generate,
+install, run, and modify the Work, including build scripts, interface
+definitions, and supporting code specifically designed to enable the
+generation, installation, operation, or modification of the Work.
+Without limiting the generality of the foregoing, this includes
+configuration, integration, or deployment components that are
+specifically written to make the covered Work function in its
+intended operational context. The Corresponding Resource does not
+include System Libraries, general-purpose development tools, or
+third-party components that are not derived from the Work and are
+not required for its modification or the exercise of rights granted
+under this License. Any portion of the Work that is licensed under this
+License must remain licensed under this License. This License does not
+require relicensing of independent third-party components. For a Work
+conveyed in Source Code form, the Source Code itself constitutes the
+Corresponding Resource.
+
+---------------------------------------------------------------------------
+
+III. Transmission of Modified Source Versions.
+
+You may convey a Work based on the Work, or modifications derived from
+the Work, in Source Code form under the terms of this License, provided
+that you also comply with all of the following conditions:
+
+  a) The modified Work must contain prominent notices stating that you
+     have modified it, together with the date of each such modification.
+
+  b) The modified Work must contain clear notices stating that it is
+     licensed under this License, together with any applicable additional
+     permissions expressly permitted under this License. Such notices may
+     replace or update existing notices to accurately reflect the modified
+     status of the Work.
+
+  c) You must license the modified Work, as a whole, under this License
+     to any recipient who receives a copy of it. This License, and any
+     applicable additional permissions permitted by it, shall therefore
+     apply to the modified Work and all of its parts, regardless of how they
+     are packaged or distributed.
+
+This License does not permit relicensing of the modified Work under
+different terms. However, this provision does not invalidate permissions
+that you may have obtained separately and independently from the
+copyright holders of portions of the Work.
+
+  d) If the modified Work includes interactive user interfaces, such
+     interfaces must display Appropriate Legal Notices, unless the original
+     Work did not include such notices and the nature of the interface makes
+     their display impractical or unreasonable.
+
+  e) If the modified Work is a Library Work, the Library Work itself must
+     remain licensed under this License. Linking, importing, or otherwise
+     using a Library Work in combination with other independent Works does
+     not remove or alter the obligations imposed by this License on the
+     Library Work itself, nor does it grant permission to relicense the
+     Library Work under different terms.
+
+A compilation of a covered Work with other separate and independent
+Works that are not, by their nature, extensions of the covered Work and
+that are not combined with it to form a single unified Work is referred
+to as an "aggregate". The inclusion of a covered Work in an aggregate
+does not cause this License to apply to the other Works in the aggregate,
+provided that the compilation and its conveyance do not impose
+additional restrictions on the rights granted under this License with
+respect to the covered Work.
+
+---------------------------------------------------------------------------
+
+IV. Transmission of Non-Source Formats.
+
+"User Product" means (1) any tangible personal property which is
+normally used for personal, family, or domestic purposes, and (2)
+anything designed or sold for incorporation into a dwelling. In
+determining whether a product is a User Product, doubtful cases shall
+be resolved in favor of coverage. For a particular product received
+by a particular user, "normally used" refers to the typical or common
+use of that class of product, regardless of the status of the particular
+user or the way in which the particular user actually uses, expects
+to use, or is expected to use the product.
+
+"Installation Information" for a User Product means any methods,
+procedures, authorization keys, or other information required to
+install and run modified versions of a covered Work in that User
+Product from a modified version of its Corresponding Resource. The
+information must be sufficient to ensure that the continued operation
+of the modified object code is not prevented or interfered with solely
+because the Work has been modified.
+
+For the purposes of this Section, "Network Interaction" means operation
+of a Work through a computer network primarily for the purpose of
+providing its functionality or output to third parties, regardless of
+whether a copy of the Work is transferred.
+
+The purpose of this provision is solely to ensure that recipients
+interacting with a covered Work through a network are afforded the
+same practical freedoms to access, study, and modify the Work as
+recipients who receive copies through traditional distribution.
+
+Operating a covered Work through Network Interaction primarily for the
+purpose of providing its functionality or output to the public shall be
+deemed conveying the Work solely for the purpose of triggering the
+source availability obligations set forth in this License, where the
+copyright holder has expressly required such treatment by an Explicit
+Network Use Notice.
+
+This does not include internal, private, testing, development,
+or incidental uses that do not primarily provide the Work’s functionality
+to the public. In accordance with this License, you may convey a
+covered Work in object code or other non-source form, provided that the
+Corresponding Resource of the Work is made available under the terms of
+this License in a machine-readable form. The Corresponding Resource must
+be made available in a manner that is no less accessible, timely, and usable
+than the object code itself.
+
+  a) You may convey the object code in, or embodied in, a physical
+     product (including a physical distribution medium), accompanied by
+     the Corresponding Resource fixed on a durable physical medium
+     customarily used for software exchange.
+
+  b) You may convey the object code in, or embodied in, a physical
+     product (including a physical distribution medium), accompanied by a
+     written offer, valid for at least three years and for as long as you
+     offer spare parts, updates, or customer support for that product
+     model, to provide any recipient with either:
+
+       (1) a copy of the Corresponding Resource for all covered Works in
+           the product, on a durable physical medium customarily used for
+           software exchange, for a price no higher than the reasonable
+           cost of physically performing this transmission; or
+
+       (2) immediate and unrestricted access to copy the Corresponding
+           Resource through any reasonable and publicly accessible means.
+
+The refusal or non-acceptance of such a written offer by any recipient
+does not relieve you of the obligation to ensure that the
+Corresponding Resource remains publicly available under this License
+for the duration required by this Section.
+
+  c) You may convey individual copies of the object code together with a
+     copy of the written offer described in subsection (b), but only
+     occasionally, for non-commercial purposes, and only if you received
+     the object code accompanied by such an offer.
+
+  d) You may convey the object code by offering access from a designated
+     location, free of charge or for a fee, provided that equivalent access
+     to the Corresponding Resource is offered in the same manner, without
+     delay, additional conditions, or practical barriers. If the object
+     code is offered from a network server, the Corresponding Resource may
+     be hosted on a different server operated by you or by a third party,
+     provided that clear, prominent, and persistent instructions are given
+     alongside the object code indicating where and how the Corresponding
+     Resource may be obtained.
+
+Any technical, contractual, procedural, or policy-based measure that
+has the effect of discouraging, delaying, conditioning, or preventing
+access to the Corresponding Resource constitutes a failure to comply
+with the requirements of this License.
+
+  e) You may convey the object code using peer-to-peer transmission,
+     provided that you clearly inform all peers where the object code and
+     the Corresponding Resource are being offered to the general public,
+     free of charge, under the terms of this License.
+
+A separable portion of the object code whose source is excluded from
+the Corresponding Resource as a System Library need not be included in
+the transmission of the object code. If you convey an object code Work
+under this Section in, with, or specifically for use in a User Product,
+and the conveyance occurs as part of a transaction transferring the right
+of possession or use of the User Product to the recipient, the Corresponding
+Resource must be accompanied by the Installation Information. This requirement
+does not apply if neither you nor any third party retains the ability to
+install modified object code on the User Product. The Corresponding Resource
+and any Installation Information provided under this Section must be in a
+publicly documented format, must not impose additional restrictions that
+materially limit the practical ability of recipients to exercise the rights
+granted under this License to access, and must remain available for as long
+as necessary to satisfy the requirements of this License.
+
+---------------------------------------------------------------------------
+
+V. Termination.
+
+You may not convey, or modify a covered Work except as
+expressly permitted under this License. Any attempt to do so otherwise
+is void and shall automatically terminate your rights under this
+License. However, if you cease all violations of this License, your
+rights under this License from a particular copyright holder are
+reinstated provisionally, unless and until that copyright holder
+explicitly and finally terminates those rights.
+
+Your rights are reinstated permanently if the copyright holder fails to
+notify you of the violation by reasonable means within sixty (60) days
+after the cessation of the violation.
+
+Additionally, your rights are reinstated permanently if this is the
+first time you have received notice of a violation of this License from
+that copyright holder, and you cure the violation within thirty (30)
+days after receiving such notice.
+
+Termination of your rights under this Section does not terminate the
+licenses of any parties who have received copies of the Work, or rights
+under this License, from you prior to such termination.
+
+---------------------------------------------------------------------------
+
+VI. Acceptance Not Required for Possession or Use.
+
+You are not required to accept this License in order to receive,
+possess, or use a copy of a covered Work. The mere act of downloading,
+receiving, storing, or executing the Work does not constitute acceptance
+of this License.
+
+Propagation or conveyance of a covered Work that occurs solely as an
+automatic, incidental, or passive consequence of using a network,
+distribution system, or peer-to-peer transmission to receive a copy
+likewise does not require acceptance of this License.
+
+However, nothing other than this License grants you permission to
+convey, or modify a covered Work. Any such actions without
+authorization under this License constitute copyright infringement.
+
+By propagating, conveying, or modifying a covered Work, you indicate
+your acceptance of this License and all of its terms and conditions
+with respect to those actions.
+
+---------------------------------------------------------------------------
+
+VII. Automatic Licensing of Downstream Recipients.
+
+The license granted to recipients of a covered Work arises solely by
+operation of this License and not by virtue of any separate agreement,
+contract, or policy.
+
+Each time you convey a covered Work, the recipient automatically
+receives a license directly from the original licensors to use,
+operate, study, modify, and convey that Work, subject to the terms and
+conditions of this License.
+
+You are not responsible for enforcing compliance with this License by
+third parties.
+
+An "entity transaction" means a transaction that transfers control of
+an organization, transfers substantially all of its assets, subdivides
+an organization, or merges organizations. If conveyance of a covered
+Work results from an entity transaction, each party to that transaction
+who receives a copy of the Work also receives any licenses to the Work
+that the predecessor in interest had or could grant under this License,
+together with the right to receive the Corresponding Resource of the
+Work, if the predecessor possesses it or can obtain it with reasonable
+effort.
+
+You may not impose any additional legal, contractual, technical, or
+policy-based restrictions on the exercise of the rights granted or
+affirmed under this License. Any attempt to impose such further
+restrictions is void and shall not affect the rights of recipients
+under this License.
+
+---------------------------------------------------------------------------
+
+VIII. Patents.
+
+A "Contributor" is a copyright holder who authorizes the use of a
+covered Work under this License. The Work so licensed is referred to
+as the Contributor’s "Contributor Version".
+
+Each Contributor grants to every recipient of the Contributor Version
+a non-exclusive, worldwide, royalty-free, irrevocable patent license
+under any patent claims owned or controlled by that Contributor, to
+the extent that such claims are necessarily infringed by the use,
+operation, modification, or conveyance of the Contributor Version in
+a manner permitted by this License.
+
+This patent license applies only to those patent claims that are
+unavoidably infringed by exercising the rights granted under this
+License with respect to the Contributor Version. It does not extend
+to patent claims that would be infringed solely as a result of further
+modification, combination, or use beyond the scope of the Contributor
+Version.
+
+If you convey a covered Work, you may not rely on, assert, or enforce
+any patent license, agreement, covenant, or arrangement that would
+result in any recipient being denied the full exercise of the rights
+granted under this License.
+
+Any patent license granted in connection with a covered Work must be
+non-discriminatory and must extend equally to all recipients of that
+Work under this License.
+
+Nothing in this License shall be construed as limiting, excluding, or
+waiving any implied patent license, patent exhaustion doctrine, or
+other defenses to patent infringement that may be available under
+applicable law.
+
+---------------------------------------------------------------------------
+
+IX. Linking and Combined Works.
+
+A Library Work covered by this License may be linked, combined, or
+otherwise integrated with an independent Work, whether statically or
+dynamically, without causing this License to apply to the independent
+Work as a whole, provided that the terms of this Section are satisfied.
+
+The Library Work itself, and any modifications to it, must remain
+licensed under this License. Any party conveying a modified version of
+the Library Work, or a Combined Work containing a modified Library Work,
+must comply with the terms of this License with respect to the Library
+Work.
+
+You must not restrict the ability of recipients to modify the Library
+Work and to relink or otherwise use a modified version of the Library
+Work with the Combined Work. This includes providing the necessary
+source code, interface information, and build mechanisms required to
+enable such modification and relinking.
+
+A Combined Work that merely links to, imports, or uses a Library Work
+through its defined interfaces shall not be required to be licensed
+under this License, provided that the Library Work remains separable
+and replaceable.
+
+Mere aggregation of independent Works, or communication between
+independent Works through standard interfaces, inter-process
+communication, command-line invocation, or network protocols, does not
+by itself cause this License to apply to such independent Works.
+
+---------------------------------------------------------------------------
+
+X. Equal Access to Corresponding Resource.
+
+Where access to a covered Work or its Corresponding Resource is granted
+to any recipient, such access must be provided in a manner consistent
+with the requirements of this License and must not impose additional
+restrictions that materially and demonstrably impair the ability of
+recipients to exercise the rights granted herein.
+
+Differences in timing, format, location, or method of access shall not
+constitute a violation of this License unless they have the practical
+effect of preventing or significantly hindering recipients from
+understanding, modifying, or reusing the Work.
+
+The Corresponding Resource must be provided in a form that is reasonably
+usable and modifiable by a competent developer using commonly available
+tools.
+
+---------------------------------------------------------------------------
+
+XI. Protection of Contributor Rights.
+
+No agreement, policy, contract, or other arrangement may retroactively
+restrict, revoke, or nullify the rights granted to a Contributor under
+this License with respect to their contributions.
+
+Any additional agreement affecting a Contributor’s contributions must
+not diminish the permissions, freedoms, or protections granted by this
+License to that Contributor or to recipients of the covered Work.
+
+If conditions are imposed upon you, whether by court order, agreement,
+policy, or otherwise, that contradict the conditions of this License,
+such conditions do not excuse you from complying with this License. If
+you cannot convey a covered Work in a manner that simultaneously
+satisfies your obligations under this License and any other applicable
+obligations, then you may not convey the covered Work at all.
+
+You may not impose, accept, or pass through any obligation that has the
+effect of restricting, conditioning, or discouraging the exercise of
+the rights granted under this License by recipients of the covered Work.
+For example, if you agree to terms that require the collection of fees,
+royalties, or other consideration as a condition of further conveyance,
+and such terms are incompatible with this License, you must refrain
+entirely from conveying the covered Work under those terms.
+
+---------------------------------------------------------------------------
+
+XII. Uniform Exercise of Rights.
+
+Where a covered Work is conveyed, distributed, or made available in
+object code, executable, operational, or service form, the
+Corresponding Resource for that Work must be made available under this
+License no later than the time at which such form is first provided to
+any recipient.
+
+A difference in timing, manner, or conditions under which access to the
+Work or its Corresponding Resource is provided shall constitute a
+violation of this License only where such difference materially prevents
+recipients from exercising the rights granted under this License.
+
+The rights granted under this License apply equally to all recipients
+and all fields of endeavor. No restriction or condition may be imposed
+that limits the exercise of such rights based on the nature, identity,
+or purpose of the recipient.
+
+The rights granted under this License may not be negated or restricted
+by separate agreements, policies, or contractual terms to the extent
+that such terms conflict with this License.
+
+Where a covered Work is operated as part of a larger system, service,
+or deployment, the Corresponding Resource shall include only the source
+code of the covered Work itself and any modifications thereto, and does
+not require the disclosure of independent works or system components
+that are not derived from the covered Work.
+
+---------------------------------------------------------------------------
+
+XIII. Disclaimer of Warranty.
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE WORK IS PROVIDED
+"AS IS" AND WITHOUT WARRANTY OF ANY KIND. EXCEPT WHERE OTHERWISE
+EXPRESSLY STATED IN WRITING, THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+PROVIDE THE WORK WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR
+A PARTICULAR PURPOSE, TITLE, OR NON-INFRINGEMENT. THE ENTIRE RISK AS TO
+THE QUALITY, PERFORMANCE, AND FUNCTIONALITY OF THE WORK IS WITH YOU.
+SHOULD THE WORK PROVE DEFECTIVE OR FAIL TO OPERATE AS EXPECTED, YOU
+ASSUME ALL COSTS OF NECESSARY SERVICING, REPAIR, CORRECTION, OR REMEDIATION.
+
+---------------------------------------------------------------------------
+
+XIV. Limitation of Liability.
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL
+ANY COPYRIGHT HOLDER, CONTRIBUTOR, OR ANY OTHER PARTY WHO MODIFIES,
+CONVEYS, OR OTHERWISE MAKES THE WORK AVAILABLE BE LIABLE TO YOU FOR
+ANY DAMAGES OF ANY KIND, INCLUDING, WITHOUT LIMITATION, DIRECT,
+INDIRECT, GENERAL, SPECIAL, INCIDENTAL, CONSEQUENTIAL, EXEMPLARY, OR
+PUNITIVE DAMAGES, ARISING OUT OF OR IN CONNECTION WITH THE USE OF, OR
+INABILITY TO USE, THE WORK, EVEN IF SUCH PARTY HAS BEEN ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGES.
+
+---------------------------------------------------------------------------
+
+XV. Interpretation of Sections XIII and XIV.
+
+If the disclaimer of warranty or limitation of liability set forth in
+Sections XIII and XIV of this License cannot be given full legal effect
+under applicable local law, such provisions shall be enforced to the
+maximum extent permitted by that law.
+
+In such cases, courts shall apply the local law in a manner that most
+closely approximates an absolute exclusion or limitation of civil
+liability in connection with the Work, consistent with the intent of
+Sections XIII and XIV, unless a warranty or assumption of liability
+accompanies a copy of the Work in return for a fee.
+
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+-------- PART II — NETWORK-BASED OPERATION AND PLATFORM CONSTRAINTS--------
+This Part clarifies how the core obligations of this License apply when ---
+a covered Work is operated, deployed, or made available as part of a ------
+network-accessible service or managed system. THIS PART IS INTERPRETATIVE
+AND PURELY CLARIFYING. IN THE EVENT OF ANY CONFLICT, THE PROVISIONS OF PART
+I SHALL PREVAIL. Nothing in this Part creates additional permissions,
+obligations, or restrictions beyond those expressly set forth in Part I.
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+
+I. Design Intent and Scope (Non-Normative)
+
+This License is intentionally designed to address deployment models
+and technical realities that are insufficiently covered by existing
+copyleft licenses, including but not limited to:
+
+- Network-based service operation without distribution
+- Managed deployment environments and platform-controlled systems
+- Modern software supply chains involving orchestration and service glue
+
+The operative provisions of this License reflect these goals directly.
+This explanatory section is non-normative and does not modify the legal
+terms of the License.
+
+---------------------------------------------------------------------------
+
+II. Authority of Interpretation.
+
+The terms of this License shall be interpreted according to their
+plain meaning and intent, as expressed in the text of this License,
+and in accordance with applicable law. No person or organization may
+grant permissions, exceptions, or interpretations that purport to
+modify the terms of this License or impose additional obligations
+beyond those expressly stated herein, except by the applicable
+copyright holder with respect to their own contributions.
+No external statements or materials may alter the terms of
+this License.
+
+---------------------------------------------------------------------------
+
+III. Protection of Users’ Legal Rights Against Technological Measures.
+
+No covered Work shall be considered part of an effective technological
+measure under Article 11 of the WIPO Copyright Treaty of 20 December 1996,
+or any similar law, to the extent that such a measure is used primarily
+to restrict or prohibit the exercise of rights granted under this License.
+
+By licensing, conveying, or otherwise applying this License to a Work,
+you agree not to assert any legal right to prohibit or restrict the
+circumvention of technological measures where such circumvention is
+necessary to exercise the rights granted under this License.
+
+This Section does not prohibit the use of technical mechanisms that are
+designed solely to ensure system integrity, security, authenticity, or
+reliable distribution, including but not limited to secure boot
+mechanisms, cryptographic signature verification, or platform-level
+distribution requirements, provided that such mechanisms do not prevent
+recipients from accessing, modifying, or conveying the Corresponding
+Resource of the covered Work under the terms of this License.
+
+Any technological, contractual, legal, or policy-based mechanism that,
+in practice, conditions access to the Corresponding Resource on payment,
+exclusive agreements, subscription status, customer classification, or
+acceptance of terms inconsistent with this License shall be deemed a
+technological measure for the purposes of this Section.
+
+Platform policies or distribution requirements that apply uniformly,
+without discrimination, and that do not restrict the availability or
+exercise of rights granted under this License shall not, by themselves,
+constitute a violation of this Section.
+
+---------------------------------------------------------------------------
+
+IV. Additional Terms.
+
+Nothing in this License grants permission to relicense a Work in a
+manner not permitted by the terms under which that Work was originally
+licensed.
+
+"Additional permissions" are terms that supplement this License by
+granting limited exceptions to one or more of its conditions, without
+removing, weakening, or contradicting the core requirements of this
+License.
+
+Additional permissions that apply to an entire Work shall be treated
+as incorporated into this License with respect to that Work, to the
+extent that they are valid under applicable law. Where additional
+permissions apply only to a specific portion of a Work, that portion
+may be used under those permissions, provided that the Work as a whole
+remains governed by this License.
+
+When conveying a Work covered by this License, you are not required to
+propagate additional permissions that were granted by a previous
+contributor, unless such permissions are inseparable from the material
+to which they apply. Additional permissions may also be removed when
+modifying the Work, where such removal is necessary to preserve the
+consistency or intent of this License.
+
+You may place additional permissions on material added by you to a
+covered Work, provided that you have the authority to grant such
+permissions for that material.
+
+Notwithstanding the other provisions of this License, additional
+permissions applicable to material added by you may include terms
+that:
+
+  a) disclaim warranty or limit liability for that material;
+
+  b) require that reasonable legal notices or author attributions be
+     preserved in Appropriate Legal Notices associated with that material;
+
+  c) prohibit misrepresentation of the origin of that material or require
+     that modified versions be clearly marked as such;
+
+  d) restrict the promotional use of the names of licensors or authors
+     of that material;
+
+  e) disclaim any rights under trademark law to use specific trade names,
+     trademarks, or service marks associated with that material.
+
+No additional permission may impose conditions that restrict, negate,
+or circumvent the obligations of this License concerning source
+availability, copyleft requirements, network-based use, or the rights
+of recipients to use, modify, and redistribute the Work.
+
+Where additional permissions apply to a Work, the applicable source
+files must include a clear notice describing those permissions or
+indicating where the full text of such permissions may be found.
+
+Notwithstanding the copyleft requirements of this License, a covered
+Work may be combined, linked, or otherwise used together with a Work
+licensed under a Compatible License, provided that such
+combination does not impose additional restrictions on the covered
+Work beyond those permitted by this License.
+
+A Work licensed under a Compatible License shall be
+considered, for the purposes of this License, to be license-compatible
+with this License. Such compatibility applies solely for the purposes
+of combination, linking, and interoperability, and does not alter the
+copyleft requirements applicable to the covered Work itself.
+
+The designation of a Compatible License does not grant
+permission to relicense a covered Work under that license, unless such
+permission is expressly stated by the applicable copyright holder.
+
+---------------------------------------------------------------------------
+
+V. Essential Permissions.
+
+All rights granted under this License are granted for the full term of
+copyright applicable to the Work and are irrevocable, provided that
+the conditions of this License are satisfied. Subject to the terms and
+conditions of this License, you are permitted to use, operate, study,
+modify, and convey the Work. Operation of an unmodified Work for private,
+internal, testing, development, or evaluation purposes does not, by itself,
+impose any obligation to convey the Work or make its Corresponding Resource
+available, except where expressly stated in this License.
+
+You may convey the Work, in original or modified form, provided that
+each recipient receives the same rights and obligations under this
+License, and that no additional restrictions are imposed on the
+exercise of those rights.
+
+You may engage third parties to perform activities on your behalf
+relating to the creation, modification, operation, or display of the
+Work, provided that such activities are carried out under your
+authorization and that no copies of the Work are retained, conveyed,
+or made available beyond the scope of that engagement, except as
+permitted under this License.
+
+If the Work, or a modified version of the Work, is operated primarily
+for the purpose of providing its functionality or output to third
+parties through a computer network, including via hosted, remote,
+or internet-accessible services, such operation shall be treated
+as conveyance solely for the limited purpose of triggering source
+availability obligations expressly identified in this License, and
+shall not be construed as a general conveyance for any other purpose.
+In such cases, the Corresponding Resource of the Work must be made
+publicly available under this License in a reasonable, timely, and
+accessible manner, at no additional charge.
+
+Any output resulting from the operation of the Work is covered under
+this License only to the extent that such output itself constitutes,
+in whole or in part, a covered Work or a derivative thereof.
+
+Sublicensing of the Work as a separate license grant is not permitted.
+All rights granted to recipients arise solely from this License and not
+from any separate license grant by an intermediary. This License may
+not be applied to a Work in a manner that subjects the same Work, in
+whole or in part, to additional or conflicting license terms. Relicensing
+of the Work is permitted only where explicitly authorized under the terms
+of this License.
+
+V.a Network-Based Operation
+
+The obligations described in this License apply independently of the
+method by which the Work is made available, including where the Work is
+operated to provide functionality to third parties through a network.
+
+---------------------------------------------------------------------------
+
+VI. Transmission of Identical Copies.
+
+You may convey exact, unmodified copies of the Work, as received, in any
+medium, provided that you conspicuously and appropriately publish on
+each copy an appropriate copyright notice; keep intact all notices
+stating that this License applies to the Work and that no warranty is
+provided; and provide all recipients with a copy of this License.
+
+The conveyance of identical copies under this Section shall not impose
+any technical, contractual, procedural, or practical restrictions that
+would limit or interfere with the recipients’ ability to access, copy,
+modify, or redistribute the Work in accordance with the terms of this
+License.
+
+Where identical copies of the Work are made available to any recipient
+through online services, subscription-based systems, or controlled
+access platforms, the Corresponding Resource for that Work must be made
+publicly available under this License no later than the time such copies
+are first made available to any recipient. Such availability shall not
+be conditioned on exclusive agreements, non-disclosure obligations,
+account registration, payment, or acceptance of terms inconsistent with
+this License.
+
+Nothing in this License prohibits charging a fee for the physical act of
+transferring a copy, or for providing services such as support,
+maintenance, or warranty protection. However, such fees or services
+shall not be used to restrict, delay, condition, or discourage access
+to the Work or its Corresponding Resource.
+
+Distribution of the Work through application stores, repositories, or
+other controlled platforms is permitted only to the extent that such
+distribution does not impose additional restrictions beyond those
+permitted by this License.
+
+Clear, prominent, and persistent instructions for obtaining the
+Corresponding Resource must be provided alongside the Work, and such
+resource must be accessible to the general public through any reasonable
+and publicly accessible means without undue barriers.
+
+For the avoidance of doubt, Corresponding Resource includes only
+those configuration or integration components that are specifically
+written to make the covered Work function as a network-accessible
+service, and does not include general infrastructure or unrelated
+systems. This obligation applies regardless of whether such code is
+characterized as “glue code”, “infrastructure code”, or “deployment
+configuration”.
+
+---------------------------------------------------------------------------
+
+END OF TERMS AND CONDITIONS
+
+---------------------------------------------------------------------------

@@ -1,0 +1,161 @@
+PROJECT TICK TERMS OF SERVICE
+Version 2, 2 February 2026
+
+---------------------------------------------------------------------------
+
+1. Acceptance of Terms
+
+By accessing or using the Project Tick website, services, or related
+online platforms (collectively, the “Services”), you agree to be bound
+by these Terms of Service (“Terms”).
+
+If you do not agree to these Terms, you must not access or use the
+Services.
+
+---------------------------------------------------------------------------
+
+2. Scope of These Terms
+
+These Terms govern website access and online services only.
+
+They do not apply to:
+	•	software distributed under an open-source license;
+	•	proprietary or enterprise software governed by a separate EULA;
+	•	third-party services governed by their own terms.
+
+Applicable software licenses always take precedence over these Terms.
+
+---------------------------------------------------------------------------
+
+3. Eligibility and Accounts
+
+You may access the Services without creating an account.
+
+Certain features may require account registration.
+You are responsible for maintaining the confidentiality of your account
+credentials and for all activities conducted under your account.
+
+You must provide accurate and current information.
+
+---------------------------------------------------------------------------
+
+4. Acceptable Use
+
+You agree not to:
+	•	misuse, disrupt, or interfere with the Services;
+	•	attempt unauthorized access to systems or data;
+	•	submit false, misleading, or unlawful information;
+	•	use the Services for illegal or abusive purposes;
+	•	circumvent technical or security measures.
+
+Project Tick reserves the right to restrict or terminate access for
+violations of these Terms.
+
+---------------------------------------------------------------------------
+
+5. User Content
+
+If you submit content (including but not limited to text, feedback,
+reports, or form submissions), you grant Project Tick a non-exclusive,
+royalty-free right to use such content for the operation and improvement
+of the Services.
+
+You represent that you have the legal right to submit such content.
+
+---------------------------------------------------------------------------
+
+6. Intellectual Property
+
+All content, branding, design, and materials provided through the
+Services are owned by Project Tick or its licensors, unless otherwise
+stated.
+
+No rights are granted except as necessary to use the Services.
+
+Project Tick trademarks and branding may not be used without prior
+written permission.
+
+---------------------------------------------------------------------------
+
+7. Availability and Modifications
+
+The Services are provided on an “as available” basis.
+
+Project Tick may modify, suspend, or discontinue any part of the
+Services at any time without prior notice.
+
+No service level or uptime guarantee is provided unless explicitly
+stated.
+
+---------------------------------------------------------------------------
+
+8. Third-Party Links and Services
+
+The Services may include links to third-party websites or services.
+
+Project Tick is not responsible for third-party content, policies, or
+practices. Use of third-party services is at your own risk.
+
+---------------------------------------------------------------------------
+
+9. Disclaimer of Warranties
+
+THE SERVICES ARE PROVIDED “AS IS” AND “AS AVAILABLE”.
+
+PROJECT TICK DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+
+---------------------------------------------------------------------------
+
+10. Limitation of Liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, PROJECT TICK SHALL NOT BE LIABLE
+FOR ANY INDIRECT, INCIDENTAL, CONSEQUENTIAL, OR EXEMPLARY DAMAGES.
+
+TOTAL LIABILITY SHALL NOT EXCEED THE AMOUNT PAID BY YOU FOR ACCESS TO THE
+SERVICES, IF ANY.
+
+---------------------------------------------------------------------------
+
+11. Indemnification
+
+You agree to indemnify and hold harmless Project Tick from claims,
+damages, or losses arising from your misuse of the Services or violation
+of these Terms.
+
+---------------------------------------------------------------------------
+
+12. Termination
+
+Project Tick may suspend or terminate access to the Services at any time
+for violation of these Terms or for operational or legal reasons.
+
+---------------------------------------------------------------------------
+
+13. Governing Law
+
+These Terms shall be governed by the laws designated by Project Tick,
+excluding conflict-of-law principles.
+
+---------------------------------------------------------------------------
+
+14. Changes to These Terms
+
+Project Tick may update these Terms from time to time.
+
+Continued use of the Services after changes become effective
+constitutes acceptance of the revised Terms.
+
+---------------------------------------------------------------------------
+
+15. Contact Information
+
+For questions regarding these Terms, contact:
+
+license@projecttick.org
+
+---------------------------------------------------------------------------
+
+END OF TERMS OF SERVICE
+
+---------------------------------------------------------------------------

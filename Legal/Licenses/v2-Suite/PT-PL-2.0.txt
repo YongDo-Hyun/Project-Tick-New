@@ -1,0 +1,106 @@
+PROJECT TICK PERMISSIVE LICENSE
+Version 2, 2 February 2026
+
+---------------------------------------------------------------------------
+
+Copyright (C) <year> <copyright holder>
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Work"), to deal in the Work without restriction, including without
+limitation the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Work, subject to the following
+conditions:
+
+---------------------------------------------------------------------------
+
+1. Attribution.
+
+Any copy or substantial portion of the Work, whether in source or
+binary form, must retain the following, in a reasonable and visible
+manner:
+
+- the name of the original copyright holder,
+- a reference to Project Tick, where applicable,
+- a copy of this License or a clear reference to where it may be found.
+
+---------------------------------------------------------------------------
+
+2. Patent Grant.
+
+Each contributor hereby grants to any recipient of the Work a
+non-exclusive, worldwide, royalty-free, irrevocable patent license
+under any patent claims owned or controlled by that contributor that
+are necessarily infringed by the contributor’s contribution, to use,
+make, have made, modify, and distribute the Work.
+
+---------------------------------------------------------------------------
+
+2.1. Patent retaliation.
+
+If you initiate patent litigation against any person or entity
+alleging that the Work or a contribution incorporated within the Work
+constitutes patent infringement, then any patent licenses granted to
+you under this License for the Work shall terminate as of the date
+such litigation is filed.
+
+---------------------------------------------------------------------------
+
+3. No Trademark Rights.
+
+This License does not grant permission to use any trade names,
+trademarks, service marks, or logos of the copyright holder or
+contributors, except as required for reasonable and customary
+attribution.
+
+---------------------------------------------------------------------------
+
+4. No Copyleft.
+
+This License does not require derivative works or combined works to
+be licensed under the same terms. You may apply any license to works
+that you create using the Work, provided that the conditions of this
+License are satisfied with respect to the original Work.
+
+---------------------------------------------------------------------------
+
+4.1. Future Licensing of New Versions.
+
+The original copyright holder may choose to release future versions
+of the Work under one or more different licenses, including licenses
+published within the Project Tick license family.
+
+This provision applies only to future versions of the Work and does
+not alter, revoke, or limit the rights granted to recipients of any
+version of the Work distributed under this License.
+
+Recipients of the Work retain all rights granted under this License
+for the version they received, regardless of the licensing terms
+applied to future versions.
+
+Such relicensing may include, but is not limited to, copyleft or
+stronger copyleft licenses designated by Project Tick.
+
+This right to relicense is unilateral and applies only to the original
+copyright holder or contributors acting with appropriate authority.
+Recipients of the Work do not receive any right to relicense the Work
+under other terms by virtue of this License.
+
+---------------------------------------------------------------------------
+
+5. Disclaimer of Warranty
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+NON-INFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR
+CONTRIBUTORS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM,
+OUT OF, OR IN CONNECTION WITH THE WORK OR THE USE OR OTHER DEALINGS
+IN THE WORK.
+
+---------------------------------------------------------------------------
+
+END OF TERMS AND CONDITIONS
+
+---------------------------------------------------------------------------

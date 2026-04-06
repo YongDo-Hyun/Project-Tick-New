@@ -1,0 +1,68 @@
+PROJECT TICK EVALUATION LICENSE
+Version 2, 2 February 2026
+
+---------------------------------------------------------------------------
+
+Copyright (C) <year> <copyright holder>
+
+Permission is hereby granted to any person obtaining a copy of this
+software and associated documentation files (the “Work”) to use,
+study, and modify the Work solely for evaluation, testing, benchmarking,
+or internal review purposes, subject to the terms of this License.
+
+---------------------------------------------------------------------------
+
+1. Evaluation Scope.
+
+Use of the Work is permitted only for the purpose of technical
+evaluation, experimentation, internal testing, or assessment of
+suitability. Use of the Work to provide products, services, or
+functional output to third parties is not permitted. For the
+avoidance of doubt, internal use does not include use in shared,
+hosted, or network-accessible environments, even if such use is
+limited to internal personnel.
+
+---------------------------------------------------------------------------
+
+2. Prohibition of Production Use.
+
+The Work may not be used in production environments, commercial
+products, hosted services, or any activity that provides ongoing
+functional output or creates operational dependency on the Work.
+
+---------------------------------------------------------------------------
+
+3. Distribution.
+
+You may distribute unmodified copies of the Work for evaluation
+purposes only, provided that this License is included in full.
+Distribution of modified versions is not permitted under this
+License. Any recipient of such copies is subject to the same
+evaluation-only limitations set forth in this License.
+
+---------------------------------------------------------------------------
+
+4. No Commercial Rights.
+
+This License does not grant any right to use the Work for commercial,
+production, or revenue-generating purposes, whether directly or
+indirectly.
+
+---------------------------------------------------------------------------
+
+5. Disclaimer of Warranty.
+
+THE WORK IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND.
+
+---------------------------------------------------------------------------
+
+6. Limitation of Liability.
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ANY DAMAGES ARISING FROM THE USE OF THE WORK.
+
+---------------------------------------------------------------------------
+
+END OF TERMS AND CONDITIONS
+
+---------------------------------------------------------------------------

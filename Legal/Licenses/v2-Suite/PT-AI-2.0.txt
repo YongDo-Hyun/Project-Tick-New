@@ -1,0 +1,183 @@
+PROJECT TICK ARTIFICIAL INTELLIGENCE USE LICENSE
+Version 2, 2 February 2026
+
+---------------------------------------------------------------------------
+
+Copyright (C) 2026 Project Tick
+<https://projecttick.org/>
+
+Permission is hereby granted to any person or entity obtaining a copy
+of the licensed material (the "Work") to use the Work subject to the
+terms and conditions set forth below.
+
+This License governs the use of the Work in connection with artificial
+intelligence systems, machine learning models, automated data
+processing systems, and similar technologies.
+
+This License does not replace, supersede, or modify any other license
+applicable to the Work, except with respect to AI-related use as
+explicitly stated herein.
+
+---------------------------------------------------------------------------
+
+1. Definitions
+
+"Artificial Intelligence System" ("AI System") means any system,
+model, pipeline, or process that performs tasks normally associated
+with human intelligence, including but not limited to machine learning,
+deep learning, neural networks, large language models, and statistical
+or probabilistic learning systems.
+
+"Training" means the process of using the Work, in whole or in part,
+to influence, derive, or adjust the parameters, weights, embeddings,
+latent representations, or internal state of an AI System.
+
+"Inference" means the use of an AI System to generate Outputs without
+modifying its parameters or internal representations.
+
+"Output" means any result, prediction, classification, generation,
+or response produced by an AI System.
+
+"Reconstruction" means the ability of an AI System, whether directly
+or indirectly, to reproduce, approximate, extract, or regenerate
+substantial portions of the Work in a form that is recognizable,
+attributable, or substantially similar to the original Work.
+For the avoidance of doubt, Reconstruction does not include
+irreversible statistical influence, abstract feature extraction,
+or parameter adjustment, provided that no human-readable,
+source-level, or substantially similar reproduction of the Work
+is possible.
+
+"Commercial Use" means use of an AI System in connection with
+monetization, paid access, advertising, subscription services,
+commercial products, or revenue-generating activities.
+
+---------------------------------------------------------------------------
+
+2. Human Use
+
+Use of the Work by natural persons for reading, studying, modifying,
+executing, or otherwise interacting with the Work without the use of
+an AI System is unrestricted under this License.
+
+---------------------------------------------------------------------------
+
+3. Permitted AI Uses
+
+Unless otherwise explicitly stated by the copyright holder, the Work
+MAY be used for the following purposes, provided that such use does
+not result in Reconstruction:
+
+a) Indexing, classification, tagging, or metadata extraction;
+b) Search, retrieval, and ranking;
+c) Non-persistent analysis, including static or dynamic analysis;
+d) Evaluation, benchmarking, or testing of AI Systems;
+e) Inference-only use, where the Work is provided as input and is not
+   retained, memorized, or encoded into the AI System.
+f) Temporary preprocessing necessary to enable the permitted uses
+   listed above, provided that such preprocessing does not result
+   in Reconstruction.
+
+---------------------------------------------------------------------------
+
+4. AI Training for Non-Commercial Research
+
+The Work MAY be used for Training AI Systems solely for non-commercial
+research purposes, provided that:
+
+a) The trained AI System does not enable Reconstruction of the Work;
+b) The Work is not intentionally memorized, encoded verbatim, or
+   recoverable from model parameters, embeddings, or Outputs;
+c) The primary purpose of the AI System is not to replicate, replace,
+   or compete with the Work itself.
+
+For the purposes of this License, non-commercial research does not
+include research conducted for, on behalf of, or with the intent
+to support commercial products, services, monetized platforms,
+or revenue-generating activities, whether directly or indirectly.
+
+---------------------------------------------------------------------------
+
+5. Prohibited AI Uses
+
+The Work MUST NOT be used for:
+
+a) Training AI Systems intended to reproduce, substitute, or function
+   as a direct replacement for the Work;
+b) Training AI Systems designed to emit source-identifiable,
+   license-identifiable, or attribution-stripping Outputs;
+c) Dataset extraction or transformation intended to enable
+   Reconstruction;
+d) Circumventing technical, legal, or attribution requirements
+   applicable to the Work.
+
+---------------------------------------------------------------------------
+
+6. Commercial AI Use
+
+Use of the Work for Training, fine-tuning, or adaptation of AI Systems
+intended for Commercial Use is NOT permitted under this License unless
+expressly authorized by the copyright holder under a separate written
+agreement.
+
+For the avoidance of doubt, this License does not itself grant any
+commercial AI rights.
+
+Commercial Use includes internal, hosted, or third-party AI Systems
+operated by or for the benefit of a commercial entity, regardless
+of whether access to the AI System itself is offered for a fee.
+
+---------------------------------------------------------------------------
+
+7. Outputs and Derivative Restrictions
+
+Outputs of an AI System trained or evaluated using the Work:
+
+a) MUST NOT contain substantial portions of the Work;
+b) MUST NOT enable reverse engineering, extraction, or Reconstruction
+   of the Work;
+c) MUST NOT be marketed or represented as a substitute for the Work.
+
+Nothing in this License grants permission to distribute the Work or
+derivative works thereof, except as permitted under the applicable
+underlying license.
+
+---------------------------------------------------------------------------
+
+8. Attribution
+
+Where technically and reasonably feasible, AI Systems making use
+of the Work must include attribution acknowledging such use.
+Where direct system-level attribution is not feasible, such
+attribution must be included in associated documentation, model
+cards, system descriptions, or similar materials.
+
+---------------------------------------------------------------------------
+
+9. No Patent Grant
+
+This License does not grant any express or implied patent rights.
+
+---------------------------------------------------------------------------
+
+10. No Warranty
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+NON-INFRINGEMENT.
+
+---------------------------------------------------------------------------
+
+11. Termination
+
+Any violation of this License automatically and immediately terminates
+the permissions granted herein. Termination is without prejudice to
+any other rights or remedies available to the copyright holder under
+applicable law, including injunctive relief.
+
+---------------------------------------------------------------------------
+
+END OF TERMS AND CONDITIONS
+
+---------------------------------------------------------------------------

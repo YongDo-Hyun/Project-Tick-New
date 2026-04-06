@@ -1,0 +1,103 @@
+PROJECT TICK CONTRIBUTOR LICENSE AGREEMENT
+Version 2, 2 February 2026
+
+---------------------------------------------------------------------------
+
+This Contributor License Agreement ("Agreement") applies to all
+contributions submitted to projects maintained within the Project Tick
+ecosystem, regardless of the contributor's country of residence or
+place of submission.
+
+---------------------------------------------------------------------------
+
+1. Definitions.
+
+"Contribution" means any code, documentation, design, data, or other
+material intentionally submitted by you to a Project Tick project for
+inclusion in a Work.
+
+"Work" means the Project Tick project to which the Contribution is
+submitted.
+
+---------------------------------------------------------------------------
+
+2. Authority and Right to Contribute.
+
+You represent and confirm that:
+(a) you have the legal right and authority to submit the Contribution;
+(b) the Contribution is your original work, or you have obtained all
+    necessary rights, permissions, or licenses to submit it under this
+    Agreement; and
+(c) to the best of your knowledge, the Contribution does not infringe
+    any copyright, patent, trademark, or other proprietary right of
+    any third party.
+
+---------------------------------------------------------------------------
+
+3. Grant of Copyright License.
+
+You hereby grant Project Tick and all downstream recipients a
+perpetual, worldwide, non-exclusive, royalty-free, and irrevocable
+copyright license to use, reproduce, modify, adapt, publish,
+distribute, sublicense, and convey your Contribution as part of the
+Work, under the terms of the applicable Project Tick license.
+
+This license grant applies to all current and future forms of
+distribution of the Work permitted by the applicable license.
+
+---------------------------------------------------------------------------
+
+4. License Consistency and Relicensing.
+
+You acknowledge that Project Tick maintains a family of licenses and
+that Contributions are integrated for long-term governance.
+
+Accordingly, you agree that your Contribution may be distributed under
+the applicable Project Tick license governing the Work, including
+future versions of that license or other Project Tick licenses where
+explicitly permitted by their terms.
+
+Once your Contribution has been accepted into a Work, you waive any
+right, to the maximum extent permitted by applicable law, to revoke,
+withdraw, or relicense the Contribution independently of the Work,
+except as expressly allowed by the applicable Project Tick license.
+
+---------------------------------------------------------------------------
+
+5. No Warranty and No Obligation.
+
+You provide the Contribution "AS IS", without warranty of any kind,
+whether express or implied.
+
+You are not required to provide support, maintenance, updates, or
+ongoing services for the Contribution.
+
+Project Tick is under no obligation to accept, use, maintain, or
+distribute any Contribution.
+
+---------------------------------------------------------------------------
+
+6. No Additional Restrictions.
+
+You agree not to impose any legal, contractual, technical, or policy-
+based restrictions on the use of your Contribution that would conflict
+with this Agreement or with the applicable Project Tick license.
+
+---------------------------------------------------------------------------
+
+7. Governing Law and Interpretation.
+
+This Agreement is intended to be applied globally. It shall be
+interpreted in a manner that gives maximum effect to the permissions
+and intentions expressed herein, consistent with applicable local law.
+
+If any provision of this Agreement is held unenforceable under
+applicable law, such provision shall be interpreted or limited only to
+the extent necessary to render it enforceable, without affecting the
+validity of the remaining provisions.
+
+---------------------------------------------------------------------------
+
+END OF AGREEMENT
+
+---------------------------------------------------------------------------

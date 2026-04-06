@@ -1,0 +1,56 @@
+PROJECT TICK DOCUMENTATION LICENSE
+Version 2, 2 February 2026
+
+---------------------------------------------------------------------------
+
+Copyright (C) <year> <copyright holder>
+
+Permission is hereby granted to any person obtaining a copy of this
+documentation or other non-software material (the “Work”) to use,
+copy, modify, translate, and distribute the Work, subject to the
+conditions below.
+
+---------------------------------------------------------------------------
+
+1. Attribution.
+
+Any distribution of the Work or modified versions must include
+reasonable attribution to the original author or Project Tick,
+as applicable, in a manner appropriate to the medium of distribution.
+This License applies to the Work in all formats and representations,
+including modified, translated, or transformed versions.
+
+---------------------------------------------------------------------------
+
+2. No Additional Restrictions.
+
+You may not apply legal terms or technological measures that
+restrict others from exercising the rights granted under this
+License.
+
+---------------------------------------------------------------------------
+
+3. No Trademark Rights.
+
+This License does not grant permission to use any trademarks,
+logos, or service marks associated with the Work, except for
+attribution purposes.
+
+---------------------------------------------------------------------------
+
+4. Disclaimer of Warranty.
+
+THE WORK IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND.
+
+---------------------------------------------------------------------------
+
+5. Limitation of Liability.
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DAMAGES ARISING FROM THE USE OF THE WORK.
+
+---------------------------------------------------------------------------
+
+END OF TERMS AND CONDITIONS
+
+---------------------------------------------------------------------------
