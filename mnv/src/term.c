@@ -185,7 +185,7 @@ int write_t_8u_state = FALSE;
  * Some versions define ospeed to be speed_t, but that is incompatible with
  * BSD, where ospeed is short and speed_t is long.
  */
-# ifndef HAVE_OSPEED
+# if !defined(HAVE_OSPEED) && !defined(HAVE_TERMCAP_H)
 #  ifdef OSPEED_EXTERN
 extern short ospeed;
 #  else
