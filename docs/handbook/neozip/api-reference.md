@@ -372,7 +372,7 @@ Returns a bitmask indicating compilation options:
 #define ZLIBNG_VER_REVISION 90
 #define ZLIBNG_VER_STATUS   0    // 0=devel, 1=alpha, 2=beta, ...9=release
 
-#define ZLIB_VERSION        "1.3.1.zlib-ng"   // Compat version
+#define ZLIB_VERSION        "1.3.1.neozip"   // Compat version
 #define ZLIB_VERNUM         0x1310
 ```
 
@@ -383,7 +383,7 @@ Returns a bitmask indicating compilation options:
 ### Basic Compression
 
 ```c
-#include <zlib.h>   // or <zlib-ng.h> in native mode
+#include <zlib.h>   // or <neozip.h> in native mode
 
 void compress_data(const uint8_t *input, size_t input_len) {
     size_t bound = compressBound(input_len);

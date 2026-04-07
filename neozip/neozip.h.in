@@ -1,6 +1,6 @@
 #ifndef ZNGLIB_H_
 #define ZNGLIB_H_
-/* zlib-ng.h -- interface of the 'zlib-ng' compression library, forked from zlib.
+/* neozip.h -- interface of the 'neozip' compression library, forked from zlib.
 
   Copyright (C) 1995-2024 Jean-loup Gailly and Mark Adler
 
@@ -30,7 +30,7 @@
 */
 
 #ifdef ZLIB_H_
-#  error Include zlib-ng.h for zlib-ng API or zlib.h for zlib-compat API but not both
+#  error Include neozip.h for neozip API or zlib.h for zlib-compat API but not both
 #endif
 
 #ifndef RC_INVOKED
@@ -55,7 +55,7 @@ extern "C" {
 #define ZLIBNG_VER_REVISION 90
 #define ZLIBNG_VER_STATUS 0         /* 0=devel, 1-E=beta, F=Release (DEPRECATED) */
 #define ZLIBNG_VER_STATUSH 0x0      /* Hex values: 0=devel, 1-9=beta, A-E=Release Candidate, F=Release */
-#define ZLIBNG_VER_MODIFIED 0       /* non-zero if modified externally from zlib-ng */
+#define ZLIBNG_VER_MODIFIED 0       /* non-zero if modified externally from neozip */
 
 /*
     The 'zlib' compression library provides in-memory compression and
@@ -221,7 +221,7 @@ Z_EXTERN Z_EXPORT
 const char *zlibng_version(void);
 /* The application can compare zlibng_version and ZLIBNG_VERSION for consistency.
    If the first character differs, the library code actually used is not
-   compatible with the zlib-ng.h header file used by the application.
+   compatible with the neozip.h header file used by the application.
  */
 
 Z_EXTERN Z_EXPORT
@@ -1174,7 +1174,7 @@ unsigned long zng_zlibCompileFlags(void);
      11: 0 (reserved)
 
     One-time table building (smaller code, but not thread-safe if true):
-     12: BUILDFIXED -- build static block decoding tables when needed (not supported by zlib-ng)
+     12: BUILDFIXED -- build static block decoding tables when needed (not supported by neozip)
      13: DYNAMIC_CRC_TABLE -- build CRC calculation tables when needed
      14,15: 0 (reserved)
 
@@ -1806,7 +1806,7 @@ typedef enum {
     /*
          Whether reproducible compression results are required. Represented as an int, where 0 means that it is allowed
        to trade reproducibility for e.g. improved performance or compression ratio, and non-0 means that
-       reproducibility is strictly required. Reproducibility is guaranteed only when using an identical zlib-ng build.
+       reproducibility is strictly required. Reproducibility is guaranteed only when using an identical neozip build.
        Default is 0.
     */
 } zng_deflate_param;
@@ -1821,7 +1821,7 @@ typedef struct {
 Z_EXTERN Z_EXPORT
 int32_t zng_deflateSetParams(zng_stream *strm, zng_deflate_param_value *params, size_t count);
 /*
-     Sets the values of the given zlib-ng deflate stream parameters. All the buffers are copied internally, so the
+     Sets the values of the given neozip deflate stream parameters. All the buffers are copied internally, so the
    caller still owns them after this function returns. Returns Z_OK if success.
 
      If the size of at least one of the buffers is too small to hold the entire value of the corresponding parameter,
@@ -1833,7 +1833,7 @@ int32_t zng_deflateSetParams(zng_stream *strm, zng_deflate_param_value *params, 
    Parameters, whose status field is equal to Z_OK, have been applied successfully. If all status fields are not equal
    to Z_STREAM_ERROR, then the error was caused by a stream state inconsistency.
 
-     If there are no other errors, but at least one parameter is not supported by the current zlib-ng version,
+     If there are no other errors, but at least one parameter is not supported by the current neozip version,
    Z_VERSION_ERROR is returned. The caller may inspect status fields in order to determine which of the parameters
    caused this error.
 */
@@ -1841,8 +1841,8 @@ int32_t zng_deflateSetParams(zng_stream *strm, zng_deflate_param_value *params, 
 Z_EXTERN Z_EXPORT
 int32_t zng_deflateGetParams(zng_stream *strm, zng_deflate_param_value *params, size_t count);
 /*
-     Copies the values of the given zlib-ng deflate stream parameters into the user-provided buffers. Returns Z_OK if
-   success, Z_VERSION_ERROR if at least one parameter is not supported by the current zlib-ng version, Z_STREAM_ERROR
+     Copies the values of the given neozip deflate stream parameters into the user-provided buffers. Returns Z_OK if
+   success, Z_VERSION_ERROR if at least one parameter is not supported by the current neozip version, Z_STREAM_ERROR
    if the stream state is inconsistent, and Z_BUF_ERROR if the size of at least one buffer is too small to hold the
    entire value of the corresponding parameter.
 */

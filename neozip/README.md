@@ -1,15 +1,15 @@
 | CI | Stable | Develop |
 |:---|:-------|:--------|
-| GitHub Actions | [![Stable CMake](https://github.com/zlib-ng/zlib-ng/actions/workflows/cmake.yml/badge.svg?branch=stable)](https://github.com/zlib-ng/zlib-ng/actions/workflows/cmake.yml?query=branch%3Astable) <br> [![Stable Configure](https://github.com/zlib-ng/zlib-ng/actions/workflows/configure.yml/badge.svg?branch=stable)](https://github.com/zlib-ng/zlib-ng/actions/workflows/configure.yml?query=branch%3Astable) | [![Develop CMake](https://github.com/zlib-ng/zlib-ng/actions/workflows/cmake.yml/badge.svg?branch=develop)](https://github.com/zlib-ng/zlib-ng/actions/workflows/cmake.yml?query=branch%3Adevelop) <br> [![Develop Configure](https://github.com/zlib-ng/zlib-ng/actions/workflows/configure.yml/badge.svg?branch=develop)](https://github.com/zlib-ng/zlib-ng/actions/workflows/configure.yml?query=branch%3Adevelop) |
-| CodeFactor     | [![CodeFactor](https://www.codefactor.io/repository/github/zlib-ng/zlib-ng/badge/stable)](https://www.codefactor.io/repository/github/zlib-ng/zlib-ng/overview/stable) | [![CodeFactor](https://www.codefactor.io/repository/github/zlib-ng/zlib-ng/badge/develop)](https://www.codefactor.io/repository/github/zlib-ng/zlib-ng/overview/develop) |
-| OSS-Fuzz       | [![Fuzzing Status](https://oss-fuzz-build-logs.storage.googleapis.com/badges/zlib-ng.svg)](https://bugs.chromium.org/p/oss-fuzz/issues/list?sort=-opened&can=1&q=proj:zlib-ng) | [![Fuzzing Status](https://oss-fuzz-build-logs.storage.googleapis.com/badges/zlib-ng.svg)](https://bugs.chromium.org/p/oss-fuzz/issues/list?sort=-opened&can=1&q=proj:zlib-ng) |
-| Coveralls      | [![Coverage Status](https://coveralls.io/repos/github/zlib-ng/zlib-ng/badge.svg?branch=stable)](https://coveralls.io/github/zlib-ng/zlib-ng?branch=stable) | [![Coverage Status](https://coveralls.io/repos/github/zlib-ng/zlib-ng/badge.svg?branch=develop)](https://coveralls.io/github/zlib-ng/zlib-ng?branch=develop) |
+| GitHub Actions | [![Stable CMake](https://github.com/neozip/neozip/actions/workflows/cmake.yml/badge.svg?branch=stable)](https://github.com/neozip/neozip/actions/workflows/cmake.yml?query=branch%3Astable) <br> [![Stable Configure](https://github.com/neozip/neozip/actions/workflows/configure.yml/badge.svg?branch=stable)](https://github.com/neozip/neozip/actions/workflows/configure.yml?query=branch%3Astable) | [![Develop CMake](https://github.com/neozip/neozip/actions/workflows/cmake.yml/badge.svg?branch=develop)](https://github.com/neozip/neozip/actions/workflows/cmake.yml?query=branch%3Adevelop) <br> [![Develop Configure](https://github.com/neozip/neozip/actions/workflows/configure.yml/badge.svg?branch=develop)](https://github.com/neozip/neozip/actions/workflows/configure.yml?query=branch%3Adevelop) |
+| CodeFactor     | [![CodeFactor](https://www.codefactor.io/repository/github/neozip/neozip/badge/stable)](https://www.codefactor.io/repository/github/neozip/neozip/overview/stable) | [![CodeFactor](https://www.codefactor.io/repository/github/neozip/neozip/badge/develop)](https://www.codefactor.io/repository/github/neozip/neozip/overview/develop) |
+| OSS-Fuzz       | [![Fuzzing Status](https://oss-fuzz-build-logs.storage.googleapis.com/badges/neozip.svg)](https://bugs.chromium.org/p/oss-fuzz/issues/list?sort=-opened&can=1&q=proj:neozip) | [![Fuzzing Status](https://oss-fuzz-build-logs.storage.googleapis.com/badges/neozip.svg)](https://bugs.chromium.org/p/oss-fuzz/issues/list?sort=-opened&can=1&q=proj:neozip) |
+| Coveralls      | [![Coverage Status](https://coveralls.io/repos/github/neozip/neozip/badge.svg?branch=stable)](https://coveralls.io/github/neozip/neozip?branch=stable) | [![Coverage Status](https://coveralls.io/repos/github/neozip/neozip/badge.svg?branch=develop)](https://coveralls.io/github/neozip/neozip?branch=develop) |
 
-## zlib-ng
+## neozip
 *zlib data compression library for the next generation systems*
 
 Maintained by Hans Kristian Rosbach
-          aka Dead2 (zlib-ng àt circlestorm dót org)
+          aka Dead2 (neozip àt circlestorm dót org)
 
 Features
 --------
@@ -43,7 +43,7 @@ The motivation for this fork was seeing several 3rd party contributions with new
 implemented into the official zlib repository.
 
 Mark Adler has been maintaining zlib for a very long time, and he has done a great job and hopefully he will continue
-for a long time yet. The idea of zlib-ng is not to replace zlib, but to co-exist as a drop-in replacement with a
+for a long time yet. The idea of neozip is not to replace zlib, but to co-exist as a drop-in replacement with a
 lower threshold for code change.
 
 zlib has a long history and is incredibly portable, even supporting many systems that predate the Internet.<br>
@@ -55,9 +55,9 @@ cluttered throughout the code, it makes it harder for new programmers with an id
 
 I decided to make a fork, merge all the Intel optimizations, some of the Cloudflare optimizations, plus a couple other
 smaller patches. Then started cleaning out workarounds, various dead code, all contrib and example code.<br>
-The result is a better performing and easier to maintain zlib-ng.
+The result is a better performing and easier to maintain neozip.
 
-A lot of improvements have gone into zlib-ng since its start, and numerous people and companies have contributed both
+A lot of improvements have gone into neozip since its start, and numerous people and companies have contributed both
 small and big improvements, or valuable testing.
 
 
@@ -65,11 +65,11 @@ Build
 -----
 <sup>Please read LICENSE.md, it is very simple and very liberal.</sup>
 
-There are two ways to build zlib-ng:
+There are two ways to build neozip:
 
 ### Cmake
 
-To build zlib-ng using the cross-platform makefile generator cmake.
+To build neozip using the cross-platform makefile generator cmake.
 
 ```
 cmake .
@@ -85,7 +85,7 @@ ccmake .
 
 ### Configure
 
-To build zlib-ng using the bash configure script:
+To build neozip using the bash configure script:
 
 ```
 ./configure
@@ -104,7 +104,7 @@ Build Options
 | WITH_OPTIM                 | --without-optimizations  | Build with optimisations                                                            | ON      |
 | WITH_NEW_STRATEGIES        | --without-new-strategies | Use new strategies                                                                  | ON      |
 | WITH_CRC32_CHORBA          |                          | Build with Chorba optimized CRC32                                                   | ON      |
-| WITH_REDUCED_MEM           | --with-reduced-mem       | Reduce zlib-ng memory usage, affects performance and compression ratio              | OFF     |
+| WITH_REDUCED_MEM           | --with-reduced-mem       | Reduce neozip memory usage, affects performance and compression ratio              | OFF     |
 | WITH_GTEST                 |                          | Build tests using GTest framework                                                   | ON      |
 | WITH_BENCHMARKS            |                          | Build benchmarks using Google Benchmark framework                                   | OFF     |
 | INSTALL_UTILS              |                          | Copy minigzip and minideflate during install                                        | OFF     |
@@ -115,21 +115,21 @@ Install
 -------
 
 WARNING: We do not recommend manually installing unless you really know what you are doing, because this can
-potentially override the system default zlib library, and any incompatibility or wrong configuration of zlib-ng
+potentially override the system default zlib library, and any incompatibility or wrong configuration of neozip
 can make the whole system unusable, requiring recovery or reinstall.
 If you still want a manual install, we recommend using the /opt/ path prefix.
 
-For Linux distros, an alternative way to use zlib-ng (if compiled in zlib-compat mode) instead of zlib, is through
+For Linux distros, an alternative way to use neozip (if compiled in zlib-compat mode) instead of zlib, is through
 the use of the _LD_PRELOAD_ environment variable. If the program is dynamically linked with zlib, then the program
-will temporarily attempt to use zlib-ng instead, without risking system-wide instability.
+will temporarily attempt to use neozip instead, without risking system-wide instability.
 
 ```
-LD_PRELOAD=/opt/zlib-ng/libz.so.1.2.13.zlib-ng /usr/bin/program
+LD_PRELOAD=/opt/neozip/libz.so.1.2.13.neozip /usr/bin/program
 ```
 
 ### Cmake
 
-To install zlib-ng system-wide using cmake:
+To install neozip system-wide using cmake:
 
 ```sh or powershell
 cmake --build . --target install
@@ -137,7 +137,7 @@ cmake --build . --target install
 
 ### Configure
 
-To install zlib-ng system-wide using the configure script:
+To install neozip system-wide using the configure script:
 
 ```sh
 make install
@@ -157,32 +157,32 @@ cpack --config CPackSourceConfig.cmake
 
 ### Vcpkg
 
-Alternatively, you can build and install zlib-ng using the [vcpkg](https://github.com/Microsoft/vcpkg/) dependency manager:
+Alternatively, you can build and install neozip using the [vcpkg](https://github.com/Microsoft/vcpkg/) dependency manager:
 
 ```sh or powershell
 git clone https://github.com/Microsoft/vcpkg.git
 cd vcpkg
 ./bootstrap-vcpkg.sh # "./bootstrap-vcpkg.bat" for powershell
 ./vcpkg integrate install
-./vcpkg install zlib-ng
+./vcpkg install neozip
 ```
 
-The zlib-ng port in vcpkg is kept up to date by Microsoft team members and community contributors.
+The neozip port in vcpkg is kept up to date by Microsoft team members and community contributors.
 If the version is out of date, please [create an issue or pull request](https://github.com/Microsoft/vcpkg) on the vcpkg repository.
 
 Contributing
 ------------
 
-Zlib-ng is aiming to be open to contributions, and we would be delighted to receive pull requests on github.
+neozip is aiming to be open to contributions, and we would be delighted to receive pull requests on github.
 Help with testing and reviewing pull requests etc is also very much appreciated.
 
-Please check the Wiki for more info: [Contributing](https://github.com/zlib-ng/zlib-ng/wiki/Contributing)
+Please check the Wiki for more info: [Contributing](https://github.com/neozip/neozip/wiki/Contributing)
 
 Acknowledgments
 ----------------
 
 Thanks go out to all the people and companies who have taken the time to contribute
-code reviews, testing and/or patches. Zlib-ng would not have been nearly as good without you.
+code reviews, testing and/or patches. neozip would not have been nearly as good without you.
 
 The deflate format used by zlib was defined by Phil Katz.<br>
 The deflate and zlib specifications were written by L. Peter Deutsch.
@@ -232,7 +232,7 @@ Advanced Build Options
 Related Projects
 ----------------
 
-* Fork of the popular minizip                   https://github.com/zlib-ng/minizip-ng
-* Python tool to benchmark minigzip/minideflate https://github.com/zlib-ng/deflatebench
-* Python tool to benchmark pigz                 https://github.com/zlib-ng/pigzbench
-* 3rd party patches for zlib-ng compatibility   https://github.com/zlib-ng/patches
+* Fork of the popular minizip                   https://github.com/neozip/minizip-ng
+* Python tool to benchmark minigzip/minideflate https://github.com/neozip/deflatebench
+* Python tool to benchmark pigz                 https://github.com/neozip/pigzbench
+* 3rd party patches for neozip compatibility   https://github.com/neozip/patches

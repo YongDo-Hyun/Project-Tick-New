@@ -14,7 +14,7 @@
 #ifdef ZLIB_COMPAT
 #  include "zlib.h"
 #else
-#  include "zlib-ng.h"
+#  include "neozip.h"
 #endif
 
 typedef unsigned char uch; /* Included for compatibility with external code only */

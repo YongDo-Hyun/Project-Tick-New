@@ -7,7 +7,7 @@
 # pthread libraries if installed.
 
 # For compilation on Windows download and use shim:
-#  https://github.com/zlib-ng/pigzbench/tree/master/pigz/win
+#  https://github.com/neozip/pigzbench/tree/master/pigz/win
 
 # Optional Variables
 #   WITH_CODE_COVERAGE  - Enable code coverage reporting

@@ -1,7 +1,7 @@
 /* dfltcc_deflate.c - IBM Z DEFLATE CONVERSION CALL compression support. */
 
 /*
-   Use the following commands to build zlib-ng with DFLTCC compression support:
+   Use the following commands to build neozip with DFLTCC compression support:
 
         $ ./configure --with-dfltcc-deflate
    or

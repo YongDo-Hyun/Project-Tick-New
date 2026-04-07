@@ -1,4 +1,4 @@
-# Makefile for zlib-ng
+# Makefile for neozip
 # Copyright (C) 1995-2013 Jean-loup Gailly, Mark Adler
 # Copyright (C) 2024 Hans Kristian Rosbach
 # Copyright (C) 2025 Yin Tong <yintong.ustc@bytedance.com>, ByteDance

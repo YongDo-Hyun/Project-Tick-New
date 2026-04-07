@@ -27,11 +27,11 @@
 /switchlevels
 /zlib.map
 /zlib.pc
-/zlib-ng.pc
+/neozip.pc
 /zconf-ng.h.included
 /zlib_name_mangling-ng.h
-/zlib-ng.h
-/zlib-ng.map
+/neozip.h
+/neozip.map
 
 .DS_Store
 *_fuzzer

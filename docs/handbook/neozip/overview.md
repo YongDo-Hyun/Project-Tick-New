@@ -2,7 +2,7 @@
 
 ## What Is Neozip?
 
-Neozip is Project Tick's fork of **zlib-ng**, which is itself a modernized,
+Neozip is Project Tick's fork of **neozip**, which is itself a modernized,
 performance-oriented fork of the venerable zlib compression library. Neozip
 provides a drop-in replacement for zlib with significantly improved throughput
 on modern hardware while retaining full API and format compatibility with the
@@ -12,12 +12,12 @@ The library implements the **DEFLATE** compressed data format (RFC 1951),
 wrapped in either the **zlib** container (RFC 1950) or the **gzip** container
 (RFC 1952). It also exposes raw deflate streams without any wrapper.
 
-Neozip tracks upstream zlib-ng closely. At the time of writing, the embedded
+Neozip tracks upstream neozip closely. At the time of writing, the embedded
 version strings are:
 
 ```c
 #define ZLIBNG_VERSION "2.3.90"
-#define ZLIB_VERSION   "1.3.1.zlib-ng"
+#define ZLIB_VERSION   "1.3.1.neozip"
 ```
 
 ---
@@ -36,7 +36,7 @@ processors because:
 3. **No runtime CPU feature detection** — the same compiled binary cannot
    select between SSE2 and AVX-512 code paths at runtime.
 
-Neozip (via zlib-ng) addresses every one of these issues while maintaining
+Neozip (via neozip) addresses every one of these issues while maintaining
 byte-for-byte compatible output with zlib for any given set of compression
 parameters (when the `ZLIB_COMPAT` build option is enabled).
 
@@ -153,7 +153,7 @@ neozip/
 ├── gzwrite.c               # gzip file writing
 ├── gzguts.h                # gzip internal definitions
 ├── zlib.h.in               # Public API header (zlib-compat mode)
-├── zlib-ng.h.in            # Public API header (native mode)
+├── neozip.h.in            # Public API header (native mode)
 ├── zbuild.h                # Build-system defines, compiler abstraction
 ├── zutil.h / zutil.c       # Internal utility functions
 ├── zutil_p.h               # Private utility helpers
@@ -260,7 +260,7 @@ When built with `-DZLIB_COMPAT=OFF` (the default):
 - The library is named `libz-ng`.
 - All public symbols use `zng_` prefixed names: `zng_deflateInit`, `zng_inflate`, etc.
 - The `zng_stream` structure uses fixed-width types (`uint32_t`).
-- Header file is `zlib-ng.h`.
+- Header file is `neozip.h`.
 - Symbol prefix macro `PREFIX()` expands to `zng_`.
 - No `ZLIB_COMPAT` macro is defined.
 
@@ -380,13 +380,13 @@ concurrently, the function table is initialised safely.
 The library provides several ways to query version information:
 
 ```c
-const char *zlibVersion(void);         // Returns "1.3.1.zlib-ng" in compat mode
+const char *zlibVersion(void);         // Returns "1.3.1.neozip" in compat mode
 const char *zlibng_version(void);      // Returns "2.3.90"
 
 // Compile-time constants
 #define ZLIBNG_VERSION  "2.3.90"
 #define ZLIBNG_VERNUM   0x02039000L
-#define ZLIB_VERSION    "1.3.1.zlib-ng"
+#define ZLIB_VERSION    "1.3.1.neozip"
 #define ZLIB_VERNUM     0x131f
 ```
 
@@ -403,7 +403,7 @@ matches the library version to prevent ABI mismatches:
 
 ## Licensing
 
-Neozip inherits the zlib/libpng license from both zlib and zlib-ng:
+Neozip inherits the zlib/libpng license from both zlib and neozip:
 
 > This software is provided 'as-is', without any express or implied warranty.
 > Permission is granted to anyone to use this software for any purpose,
@@ -416,7 +416,7 @@ See `LICENSE.md` in the neozip source tree for the full text.
 
 ## Key Differences from Upstream zlib
 
-| Area | zlib 1.3.1 | Neozip (zlib-ng) |
+| Area | zlib 1.3.1 | Neozip (neozip) |
 |---|---|---|
 | Bit buffer width | 32-bit `unsigned long` | 64-bit `uint64_t` |
 | Hash table size | 32768 entries (15 bits) | 65536 entries (16 bits) |
@@ -447,8 +447,8 @@ cmake --build . -j$(nproc)
 ### Using in a CMake Project
 
 ```cmake
-find_package(zlib-ng CONFIG REQUIRED)
-target_link_libraries(myapp PRIVATE zlib-ng::zlib-ng)
+find_package(neozip CONFIG REQUIRED)
+target_link_libraries(myapp PRIVATE neozip::neozip)
 ```
 
 Or in zlib-compat mode:
@@ -461,7 +461,7 @@ target_link_libraries(myapp PRIVATE ZLIB::ZLIB)
 ### Minimal Compression Example
 
 ```c
-#include <zlib-ng.h>
+#include <neozip.h>
 #include <string.h>
 #include <stdio.h>
 

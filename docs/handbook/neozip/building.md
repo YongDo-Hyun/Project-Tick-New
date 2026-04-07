@@ -233,11 +233,11 @@ cmake -B build-mingw \
 | Aspect | `ZLIB_COMPAT=ON` | `ZLIB_COMPAT=OFF` (default) |
 |---|---|---|
 | Library name | `libz.so` / `libz.a` | `libz-ng.so` / `libz-ng.a` |
-| Header | `zlib.h` | `zlib-ng.h` |
+| Header | `zlib.h` | `neozip.h` |
 | Symbol prefix | `z_` (via mangling) | `zng_` |
 | Stream type | `z_stream` (with `unsigned long`) | `zng_stream` (with `uint32_t`) |
-| CMake target | `ZLIB::ZLIB` | `zlib-ng::zlib-ng` |
-| Config file | `zlib-config.cmake` | `zlib-ng-config.cmake` |
+| CMake target | `ZLIB::ZLIB` | `neozip::neozip` |
+| Config file | `zlib-config.cmake` | `neozip-config.cmake` |
 | pkg-config | `zlib.pc` | (generated) |
 | gzip file ops | Always included | Controlled by `WITH_GZFILEOP` |
 
@@ -364,7 +364,7 @@ After a successful build, the following artifacts are produced:
 | Target | Static | Shared |
 |---|---|---|
 | Native mode | `libz-ng.a` | `libz-ng.so.2.3.90` (Linux) |
-| Compat mode | `libz.a` | `libz.so.1.3.1.zlib-ng` (Linux) |
+| Compat mode | `libz.a` | `libz.so.1.3.1.neozip` (Linux) |
 
 ### Utilities (optional)
 
@@ -466,8 +466,8 @@ cmake -B build -DCMAKE_BUILD_TYPE=Release 2>&1 | grep -i "arch\|SIMD\|SSE\|AVX\|
 
 ```cmake
 # Native mode
-find_package(zlib-ng 2.3 CONFIG REQUIRED)
-target_link_libraries(myapp PRIVATE zlib-ng::zlib-ng)
+find_package(neozip 2.3 CONFIG REQUIRED)
+target_link_libraries(myapp PRIVATE neozip::neozip)
 
 # Compat mode
 find_package(ZLIB 1.3 CONFIG REQUIRED)

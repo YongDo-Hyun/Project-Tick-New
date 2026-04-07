@@ -4,7 +4,7 @@
 #ifdef ZLIB_COMPAT
 #  include "zlib.h"
 #else
-#  include "zlib-ng.h"
+#  include "neozip.h"
 #endif
 
 #include <string>
@@ -15,7 +15,7 @@
 
 
 
-/* Issue: https://github.com/zlib-ng/zlib-ng/issues/2100 */
+/* Issue: https://github.com/neozip/neozip/issues/2100 */
 
 /* len(data_b) must be greater len(data_a) */
 static const uint8_t data_a[] = {  0 , 'A', 'A', 'A', 'A',  0 , 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A' };

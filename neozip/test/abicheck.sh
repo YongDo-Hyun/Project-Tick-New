@@ -10,7 +10,7 @@ Build shared library with -ggdb, then compare its ABI to the stable
 ABI, and abort if differences found.
 
 Options:
---zlib-compat  - check the ABI of the zlib-compatible flavor of zlib-ng.
+--zlib-compat  - check the ABI of the zlib-compatible flavor of neozip.
 --refresh      - build the reference library and extract its ABI rather than using a stored ABI file.
 --refresh-if   - refresh only if ABI file not present.
 
@@ -71,8 +71,8 @@ then
   ABI_GIT_REPO=https://github.com/madler/zlib.git
   ABI_GIT_COMMIT=04f42ceca40f73e2978b50e93806c2a18c1281fc
 else
-  # Reference is most recent zlib-ng develop with zlib 1.2.12 compatible api.
-  ABI_GIT_REPO=https://github.com/zlib-ng/zlib-ng.git
+  # Reference is most recent neozip develop with zlib 1.2.12 compatible api.
+  ABI_GIT_REPO=https://github.com/neozip/neozip.git
   ABI_GIT_COMMIT=e4614ebcb9b3e5b108dc983c155e4baf80882311
 fi
 
@@ -93,8 +93,8 @@ fi
 # Canonicalize CHOST to work around bug in original zlib's configure
 # (Don't export it if it wasn't already exported, else may cause
 # default compiler detection failure and shared library link error
-# when building both zlib and zlib-ng.
-# See https://github.com/zlib-ng/zlib-ng/issues/1219)
+# when building both zlib and neozip.
+# See https://github.com/neozip/neozip/issues/1219)
 CHOST=$(sh $TESTDIR/../tools/config.sub $CHOST)
 
 if test "$CHOST" = ""

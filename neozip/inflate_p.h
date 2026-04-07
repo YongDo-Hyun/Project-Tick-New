@@ -29,9 +29,9 @@
 #  define INFLATE_PRIME_HOOK(strm, bits, value) do {} while (0)
 /* Invoked at the beginning of each block. Useful for plugging arch-specific inflation code. */
 #  define INFLATE_TYPEDO_HOOK(strm, flush) do {} while (0)
-/* Returns whether zlib-ng should compute a checksum. Set to 0 if arch-specific inflation code already does that. */
+/* Returns whether neozip should compute a checksum. Set to 0 if arch-specific inflation code already does that. */
 #  define INFLATE_NEED_CHECKSUM(strm) 1
-/* Returns whether zlib-ng should update a window. Set to 0 if arch-specific inflation code already does that. */
+/* Returns whether neozip should update a window. Set to 0 if arch-specific inflation code already does that. */
 #  define INFLATE_NEED_UPDATEWINDOW(strm) 1
 /* Invoked at the beginning of inflateMark(). Useful for updating arch-specific pointers and offsets. */
 #  define INFLATE_MARK_HOOK(strm) do {} while (0)

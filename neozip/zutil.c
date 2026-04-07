@@ -21,7 +21,7 @@ z_const char * const PREFIX(z_errmsg)[10] = {
 };
 
 const char PREFIX3(vstring)[] =
-    " zlib-ng 2.3.90 devel";
+    " neozip 2.3.90 devel";
 
 #ifdef ZLIB_COMPAT
 const char * Z_EXPORT zlibVersion(void) {
@@ -100,7 +100,7 @@ const char * Z_EXPORT PREFIX(zError)(z_int32_t err) {
     return ERR_MSG(err);
 }
 
-// Zlib-ng's default alloc/free implementation, used unless
+// neozip's default alloc/free implementation, used unless
 // application supplies its own alloc/free functions.
 void Z_INTERNAL *PREFIX(zcalloc)(void *opaque, unsigned items, unsigned size) {
     Z_UNUSED(opaque);

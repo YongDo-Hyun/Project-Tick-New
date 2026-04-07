@@ -93,7 +93,7 @@
     <elf-symbol name='zlibCompileFlags' version='ZLIB_1.2.0.2' is-default-version='yes' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
     <elf-symbol name='zlibVersion' type='func-type' binding='global-binding' visibility='default-visibility' is-defined='yes'/>
   </elf-function-symbols>
-  <abi-instr address-size='64' path='src.d/adler32.c' comp-dir-path='/mnt/c/build/git/zlib-ng/btmp1' language='LANG_C11'>
+  <abi-instr address-size='64' path='src.d/adler32.c' comp-dir-path='/mnt/c/build/git/neozip/btmp1' language='LANG_C11'>
     <type-decl name='long int' size-in-bits='64' id='type-id-1'/>
     <typedef-decl name='Byte' type-id='type-id-2' filepath='./zconf.h' line='397' column='1' id='type-id-3'/>
     <typedef-decl name='Bytef' type-id='type-id-3' filepath='./zconf.h' line='406' column='1' id='type-id-4'/>
@@ -135,7 +135,7 @@
       <return type-id='type-id-13'/>
     </function-decl>
   </abi-instr>
-  <abi-instr address-size='64' path='src.d/compress.c' comp-dir-path='/mnt/c/build/git/zlib-ng/btmp1' language='LANG_C11'>
+  <abi-instr address-size='64' path='src.d/compress.c' comp-dir-path='/mnt/c/build/git/neozip/btmp1' language='LANG_C11'>
     <typedef-decl name='uLongf' type-id='type-id-13' filepath='./zconf.h' line='411' column='1' id='type-id-17'/>
     <pointer-type-def type-id='type-id-17' size-in-bits='64' id='type-id-18'/>
     <function-decl name='compress2' mangled-name='compress2' filepath='src.d/compress.c' line='22' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='compress2'>
@@ -174,7 +174,7 @@
       <return type-id='type-id-20'/>
     </function-decl>
   </abi-instr>
-  <abi-instr address-size='64' path='src.d/crc32.c' comp-dir-path='/mnt/c/build/git/zlib-ng/btmp1' language='LANG_C11'>
+  <abi-instr address-size='64' path='src.d/crc32.c' comp-dir-path='/mnt/c/build/git/neozip/btmp1' language='LANG_C11'>
     <typedef-decl name='z_crc_t' type-id='type-id-11' filepath='./zconf.h' line='435' column='1' id='type-id-23'/>
     <qualified-type-def type-id='type-id-2' const='yes' id='type-id-24'/>
     <pointer-type-def type-id='type-id-24' size-in-bits='64' id='type-id-25'/>
@@ -222,7 +222,7 @@
       <return type-id='type-id-13'/>
     </function-decl>
   </abi-instr>
-  <abi-instr address-size='64' path='src.d/deflate.c' comp-dir-path='/mnt/c/build/git/zlib-ng/btmp1' language='LANG_C11'>
+  <abi-instr address-size='64' path='src.d/deflate.c' comp-dir-path='/mnt/c/build/git/neozip/btmp1' language='LANG_C11'>
     <type-decl name='char' size-in-bits='8' id='type-id-28'/>
     <array-type-def dimensions='1' type-id='type-id-29' size-in-bits='1248' id='type-id-30'>
       <subrange length='39' lower-bound='0' upper-bound='38' type-id='type-id-9' id='type-id-31'/>
@@ -722,7 +722,7 @@
       <return type-id='type-id-57'/>
     </function-type>
   </abi-instr>
-  <abi-instr address-size='64' path='src.d/gzclose.c' comp-dir-path='/mnt/c/build/git/zlib-ng/btmp1' language='LANG_C11'>
+  <abi-instr address-size='64' path='src.d/gzclose.c' comp-dir-path='/mnt/c/build/git/neozip/btmp1' language='LANG_C11'>
     <class-decl name='gzFile_s' size-in-bits='192' is-struct='yes' visibility='default' filepath='src.d/zlib.h' line='1834' column='1' id='type-id-86'>
       <data-member access='public' layout-offset-in-bits='0'>
         <var-decl name='have' type-id='type-id-11' visibility='default' filepath='src.d/zlib.h' line='1835' column='1'/>
@@ -749,7 +749,7 @@
       <return type-id='type-id-20'/>
     </function-decl>
   </abi-instr>
-  <abi-instr address-size='64' path='src.d/gzlib.c' comp-dir-path='/mnt/c/build/git/zlib-ng/btmp1' language='LANG_C11'>
+  <abi-instr address-size='64' path='src.d/gzlib.c' comp-dir-path='/mnt/c/build/git/neozip/btmp1' language='LANG_C11'>
     <function-decl name='open' filepath='/usr/aarch64-linux-gnu/include/fcntl.h' line='209' column='1' visibility='default' binding='global' size-in-bits='64'>
       <parameter type-id='type-id-22'/>
       <parameter type-id='type-id-20'/>
@@ -848,7 +848,7 @@
     </function-decl>
     <type-decl name='variadic parameter type' id='type-id-90'/>
   </abi-instr>
-  <abi-instr address-size='64' path='src.d/gzread.c' comp-dir-path='/mnt/c/build/git/zlib-ng/btmp1' language='LANG_C11'>
+  <abi-instr address-size='64' path='src.d/gzread.c' comp-dir-path='/mnt/c/build/git/neozip/btmp1' language='LANG_C11'>
     <class-decl name='gz_state' size-in-bits='1920' is-struct='yes' naming-typedef-id='type-id-91' visibility='default' filepath='src.d/gzguts.h' line='170' column='1' id='type-id-92'>
       <data-member access='public' layout-offset-in-bits='0'>
         <var-decl name='x' type-id='type-id-86' visibility='default' filepath='src.d/gzguts.h' line='172' column='1'/>
@@ -1006,7 +1006,7 @@
       <return type-id='type-id-20'/>
     </function-decl>
   </abi-instr>
-  <abi-instr address-size='64' path='src.d/gzwrite.c' comp-dir-path='/mnt/c/build/git/zlib-ng/btmp1' language='LANG_C11'>
+  <abi-instr address-size='64' path='src.d/gzwrite.c' comp-dir-path='/mnt/c/build/git/neozip/btmp1' language='LANG_C11'>
     <class-decl name='__va_list' size-in-bits='256' is-struct='yes' visibility='default' id='type-id-98'>
       <data-member access='public' layout-offset-in-bits='0'>
         <var-decl name='__stack' type-id='type-id-84' visibility='default'/>
@@ -1093,7 +1093,7 @@
       <return type-id='type-id-20'/>
     </function-decl>
   </abi-instr>
-  <abi-instr address-size='64' path='src.d/infback.c' comp-dir-path='/mnt/c/build/git/zlib-ng/btmp1' language='LANG_C11'>
+  <abi-instr address-size='64' path='src.d/infback.c' comp-dir-path='/mnt/c/build/git/neozip/btmp1' language='LANG_C11'>
     <enum-decl name='codetype' naming-typedef-id='type-id-102' filepath='src.d/inftrees.h' line='54' column='1' id='type-id-103'>
       <underlying-type type-id='type-id-104'/>
       <enumerator name='CODES' value='0'/>
@@ -1170,7 +1170,7 @@
       <return type-id='type-id-11'/>
     </function-type>
   </abi-instr>
-  <abi-instr address-size='64' path='src.d/inflate.c' comp-dir-path='/mnt/c/build/git/zlib-ng/btmp1' language='LANG_C11'>
+  <abi-instr address-size='64' path='src.d/inflate.c' comp-dir-path='/mnt/c/build/git/neozip/btmp1' language='LANG_C11'>
     <typedef-decl name='voidpf' type-id='type-id-84' filepath='./zconf.h' line='415' column='1' id='type-id-118'/>
     <function-decl name='inflateResetKeep' mangled-name='inflateResetKeep' filepath='src.d/inflate.c' line='119' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='inflateResetKeep@@ZLIB_1.2.5.2'>
       <parameter type-id='type-id-21' name='strm' filepath='src.d/inflate.c' line='120' column='1'/>
@@ -1242,7 +1242,7 @@
       <return type-id='type-id-9'/>
     </function-decl>
   </abi-instr>
-  <abi-instr address-size='64' path='src.d/trees.c' comp-dir-path='/mnt/c/build/git/zlib-ng/btmp1' language='LANG_C11'>
+  <abi-instr address-size='64' path='src.d/trees.c' comp-dir-path='/mnt/c/build/git/neozip/btmp1' language='LANG_C11'>
     <array-type-def dimensions='1' type-id='type-id-119' size-in-bits='2048' id='type-id-120'>
       <subrange length='256' lower-bound='0' upper-bound='255' type-id='type-id-9' id='type-id-121'/>
     </array-type-def>
@@ -1256,7 +1256,7 @@
     <var-decl name='_length_code' type-id='type-id-120' visibility='default' filepath='src.d/deflate.h' line='317' column='1'/>
     <var-decl name='_dist_code' type-id='type-id-122' visibility='default' filepath='src.d/deflate.h' line='318' column='1'/>
   </abi-instr>
-  <abi-instr address-size='64' path='src.d/uncompr.c' comp-dir-path='/mnt/c/build/git/zlib-ng/btmp1' language='LANG_C11'>
+  <abi-instr address-size='64' path='src.d/uncompr.c' comp-dir-path='/mnt/c/build/git/neozip/btmp1' language='LANG_C11'>
     <pointer-type-def type-id='type-id-13' size-in-bits='64' id='type-id-126'/>
     <function-decl name='uncompress2' mangled-name='uncompress2' filepath='src.d/uncompr.c' line='27' column='1' visibility='default' binding='global' size-in-bits='64' elf-symbol-id='uncompress2@@ZLIB_1.2.9'>
       <parameter type-id='type-id-19' name='dest' filepath='src.d/uncompr.c' line='28' column='1'/>
@@ -1273,7 +1273,7 @@
       <return type-id='type-id-20'/>
     </function-decl>
   </abi-instr>
-  <abi-instr address-size='64' path='src.d/zutil.c' comp-dir-path='/mnt/c/build/git/zlib-ng/btmp1' language='LANG_C11'>
+  <abi-instr address-size='64' path='src.d/zutil.c' comp-dir-path='/mnt/c/build/git/neozip/btmp1' language='LANG_C11'>
     <array-type-def dimensions='1' type-id='type-id-127' size-in-bits='640' id='type-id-128'>
       <subrange length='10' lower-bound='0' upper-bound='9' type-id='type-id-9' id='type-id-129'/>
     </array-type-def>

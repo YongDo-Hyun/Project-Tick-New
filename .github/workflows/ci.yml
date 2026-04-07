@@ -45,16 +45,16 @@ concurrency:
     }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
-# ════════════════════════════════════════════════════════════════════
-# Environment — shared across all jobs
-# ════════════════════════════════════════════════════════════════════
+# ╔════════════════════════════════════════════════════════════════╗
+# ║ Environment — shared across all jobs                           ║
+# ╚════════════════════════════════════════════════════════════════╝
 env:
   CI: true
   FORCE_ALL: ${{ github.event.inputs.force-all == 'true' || github.event_name == 'merge_group' }}
 
 jobs:
   # ╔════════════════════════════════════════════════════════════════╗
-  # ║  STAGE 0 — Gate & Triage                                      ║
+  # ║  STAGE 0 — Gate & Triage                                       ║
   # ╚════════════════════════════════════════════════════════════════╝
 
   gate:
@@ -182,7 +182,7 @@ jobs:
           pr-title: ${{ github.event.pull_request.title || '' }}
 
   # ╔════════════════════════════════════════════════════════════════╗
-  # ║  STAGE 1 — Lint & Commit Checks (fast, blocks everything)     ║
+  # ║  STAGE 1 — Lint & Commit Checks (fast, blocks everything)      ║
   # ╚════════════════════════════════════════════════════════════════╝
 
   lint:
@@ -203,7 +203,7 @@ jobs:
     secrets: inherit
 
   # ╔════════════════════════════════════════════════════════════════╗
-  # ║  STAGE 2 — Per-Project Build & Test Matrices                  ║
+  # ║  STAGE 2 — Per-Project Build & Test Matrices                   ║
   # ║                                                                ║
   # ║  Each project runs only when its directory changed, or when    ║
   # ║  force-all / merge-queue / master push triggers them all.      ║
@@ -502,7 +502,7 @@ jobs:
     secrets: inherit
 
   # ╔════════════════════════════════════════════════════════════════╗
-  # ║  STAGE 4 — Containers & Nix (only on full + meshmc changes)   ║
+  # ║  STAGE 4 — Containers & Nix (only on full + meshmc changes)    ║
   # ╚════════════════════════════════════════════════════════════════╝
 
   meshmc-container:
@@ -535,7 +535,7 @@ jobs:
     secrets: inherit
 
   # ╔════════════════════════════════════════════════════════════════╗
-  # ║  STAGE 5 — Documentation (master push only)                   ║
+  # ║  STAGE 5 — Documentation (master push only)                    ║
   # ╚════════════════════════════════════════════════════════════════╝
 
   json4cpp-docs:
@@ -569,7 +569,7 @@ jobs:
     secrets: inherit
 
   # ╔════════════════════════════════════════════════════════════════╗
-  # ║  STAGE 6 — Backport Automation (PR merge events)              ║
+  # ║  STAGE 6 — Backport Automation (PR merge events)               ║
   # ╚════════════════════════════════════════════════════════════════╝
 
   backport:
@@ -597,7 +597,7 @@ jobs:
     secrets: inherit
 
   # ╔════════════════════════════════════════════════════════════════╗
-  # ║  STAGE 7 — Release (tag pushes only)                          ║
+  # ║  STAGE 7 — Release (tag pushes only)                           ║
   # ╚════════════════════════════════════════════════════════════════╝
 
   neozip-release:
@@ -612,7 +612,7 @@ jobs:
     secrets: inherit
 
   # ╔════════════════════════════════════════════════════════════════╗
-  # ║  STAGE 8 — Final Verdicts                                     ║
+  # ║  STAGE 8 — Final Verdicts                                      ║
   # ║                                                                ║
   # ║  Merge queue and branch protection rules check this job.       ║
   # ║  It collects results from all stages and reports pass/fail.    ║

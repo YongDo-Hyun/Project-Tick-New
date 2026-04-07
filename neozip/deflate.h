@@ -456,14 +456,14 @@ void Z_INTERNAL PREFIX(flush_pending)(PREFIX3(streamp) strm);
 /* Returns whether the last deflate(flush) operation did everything it's supposed to do. */
 #  define DEFLATE_DONE(strm, flush) 1
 /* Adjusts the upper bound on compressed data length based on compression parameters and uncompressed data length.
- * Useful when arch-specific deflation code behaves differently than regular zlib-ng algorithms. */
+ * Useful when arch-specific deflation code behaves differently than regular neozip algorithms. */
 #  define DEFLATE_BOUND_ADJUST_COMPLEN(strm, complen, sourceLen) do {} while (0)
 /* Returns whether an optimistic upper bound on compressed data length should *not* be used.
- * Useful when arch-specific deflation code behaves differently than regular zlib-ng algorithms. */
+ * Useful when arch-specific deflation code behaves differently than regular neozip algorithms. */
 #  define DEFLATE_NEED_CONSERVATIVE_BOUND(strm) 0
 /* Invoked for each deflate() call. Useful for plugging arch-specific deflation code. */
 #  define DEFLATE_HOOK(strm, flush, bstate) 0
-/* Returns whether zlib-ng should compute a checksum. Set to 0 if arch-specific deflation code already does that. */
+/* Returns whether neozip should compute a checksum. Set to 0 if arch-specific deflation code already does that. */
 #  define DEFLATE_NEED_CHECKSUM(strm) 1
 /* Returns whether reproducibility parameter can be set to a given value. */
 #  define DEFLATE_CAN_SET_REPRODUCIBLE(strm, reproducible) 1

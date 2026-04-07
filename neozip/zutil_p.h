@@ -1,4 +1,4 @@
-/* zutil_p.h -- Private inline functions used internally in zlib-ng
+/* zutil_p.h -- Private inline functions used internally in neozip
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
 
@@ -7,7 +7,7 @@
 
 #include <stdlib.h>
 
-// Zlib-ng's default alloc/free implementation, used unless
+// neozip's default alloc/free implementation, used unless
 // application supplies its own alloc/free functions.
 static inline void *zng_alloc(size_t size) {
     return malloc(size);

@@ -120,7 +120,7 @@ contains the most recent window position that hashed to that index.
 Pos *head;   // head[HASH_SIZE]: most recent position for each hash
 ```
 
-Note: zlib-ng uses a 16-bit hash (65536 entries) compared to original zlib's
+Note: neozip uses a 16-bit hash (65536 entries) compared to original zlib's
 15-bit hash (32768 entries), providing better distribution and fewer collisions.
 
 ### `prev[w_size]`

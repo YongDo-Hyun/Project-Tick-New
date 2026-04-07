@@ -13,7 +13,7 @@
 #  include "arch/s390/dfltcc_common.h"
 #else
 /* Returns the upper bound on compressed data length based on uncompressed data length, assuming default settings.
- * Zero means that arch-specific deflation code behaves identically to the regular zlib-ng algorithms. */
+ * Zero means that arch-specific deflation code behaves identically to the regular neozip algorithms. */
 #  define DEFLATE_BOUND_COMPLEN(source_len) 0
 #endif
 

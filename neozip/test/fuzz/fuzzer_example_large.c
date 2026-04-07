@@ -6,7 +6,7 @@
 #ifdef ZLIB_COMPAT
 #  include "zlib.h"
 #else
-#  include "zlib-ng.h"
+#  include "neozip.h"
 #endif
 
 #define CHECK_ERR(err, msg) { \

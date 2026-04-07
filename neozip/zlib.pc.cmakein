@@ -7,7 +7,7 @@ sharedlibdir=${libdir}
 includedir=@PC_INC_INSTALL_DIR@
 
 Name: zlib@SUFFIX@
-Description: zlib-ng compression library
+Description: neozip compression library
 Version: @ZLIB_FULL_VERSION@
 
 Requires:

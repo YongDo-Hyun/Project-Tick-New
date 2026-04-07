@@ -68,7 +68,7 @@ if(ZLIB_LIBRARY)
     target_link_libraries(benchmark_zlib ${ZLIB_LIBRARY})
 else()
     target_sources(benchmark_zlib PRIVATE ${BENCH_INTERNAL_SRCS})
-    target_link_libraries(benchmark_zlib zlib-ng-static)
+    target_link_libraries(benchmark_zlib neozip-static)
 endif()
 
 if(WIN32)
@@ -122,5 +122,5 @@ if(WITH_BENCHMARK_APPS)
     # We need the static png library if we're statically linking to zlib,
     # otherwise it will resolve these things in the system provided dynamic
     # libraries (likely linked to stock zlib)
-    target_link_libraries(benchmark_zlib_apps libpng.a zlib-ng-static benchmark::benchmark)
+    target_link_libraries(benchmark_zlib_apps libpng.a neozip-static benchmark::benchmark)
 endif()

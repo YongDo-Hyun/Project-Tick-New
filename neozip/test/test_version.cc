@@ -4,7 +4,7 @@
 #ifdef ZLIB_COMPAT
 #  include "zlib.h"
 #else
-#  include "zlib-ng.h"
+#  include "neozip.h"
 #endif
 
 #include <stdio.h>
@@ -22,6 +22,6 @@ TEST(version, basic) {
     EXPECT_EQ(zVersion()[0], my_version[0]);
     EXPECT_STREQ(zVersion(), PREFIX2(VERSION));
 
-    printf("zlib-ng version %s = 0x%08lx, compile flags = 0x%lx\n",
+    printf("neozip version %s = 0x%08lx, compile flags = 0x%lx\n",
             ZLIBNG_VERSION, ZLIBNG_VERNUM, PREFIX(zlibCompileFlags)());
 }

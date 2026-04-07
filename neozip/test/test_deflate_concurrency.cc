@@ -1,14 +1,14 @@
 /* Test deflate() on concurrently modified next_in.
  *
  * Plain zlib does not document that this is supported, but in practice it tolerates this, and QEMU live migration is
- * known to rely on this. Make sure zlib-ng tolerates this as well.
+ * known to rely on this. Make sure neozip tolerates this as well.
  */
 
 #include "zbuild.h"
 #ifdef ZLIB_COMPAT
 #include "zlib.h"
 #else
-#include "zlib-ng.h"
+#include "neozip.h"
 #endif
 
 #include <gtest/gtest.h>

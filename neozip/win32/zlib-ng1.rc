@@ -1,5 +1,5 @@
 #include <winver.h>
-#include "zlib-ng.h"
+#include "neozip.h"
 
 VS_VERSION_INFO		VERSIONINFO
   FILEVERSION		ZLIBNG_VER_MAJOR,ZLIBNG_VER_MINOR,ZLIBNG_VER_REVISION,0
@@ -21,9 +21,9 @@ BEGIN
     BEGIN
       VALUE "FileDescription",	"zlib data compression library\0"
       VALUE "FileVersion",	ZLIBNG_VERSION "\0"
-      VALUE "InternalName",	"zlib-ng1.dll\0"
+      VALUE "InternalName",	"neozip1.dll\0"
       VALUE "LegalCopyright",	"(C) 1995-2024 Jean-loup Gailly & Mark Adler\0"
-      VALUE "OriginalFilename",	"zlib-ng1.dll\0"
+      VALUE "OriginalFilename",	"neozip1.dll\0"
       VALUE "ProductName",	"zlib\0"
       VALUE "ProductVersion",	ZLIBNG_VERSION "\0"
       VALUE "Comments",		"For more information visit https://www.zlib.net/\0"

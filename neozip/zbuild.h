@@ -119,15 +119,15 @@
 #  define z_size_t size_t
 #endif
 
-/* In zlib-compat some functions and types use unsigned long, but zlib-ng use size_t */
+/* In zlib-compat some functions and types use unsigned long, but neozip use size_t */
 #if defined(ZLIB_COMPAT)
 #  define z_uintmax_t unsigned long
 #else
 #  define z_uintmax_t size_t
 #endif
 
-/* In zlib-compat headers some function return values and parameter types use int or unsigned, but zlib-ng headers use
-   int32_t and uint32_t, which will cause type mismatch when compiling zlib-ng if int32_t is long and uint32_t is
+/* In zlib-compat headers some function return values and parameter types use int or unsigned, but neozip headers use
+   int32_t and uint32_t, which will cause type mismatch when compiling neozip if int32_t is long and uint32_t is
    unsigned long */
 #if defined(ZLIB_COMPAT)
 #  define z_int32_t int
@@ -165,10 +165,10 @@
 #endif
 
 /* Symbol versioning helpers, allowing multiple versions of a function to exist.
- * Functions using this must also be added to zlib-ng.map for each version.
+ * Functions using this must also be added to neozip.map for each version.
  * Double @@ means this is the default for newly compiled applications to link against.
  * Single @ means this is kept for backwards compatibility.
- * This is only used for Zlib-ng native API, and only on platforms supporting this.
+ * This is only used for neozip native API, and only on platforms supporting this.
  */
 #if defined(HAVE_SYMVER)
 #  define ZSYMVER(func,alias,ver) __asm__(".symver " func ", " alias "@ZLIB_NG_" ver);

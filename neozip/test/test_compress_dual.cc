@@ -1,4 +1,4 @@
-/* test_compress_dual.cc - Test linking against both zlib and zlib-ng */
+/* test_compress_dual.cc - Test linking against both zlib and neozip */
 
 #include "zlib.h"
 

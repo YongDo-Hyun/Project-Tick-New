@@ -1,0 +1,10 @@
+set(neozip_VERSION @ZLIBNG_HEADER_VERSION@)
+
+@PACKAGE_INIT@
+
+set_and_check(neozip_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
+set_and_check(neozip_LIB_DIR "@PACKAGE_LIB_INSTALL_DIR@")
+
+include("${CMAKE_CURRENT_LIST_DIR}/neozip-targets.cmake")
+
+check_required_components(neozip)

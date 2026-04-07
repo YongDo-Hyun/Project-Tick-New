@@ -6,8 +6,8 @@ It will abort if the current source
 tree has a change that breaks binary compatibility.
 
 This protects against the common scenario where:
-- an app is compiled against the current zlib-ng
-- the system package manager updates the zlib-ng shared library
+- an app is compiled against the current neozip
+- the system package manager updates the neozip shared library
 - the app now crashes because some symbol is
   missing or some public structure or parameter
   has changed type or size
@@ -16,7 +16,7 @@ If run with --zlib-compat, it verifies that the
 current source tree generates a library that
 is ABI-compatible with the reference release
 of classic zlib.  This ensures that building
-zlib-ng with --zlib-compat does what it says on the tin.
+neozip with --zlib-compat does what it says on the tin.
 
 abicheck.sh is not perfect, but it can catch
 many common compatibility issues.
@@ -24,7 +24,7 @@ many common compatibility issues.
 Cached files test/abi/*.abi
 ---------------------------
 
-Comparing to the old version of zlib (or zlib-ng)
+Comparing to the old version of zlib (or neozip)
 means someone has to check out and build
 the previous source tree and extract its .abi
 using abidw.  This can be slow.

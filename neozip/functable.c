@@ -44,7 +44,7 @@
  */
 #define FUNCTABLE_VERIFY_ASSIGN(VAR, FUNC_NAME) \
     if (!VAR.FUNC_NAME) { \
-        fprintf(stderr, "Zlib-ng functable failed initialization!\n"); \
+        fprintf(stderr, "neozip functable failed initialization!\n"); \
         return 1; \
     } \
     FUNCTABLE_ASSIGN(VAR, FUNC_NAME);
@@ -55,7 +55,7 @@
  */
 #define FUNCTABLE_INIT_ABORT \
     if (init_functable()) { \
-        fprintf(stderr, "Zlib-ng functable failed initialization!\n"); \
+        fprintf(stderr, "neozip functable failed initialization!\n"); \
         abort(); \
     };
 

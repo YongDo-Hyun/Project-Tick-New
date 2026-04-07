@@ -7,7 +7,7 @@
 #ifdef ZLIB_COMPAT
 #  include "zlib.h"
 #else
-#  include "zlib-ng.h"
+#  include "neozip.h"
 #endif
 #include "deflate.h"
 
@@ -951,7 +951,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "warning: different zlib version linked: %s\n", zVersion());
     }
 
-    printf("zlib-ng version %s = 0x%08lx, compile flags = 0x%lx\n",
+    printf("neozip version %s = 0x%08lx, compile flags = 0x%lx\n",
             ZLIBNG_VERSION, ZLIBNG_VERNUM, PREFIX(zlibCompileFlags)());
 
     compr    = (unsigned char*)calloc((unsigned int)comprLen, 1);

@@ -3,7 +3,7 @@
 
 #include "test_shared.h"
 
-/* Test definitions that can only be used in the zlib-ng build environment. */
+/* Test definitions that can only be used in the neozip build environment. */
 
 static inline int deflate_prime_32(PREFIX3(stream) *stream, uint32_t value) {
     int err;

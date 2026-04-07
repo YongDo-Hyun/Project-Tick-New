@@ -2,7 +2,7 @@
 
 ## Overview
 
-Neozip follows conventions derived from zlib-ng and the broader zlib
+Neozip follows conventions derived from neozip and the broader zlib
 ecosystem. This document describes naming patterns, macro usage,
 compiler annotations, and structural conventions observed in the
 codebase.

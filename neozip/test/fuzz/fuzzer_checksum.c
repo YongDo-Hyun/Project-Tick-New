@@ -5,7 +5,7 @@
 #ifdef ZLIB_COMPAT
 #  include "zlib.h"
 #else
-#  include "zlib-ng.h"
+#  include "neozip.h"
 #endif
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t dataLen) {

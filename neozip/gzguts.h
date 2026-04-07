@@ -30,7 +30,7 @@
 #if defined(ZLIB_COMPAT)
 #  include "zlib.h"
 #else
-#  include "zlib-ng.h"
+#  include "neozip.h"
 #endif
 
 #ifdef _WIN32

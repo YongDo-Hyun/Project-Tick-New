@@ -4,7 +4,7 @@
 # See also
 #  https://wiki.debian.org/Multiarch/Tuples
 #  https://wiki.gentoo.org/wiki/CHOST
-# If you need an architecture not listed here, file a bug at github.com/zlib-ng/zlib-ng
+# If you need an architecture not listed here, file a bug at github.com/neozip/neozip
 # and work around the problem by dropping libtool's much more comprehensive config.sub
 # on top of this file, see
 # https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub

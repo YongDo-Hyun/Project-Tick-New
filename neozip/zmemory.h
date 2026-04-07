@@ -1,4 +1,4 @@
-/* zmemory.h -- Private inline functions used internally in zlib-ng
+/* zmemory.h -- Private inline functions used internally in neozip
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
 

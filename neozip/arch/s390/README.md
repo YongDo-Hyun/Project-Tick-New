@@ -11,11 +11,11 @@ or
     $ cmake -DWITH_DFLTCC_DEFLATE=1 -DWITH_DFLTCC_INFLATE=1 .
     $ make
 
-When built like this, zlib-ng would compress using hardware on level 1,
+When built like this, neozip would compress using hardware on level 1,
 and using software on all other levels. Decompression will always happen
 in hardware. In order to enable hardware compression for levels 1-6
 (i.e. to make it used by default) one could add
-`-DDFLTCC_LEVEL_MASK=0x7e` to CFLAGS when building zlib-ng.
+`-DDFLTCC_LEVEL_MASK=0x7e` to CFLAGS when building neozip.
 
 SystemZ deflate hardware acceleration is available on [IBM z15](
 https://www.ibm.com/products/z15) and newer machines under the name [
@@ -30,7 +30,7 @@ the code and the rest of this document refer to this feature simply as
 # Performance
 
 Performance figures are published [here](
-https://github.com/iii-i/zlib-ng/wiki/Performance-with-dfltcc-patch-applied-and-dfltcc-support-built-on-dfltcc-enabled-machine
+https://github.com/iii-i/neozip/wiki/Performance-with-dfltcc-patch-applied-and-dfltcc-support-built-on-dfltcc-enabled-machine
 ). The compression speed-up can be as high as 110x and the decompression
 speed-up can be as high as 15x.
 
@@ -39,11 +39,11 @@ speed-up can be as high as 15x.
 Two DFLTCC compression calls with identical inputs are not guaranteed to
 produce identical outputs. Therefore care should be taken when using
 hardware compression when reproducible results are desired. In
-particular, zlib-ng-specific `zng_deflateSetParams` call allows setting
+particular, neozip-specific `zng_deflateSetParams` call allows setting
 `Z_DEFLATE_REPRODUCIBLE` parameter, which disables DFLTCC support for a
 particular stream.
 
-DFLTCC does not support every single zlib-ng feature, in particular:
+DFLTCC does not support every single neozip feature, in particular:
 
 * `inflate(Z_BLOCK)` and `inflate(Z_TREES)`
 * `inflateMark()`
@@ -56,7 +56,7 @@ this is not possible, gracefully fail.
 # Code structure
 
 All SystemZ-specific code lives in `arch/s390` directory and is
-integrated with the rest of zlib-ng using hook macros.
+integrated with the rest of neozip using hook macros.
 
 ## Hook macros
 
@@ -103,7 +103,7 @@ suppressed using `DEFLATE_NEED_CHECKSUM()` and `INFLATE_NEED_CHECKSUM()`
 macros.
 
 While software always produces reproducible compression results, this
-is not the case for DFLTCC. Therefore, zlib-ng users are given the
+is not the case for DFLTCC. Therefore, neozip users are given the
 ability to specify whether or not reproducible compression results
 are required. While it is always possible to specify this setting
 before the compression begins, it is not always possible to do so in
@@ -112,7 +112,7 @@ determined by `DEFLATE_CAN_SET_REPRODUCIBLE()` macro.
 
 ## SystemZ-specific code
 
-When zlib-ng is built with DFLTCC, the hooks described above are
+When neozip is built with DFLTCC, the hooks described above are
 converted to calls to functions, which are implemented in
 `arch/s390/dfltcc_*` files. The functions can be grouped in three broad
 categories:
@@ -212,7 +212,7 @@ access to an IBM z15+ VM or LPAR in order to test DFLTCC support. Since
 DFLTCC is a non-privileged instruction, neither special VM/LPAR
 configuration nor root are required.
 
-zlib-ng CI uses an IBM-provided z15 self-hosted builder for the DFLTCC
+neozip CI uses an IBM-provided z15 self-hosted builder for the DFLTCC
 testing. There is no official IBM Z GitHub Actions runner, so we build
 one inspired by `anup-kodlekere/gaplib`.
 Future updates to actions-runner might need an updated patch. The .net

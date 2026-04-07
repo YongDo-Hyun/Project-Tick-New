@@ -10,9 +10,9 @@ if [ -f actions-runner.Dockerfile ]; then
 else
     MODE=2
     cd $TMPDIR
-    wget https://raw.githubusercontent.com/zlib-ng/zlib-ng/refs/heads/develop/arch/s390/self-hosted-builder/actions-runner.Dockerfile
-    wget https://raw.githubusercontent.com/zlib-ng/zlib-ng/refs/heads/develop/arch/s390/self-hosted-builder/actions-runner
-    wget https://raw.githubusercontent.com/zlib-ng/zlib-ng/refs/heads/develop/arch/s390/self-hosted-builder/entrypoint
+    wget https://raw.githubusercontent.com/neozip/neozip/refs/heads/develop/arch/s390/self-hosted-builder/actions-runner.Dockerfile
+    wget https://raw.githubusercontent.com/neozip/neozip/refs/heads/develop/arch/s390/self-hosted-builder/actions-runner
+    wget https://raw.githubusercontent.com/neozip/neozip/refs/heads/develop/arch/s390/self-hosted-builder/entrypoint
 fi
 
 # Stop service
@@ -22,17 +22,17 @@ systemctl stop actions-runner || true
 podman container rm gaplib-actions-runner || true
 
 # Delete old image
-podman image rm localhost/zlib-ng/actions-runner || true
+podman image rm localhost/neozip/actions-runner || true
 
 # Prune all unused podman data
 podman system prune -f || true
 
 # Build new image
-podman build --squash -f actions-runner.Dockerfile --tag zlib-ng/actions-runner . 2>&1 | tee /var/log/actions-runner-build.log
+podman build --squash -f actions-runner.Dockerfile --tag neozip/actions-runner . 2>&1 | tee /var/log/actions-runner-build.log
 
 # Create new container
 podman create --replace --name=gaplib-actions-runner --env-file=/etc/actions-runner --init \
-       zlib-ng/actions-runner 2>&1 | tee -a /var/log/actions-runner-build.log
+       neozip/actions-runner 2>&1 | tee -a /var/log/actions-runner-build.log
 
 # Start service
 systemctl start actions-runner || true
