@@ -229,6 +229,7 @@ typedef struct langp_S
 #define LANGP_ENTRY(ga, i)	(((langp_T *)(ga).ga_data) + (i))
 
 #define MNVSUGMAGIC "MNVsug"	// string at start of MNV .sug file
+#define VIMSUGMAGIC "VIMsug"	// also accept Vim .sug files
 #define MNVSUGMAGICL 6
 #define MNVSUGVERSION 1
 

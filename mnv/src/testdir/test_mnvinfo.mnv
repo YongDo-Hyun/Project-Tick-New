@@ -60,7 +60,7 @@ func Test_global_vars()
   let g:MY_GLOBAL_FUNCREF = function('min')
 
   set mnvinfo='100,<50,s10,h,!,nmnvinfo
-  wv! Xmnvinfo
+  wmnvinfo! Xmnvinfo
 
   unlet g:MY_GLOBAL_STRING
   unlet g:MY_GLOBAL_NUM
@@ -74,7 +74,7 @@ func Test_global_vars()
   unlet g:MY_GLOBAL_NONE
   unlet g:MY_GLOBAL_FUNCREF
 
-  rv! Xmnvinfo
+  rmnvinfo! Xmnvinfo
   call assert_equal("MNV Editor", g:MY_GLOBAL_STRING)
   call assert_equal(345, g:MY_GLOBAL_NUM)
   call assert_equal(3.14, g:MY_GLOBAL_FLOAT)
@@ -102,7 +102,7 @@ func Test_global_vars()
   const g:MY_GLOBAL_DICT = {'editor': 'mnv'}
   const g:MY_GLOBAL_LIST = [5, 7, 13]
   const g:MY_GLOBAL_BLOB = 0zDEADBEEF
-  call assert_fails('rv! Xmnvinfo', 'E741:')
+  call assert_fails('rmnvinfo! Xmnvinfo', 'E741:')
   call assert_equal('New Value', g:MY_GLOBAL_STRING)
   call assert_equal(987, g:MY_GLOBAL_NUM)
   call assert_equal(1.16, g:MY_GLOBAL_FLOAT)
@@ -125,7 +125,7 @@ func Test_global_vars()
         \ "!GLOB_BLOB_4\tBLO\t0z12 ab",
         \ "!GLOB_LIST_1\tLIS\t1 2",
         \ "!GLOB_DICT_1\tDIC\t1 2"], 'Xmnvinfo', 'D')
-  call assert_fails('rv! Xmnvinfo', 'E488:')
+  call assert_fails('rmnvinfo! Xmnvinfo', 'E488:')
   call assert_equal('123', g:GLOB_BLOB_1)
   call assert_equal(1, type(g:GLOB_BLOB_1))
   call assert_equal('012', g:GLOB_BLOB_2)
@@ -149,13 +149,13 @@ func Test_global_vars_with_circular_reference()
   let g:MY_GLOBAL_DICT['self'] = g:MY_GLOBAL_DICT
 
   set mnvinfo='100,<50,s10,h,!,nmnvinfo
-  wv! Xmnvinfo
+  wmnvinfo! Xmnvinfo
   call assert_equal(v:errmsg, '')
 
   unlet g:MY_GLOBAL_LIST
   unlet g:MY_GLOBAL_DICT
 
-  rv! Xmnvinfo
+  rmnvinfo! Xmnvinfo
   call assert_equal(v:errmsg, '')
   call assert_true(!exists('g:MY_GLOBAL_LIST'))
   call assert_true(!exists('g:MY_GLOBAL_DICT'))
@@ -849,25 +849,25 @@ func Test_mnvinfo_error()
 
   " Illegal starting character
   call writefile(["a 123"], 'Xmnvinfo', 'D')
-  call assert_fails('rv Xmnvinfo', 'E575:')
+  call assert_fails('rmnvinfo Xmnvinfo', 'E575:')
 
   " Illegal register name in the mnvinfo file
   call writefile(['"@	LINE	0'], 'Xmnvinfo')
-  call assert_fails('rv Xmnvinfo', 'E577:')
+  call assert_fails('rmnvinfo Xmnvinfo', 'E577:')
 
   " Invalid file mark line
   call writefile(['>', '@'], 'Xmnvinfo')
-  call assert_fails('rv Xmnvinfo', 'E576:')
+  call assert_fails('rmnvinfo Xmnvinfo', 'E576:')
 
   " Too many errors in mnvinfo file
   call writefile(repeat(["a 123"], 15), 'Xmnvinfo')
-  call assert_fails('rv Xmnvinfo', 'E575:')
+  call assert_fails('rmnvinfo Xmnvinfo', 'E575:')
 
   call writefile(['>'] + repeat(['@'], 10), 'Xmnvinfo')
-  call assert_fails('rv Xmnvinfo', 'E576:')
+  call assert_fails('rmnvinfo Xmnvinfo', 'E576:')
 
   call writefile(repeat(['"@'], 15), 'Xmnvinfo')
-  call assert_fails('rv Xmnvinfo', 'E577:')
+  call assert_fails('rmnvinfo Xmnvinfo', 'E577:')
 endfunc
 
 " Test for saving and restoring last substitute string in mnvinfo

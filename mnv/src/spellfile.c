@@ -695,7 +695,8 @@ suggest_load_files(void)
 	     */
 	    for (i = 0; i < MNVSUGMAGICL; ++i)
 		buf[i] = (c = getc(fd)) == EOF ? 0 : c;	// <fileID>
-	    if (STRNCMP(buf, MNVSUGMAGIC, MNVSUGMAGICL) != 0)
+	    if (STRNCMP(buf, MNVSUGMAGIC, MNVSUGMAGICL) != 0
+		    && STRNCMP(buf, VIMSUGMAGIC, MNVSUGMAGICL) != 0)
 	    {
 		semsg(_(e_this_does_not_look_like_sug_file_str),
 							     slang->sl_fname);
