@@ -47,15 +47,23 @@ pub struct ProjectBuildConfig {
     pub test_command: Option<Vec<String>>,
 }
 
+/// Container image used for isolated builds.
+const BUILD_CONTAINER_IMAGE: &str = "localhost/tickborg-builder:latest";
+
 /// The build executor — replaces ofborg's Nix struct.
 #[derive(Clone, Debug)]
 pub struct BuildExecutor {
     pub build_timeout: u16,
+    /// Whether to run builds inside a container for isolation.
+    pub use_container: bool,
 }
 
 impl BuildExecutor {
     pub fn new(build_timeout: u16) -> Self {
-        Self { build_timeout }
+        Self {
+            build_timeout,
+            use_container: true,
+        }
     }
 
     /// Build a project using its configured build system.
@@ -64,9 +72,217 @@ impl BuildExecutor {
         project_root: &Path,
         config: &ProjectBuildConfig,
     ) -> Result<fs::File, fs::File> {
+        if self.use_container {
+            self.build_project_containerized(project_root, config)
+        } else {
+            self.build_project_direct(project_root, config)
+        }
+    }
+
+    /// Build inside a podman container with full isolation.
+    fn build_project_containerized(
+        &self,
+        project_root: &Path,
+        config: &ProjectBuildConfig,
+    ) -> Result<fs::File, fs::File> {
         let project_dir = project_root.join(&config.path);
+        let project_dir_str = project_dir.to_string_lossy();
+
+        // Build a shell script that runs configure + build inside the container
+        let mut script = String::from("set -e\n");
+
+        // Configure step
+        if let Some(configure_args) = self.configure_script_fragment(&config.build_system, config) {
+            script.push_str(&configure_args);
+            script.push('\n');
+        }
+
+        // Build step
+        script.push_str(&self.build_script_fragment(&config.build_system, config));
+
+        let timeout = if config.build_timeout_seconds > 0 {
+            config.build_timeout_seconds
+        } else {
+            self.build_timeout
+        };
+
+        let mut cmd = Command::new("podman");
+        cmd.args([
+            "run",
+            "--rm",
+            // Security: no network access
+            "--network=none",
+            // Resource limits
+            "--memory=4g",
+            "--cpus=4",
+            // Timeout (podman --timeout kills the container)
+            &format!("--timeout={}", timeout),
+            // Read-only root filesystem for the container
+            "--read-only",
+            // Tmpfs for /tmp inside the container
+            "--tmpfs=/tmp:rw,size=512m",
+            // Drop all capabilities
+            "--cap-drop=ALL",
+            // No new privileges
+            "--security-opt=no-new-privileges",
+            // Mount project directory as the only writable volume
+            &format!("--volume={}:/build:Z", project_dir_str),
+            "--workdir=/build",
+            BUILD_CONTAINER_IMAGE,
+            "sh", "-c", &script,
+        ]);
+
+        self.run(cmd, true)
+    }
+
+    /// Build directly on the host (fallback, not recommended).
+    fn build_project_direct(
+        &self,
+        project_root: &Path,
+        config: &ProjectBuildConfig,
+    ) -> Result<fs::File, fs::File> {
+        let project_dir = project_root.join(&config.path);
+
+        // Run configure/generate step if needed
+        if let Some(configure_cmd) = self.configure_command(&project_dir, config) {
+            if let Err(log) = self.run(configure_cmd, true) {
+                return Err(log);
+            }
+        }
+
         let cmd = self.build_command(&project_dir, config);
         self.run(cmd, true)
+    }
+
+    /// Generate shell fragment for the configure step (runs inside container).
+    fn configure_script_fragment(&self, build_system: &BuildSystem, config: &ProjectBuildConfig) -> Option<String> {
+        match build_system {
+            BuildSystem::CMake => {
+                let mut parts = vec!["cmake -S . -B build -DCMAKE_BUILD_TYPE=Release".to_string()];
+                for arg in &config.configure_args {
+                    parts.push(shell_escape(arg));
+                }
+                Some(parts.join(" "))
+            }
+            BuildSystem::Meson => {
+                let mut parts = vec!["meson setup build".to_string()];
+                for arg in &config.configure_args {
+                    parts.push(shell_escape(arg));
+                }
+                // Meson setup fails if build dir already exists; handle both cases
+                Some(format!(
+                    "if [ -d build ]; then meson setup --reconfigure build {}; else {}; fi",
+                    config.configure_args.iter().map(|a| shell_escape(a)).collect::<Vec<_>>().join(" "),
+                    parts.join(" ")
+                ))
+            }
+            BuildSystem::Autotools => {
+                let mut parts = vec!["./configure".to_string()];
+                for arg in &config.configure_args {
+                    parts.push(shell_escape(arg));
+                }
+                Some(format!("if [ -x ./configure ]; then {}; fi", parts.join(" ")))
+            }
+            _ => None,
+        }
+    }
+
+    /// Generate shell fragment for the build step (runs inside container).
+    fn build_script_fragment(&self, build_system: &BuildSystem, config: &ProjectBuildConfig) -> String {
+        match build_system {
+            BuildSystem::CMake => {
+                let mut parts = vec!["cmake --build build --config Release".to_string()];
+                for arg in &config.build_args {
+                    parts.push(shell_escape(arg));
+                }
+                parts.join(" ")
+            }
+            BuildSystem::Meson => {
+                let mut parts = vec!["meson compile -C build".to_string()];
+                for arg in &config.build_args {
+                    parts.push(shell_escape(arg));
+                }
+                parts.join(" ")
+            }
+            BuildSystem::Autotools | BuildSystem::Make => {
+                let cpus = num_cpus();
+                let mut parts = vec![format!("make -j{cpus}")];
+                for arg in &config.build_args {
+                    parts.push(shell_escape(arg));
+                }
+                parts.join(" ")
+            }
+            BuildSystem::Cargo => {
+                let mut parts = vec!["cargo build --release".to_string()];
+                for arg in &config.build_args {
+                    parts.push(shell_escape(arg));
+                }
+                parts.join(" ")
+            }
+            BuildSystem::Gradle => {
+                // Inside container, always use gradle (wrapper won't exist)
+                let mut parts = vec!["if [ -x ./gradlew ]; then ./gradlew build; else gradle build; fi".to_string()];
+                for arg in &config.build_args {
+                    parts.push(shell_escape(arg));
+                }
+                parts.join(" ")
+            }
+            BuildSystem::Custom { command } => {
+                command.clone()
+            }
+        }
+    }
+
+    /// Generate the configure/setup command for build systems that need it.
+    fn configure_command(&self, project_dir: &Path, config: &ProjectBuildConfig) -> Option<Command> {
+        match &config.build_system {
+            BuildSystem::CMake => {
+                let mut cmd = Command::new("cmake");
+                cmd.arg("-S").arg(".");
+                cmd.arg("-B").arg("build");
+                cmd.arg("-DCMAKE_BUILD_TYPE=Release");
+                for arg in &config.configure_args {
+                    cmd.arg(arg);
+                }
+                cmd.current_dir(project_dir);
+                Some(cmd)
+            }
+            BuildSystem::Meson => {
+                let build_dir = project_dir.join("build");
+                if build_dir.exists() {
+                    // Meson doesn't allow re-setup, use reconfigure
+                    let mut cmd = Command::new("meson");
+                    cmd.arg("setup").arg("--reconfigure").arg("build");
+                    for arg in &config.configure_args {
+                        cmd.arg(arg);
+                    }
+                    cmd.current_dir(project_dir);
+                    Some(cmd)
+                } else {
+                    let mut cmd = Command::new("meson");
+                    cmd.arg("setup").arg("build");
+                    for arg in &config.configure_args {
+                        cmd.arg(arg);
+                    }
+                    cmd.current_dir(project_dir);
+                    Some(cmd)
+                }
+            }
+            BuildSystem::Autotools => {
+                let configure = project_dir.join("configure");
+                if configure.exists() {
+                    let mut cmd = Command::new("./configure");
+                    for arg in &config.configure_args {
+                        cmd.arg(arg);
+                    }
+                    cmd.current_dir(project_dir);
+                    Some(cmd)
+                } else {
+                    None
+                }
+            }
+            _ => None,
+        }
     }
 
     /// Build a project asynchronously.
@@ -257,6 +473,15 @@ fn num_cpus() -> usize {
     std::thread::available_parallelism()
         .map(|n| n.get())
         .unwrap_or(4)
+}
+
+/// Escape a string for safe use in a shell command.
+fn shell_escape(s: &str) -> String {
+    if s.chars().all(|c| c.is_alphanumeric() || c == '-' || c == '_' || c == '.' || c == '/' || c == '=') {
+        s.to_string()
+    } else {
+        format!("'{}'", s.replace('\'', "'\\''"))
+    }
 }
 
 pub fn lines_from_file(file: fs::File) -> Vec<String> {

@@ -45,11 +45,17 @@ website.  We will remember him!
 ==============================================================================
 NEW FEATURES						*new-10*
 
+Not a new feature yet
+
 ==============================================================================
 INCOMPATIBLE CHANGES				*incompatible-10*
 
+MNV incompatible for vim scripts. Please migrate
+
 ==============================================================================
 IMPROVEMENTS						*improvements-10*
+
+Improved build system
 
 ==============================================================================
 COMPILE TIME CHANGES					*compile-changes-10*

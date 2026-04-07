@@ -22,12 +22,10 @@ impl System {
         ]
     }
 
-    /// The primary CI platforms (Linux + macOS + Windows x86_64)
+    /// The primary CI platforms (Linux only for now)
     pub fn primary_systems() -> Vec<Self> {
         vec![
             Self::X8664Linux,
-            Self::X8664Darwin,
-            Self::X8664Windows,
         ]
     }
 
