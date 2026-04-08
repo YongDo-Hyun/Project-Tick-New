@@ -1,6 +1,6 @@
 all::
 
-CGIT_VERSION = 0.0.5-1-Project-Tick
+CGIT_VERSION = 10.0.3-ProjTorg
 CGIT_SCRIPT_NAME = cgit.cgi
 CGIT_SCRIPT_PATH = /var/www/htdocs/cgit
 CGIT_DATA_PATH = $(CGIT_SCRIPT_PATH)
@@ -14,7 +14,7 @@ htmldir = $(docdir)
 pdfdir = $(docdir)
 mandir = $(prefix)/share/man
 SHA1_HEADER = <openssl/sha.h>
-GIT_VER = 2.46.0
+GIT_VER = 2.53.0
 GIT_URL = https://www.kernel.org/pub/software/scm/git/git-$(GIT_VER).tar.xz
 INSTALL = install
 COPYTREE = cp -r
@@ -108,11 +108,20 @@ install-pdf: doc-pdf
 	$(INSTALL) -m 0755 -d $(DESTDIR)$(pdfdir)
 	$(INSTALL) -m 0644 $(DOC_PDF) $(DESTDIR)$(pdfdir)
 
+define rm_f
+rm -f $(1)
+
+endef
+
 uninstall:
 	rm -f $(DESTDIR)$(CGIT_SCRIPT_PATH)/$(CGIT_SCRIPT_NAME)
 	rm -f $(DESTDIR)$(CGIT_DATA_PATH)/cgit.css
+	rm -f $(DESTDIR)$(CGIT_DATA_PATH)/cgit.js
 	rm -f $(DESTDIR)$(CGIT_DATA_PATH)/cgit.png
 	rm -f $(DESTDIR)$(CGIT_DATA_PATH)/favicon.ico
+	rm -f $(DESTDIR)$(CGIT_DATA_PATH)/robots.txt
+	$(foreach file,$(patsubst filters/%,%,$(shell find filters/ ! -type d)), \
+		$(call rm_f,$(DESTDIR)$(filterdir)/$(file)))
 
 uninstall-doc: uninstall-man uninstall-html uninstall-pdf
 

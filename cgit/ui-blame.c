@@ -122,14 +122,14 @@ static void print_object(const struct object_id *oid, const char *path,
 	struct blame_origin *o;
 	struct blame_entry *ent = NULL;
 
-	type = oid_object_info(the_repository, oid, &size);
+	type = odb_read_object_info(the_repository->objects, oid, &size);
 	if (type == OBJ_BAD) {
 		cgit_print_error_page(404, "Not found", "Bad object name: %s",
 				      oid_to_hex(oid));
 		return;
 	}
 
-	buf = repo_read_object_file(the_repository, oid, &type, &size);
+	buf = odb_read_object(the_repository->objects, oid, &type, &size);
 	if (!buf) {
 		cgit_print_error_page(500, "Internal server error",
 			"Error reading object %s", oid_to_hex(oid));
@@ -264,7 +264,7 @@ static int walk_tree(const struct object_id *oid, struct strbuf *base,
 
 static int basedir_len(const char *path)
 {
-	char *p = strrchr(path, '/');
+	const char *p = strrchr(path, '/');
 	if (p)
 		return p - path + 1;
 	return 0;

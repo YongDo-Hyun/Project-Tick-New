@@ -833,7 +833,7 @@ void cgit_print_docstart(void)
 	else
 		emit_js_link(NULL, "/cgit.js");
 
-	if (ctx.cfg.favicon) {
+	if (ctx.cfg.favicon && *ctx.cfg.favicon) {
 		html("<link rel='shortcut icon' href='");
 		html_attr(ctx.cfg.favicon);
 		html("'/>\n");
@@ -890,13 +890,18 @@ void cgit_print_docend(void)
 void cgit_print_error_page(int code, const char *msg, const char *fmt, ...)
 {
 	va_list ap;
+	va_start(ap, fmt);
+	cgit_vprint_error_page(code, msg, fmt, ap);
+	va_end(ap);
+}
+
+void cgit_vprint_error_page(int code, const char *msg, const char *fmt, va_list ap)
+{
 	ctx.page.expires = ctx.cfg.cache_dynamic_ttl;
 	ctx.page.status = code;
 	ctx.page.statusmsg = msg;
 	cgit_print_layout_start();
-	va_start(ap, fmt);
 	cgit_vprint_error(fmt, ap);
-	va_end(ap);
 	cgit_print_layout_end();
 }
 
@@ -937,10 +942,9 @@ void cgit_add_clone_urls(void (*fn)(const char *))
 		add_clone_urls(fn, ctx.cfg.clone_prefix, ctx.repo->url);
 }
 
-static int print_branch_option(const char *refname, const struct object_id *oid,
-			       int flags, void *cb_data)
+static int print_branch_option(const struct reference *ref, void *cb_data)
 {
-	char *name = (char *)refname;
+	char *name = (char *)ref->name;
 	html_option(name, name, ctx.qry.head);
 	return 0;
 }
@@ -1178,7 +1182,7 @@ void cgit_print_pageheader(void)
 		html("<div class='path'>");
 		html("path: ");
 		cgit_print_path_crumbs(ctx.qry.vpath);
-		if (ctx.cfg.enable_follow_links && !strcmp(ctx.qry.page, "log")) {
+		if (ctx.repo->enable_follow_links && !strcmp(ctx.qry.page, "log")) {
 			html(" (");
 			ctx.qry.follow = !ctx.qry.follow;
 			cgit_self_link(ctx.qry.follow ? "follow" : "unfollow",

@@ -20,7 +20,8 @@
  */
 void cgit_parse_url(const char *url)
 {
-	char *c, *cmd, *p;
+	char *cmd, *p;
+	const char *c;
 	struct cgit_repo *repo;
 
 	if (!url || url[0] == '\0')
@@ -36,13 +37,13 @@ void cgit_parse_url(const char *url)
 	cmd = NULL;
 	c = strchr(url, '/');
 	while (c) {
-		c[0] = '\0';
+		*(char *)c = '\0';
 		repo = cgit_get_repoinfo(url);
 		if (repo) {
 			ctx.repo = repo;
-			cmd = c;
+			cmd = (char *)c;
 		}
-		c[0] = '/';
+		*(char *)c = '/';
 		c = strchr(c + 1, '/');
 	}
 
@@ -201,7 +202,7 @@ struct taginfo *cgit_parse_tag(struct tag *tag)
 	const char *p;
 	struct taginfo *ret = NULL;
 
-	data = repo_read_object_file(the_repository, &tag->object.oid, &type, &size);
+	data = odb_read_object(the_repository->objects, &tag->object.oid, &type, &size);
 	if (!data || type != OBJ_TAG)
 		goto cleanup;
 

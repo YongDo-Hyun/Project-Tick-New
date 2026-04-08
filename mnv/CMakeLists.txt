@@ -379,7 +379,7 @@ endif()
 ###############################################################################
 
 find_package(X11 QUIET)
-if(X11_FOUND AND NOT MNV_GUI STREQUAL "none")
+if(X11_FOUND AND X11_Xt_FOUND AND NOT MNV_GUI STREQUAL "none")
     set(HAVE_X11 1)
 endif()
 

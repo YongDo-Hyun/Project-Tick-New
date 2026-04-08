@@ -84,7 +84,7 @@ void show_commit_decorations(struct commit *commit)
 			break;
 		case DECORATION_REF_TAG:
 			if (!refs_read_ref(get_main_ref_store(the_repository), deco->name, &oid_tag) &&
-			    !peel_iterated_oid(the_repository, &oid_tag, &peeled))
+			    !peel_object(the_repository, &oid_tag, &peeled, PEEL_OBJECT_VERIFY_TAGGED_OBJECT_TYPE))
 				is_annotated = !oideq(&oid_tag, &peeled);
 			cgit_tag_link(buf, NULL, is_annotated ? "tag-annotated-deco" : "tag-deco", buf);
 			break;
@@ -168,6 +168,7 @@ static int show_commit(struct commit *commit, struct rev_info *revs)
 	revs->diffopt.output_format = DIFF_FORMAT_CALLBACK;
 	revs->diffopt.format_callback = cgit_diff_tree_cb;
 	revs->diffopt.format_callback_data = handle_rename;
+	revs->diffopt.no_free = 1;
 	diff_flush(&revs->diffopt);
 	revs->diffopt.output_format = saved_fmt;
 	revs->diffopt.flags = saved_flags;
@@ -407,7 +408,7 @@ void cgit_print_log(const char *tip, int ofs, int cnt, char *grep, char *pattern
 		}
 	}
 
-	if (!path || !ctx.cfg.enable_follow_links) {
+	if (!path || !ctx.repo->enable_follow_links) {
 		/*
 		 * If we don't have a path, "follow" is a no-op so make sure
 		 * the variable is set to false to avoid needing to check

@@ -2342,8 +2342,6 @@ func Test_python3_mnv_current()
     del b
     cb.append('w.valid: ' + repr([w.valid for w in ws]))
     cb.append('t.valid: ' + repr([t.valid for t in ts]))
-    del w
-    del t
     del ts
     del ws
   EOF

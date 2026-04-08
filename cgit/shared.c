@@ -64,6 +64,7 @@ struct cgit_repo *cgit_add_repo(const char *url)
 	ret->snapshots = ctx.cfg.snapshots;
 	ret->enable_blame = ctx.cfg.enable_blame;
 	ret->enable_commit_graph = ctx.cfg.enable_commit_graph;
+	ret->enable_follow_links = ctx.cfg.enable_follow_links;
 	ret->enable_log_filecount = ctx.cfg.enable_log_filecount;
 	ret->enable_log_linecount = ctx.cfg.enable_log_linecount;
 	ret->enable_remote_branches = ctx.cfg.enable_remote_branches;
@@ -217,11 +218,10 @@ void cgit_free_reflist_inner(struct reflist *list)
 	free(list->refs);
 }
 
-int cgit_refs_cb(const char *refname, const struct object_id *oid, int flags,
-		  void *cb_data)
+int cgit_refs_cb(const struct reference *ref, void *cb_data)
 {
 	struct reflist *list = (struct reflist *)cb_data;
-	struct refinfo *info = cgit_mk_refinfo(refname, oid);
+	struct refinfo *info = cgit_mk_refinfo(ref->name, ref->oid);
 
 	if (info)
 		cgit_add_ref(list, info);
@@ -248,7 +248,7 @@ static int load_mmfile(mmfile_t *file, const struct object_id *oid)
 		file->ptr = (char *)"";
 		file->size = 0;
 	} else {
-		file->ptr = repo_read_object_file(the_repository, oid, &type,
+		file->ptr = odb_read_object(the_repository->objects, oid, &type,
 		                           (unsigned long *)&file->size);
 	}
 	return 1;
@@ -400,7 +400,7 @@ int cgit_parse_snapshots_mask(const char *str)
 	if (strcmp(str, "all") == 0)
 		return INT_MAX;
 
-	string_list_split(&tokens, str, ' ', -1);
+	string_list_split(&tokens, str, " ", -1);
 	string_list_remove_empty_items(&tokens, 0);
 
 	for_each_string_list_item(item, &tokens) {
@@ -547,7 +547,8 @@ char *expand_macros(const char *txt)
 
 char *get_mimetype_for_filename(const char *filename)
 {
-	char *ext, *mimetype, line[1024];
+	const char *ext;
+	char *mimetype, line[1024];
 	struct string_list list = STRING_LIST_INIT_NODUP;
 	int i;
 	FILE *file;

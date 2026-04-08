@@ -74,7 +74,7 @@ static void repo_config(struct cgit_repo *repo, const char *name, const char *va
 	else if (!strcmp(name, "clone-url"))
 		repo->clone_url = xstrdup(value);
 	else if (!strcmp(name, "badge") && value) {
-		char *sep = strchr(value, '|');
+		const char *sep = strchr(value, '|');
 		if (sep) {
 			item = string_list_append(&repo->badges, sep + 1);
 			item->util = xstrndup(value, sep - value);
@@ -98,6 +98,8 @@ static void repo_config(struct cgit_repo *repo, const char *name, const char *va
 		repo->enable_blame = atoi(value);
 	else if (!strcmp(name, "enable-commit-graph"))
 		repo->enable_commit_graph = atoi(value);
+	else if (!strcmp(name, "enable-follow-links"))
+		repo->enable_follow_links = atoi(value);
 	else if (!strcmp(name, "enable-log-filecount"))
 		repo->enable_log_filecount = atoi(value);
 	else if (!strcmp(name, "enable-log-linecount"))
@@ -500,16 +502,15 @@ struct refmatch {
 	int match;
 };
 
-static int find_current_ref(const char *refname, const struct object_id *oid,
-			    int flags, void *cb_data)
+static int find_current_ref(const struct reference *ref, void *cb_data)
 {
 	struct refmatch *info;
 
 	info = (struct refmatch *)cb_data;
-	if (!strcmp(refname, info->req_ref))
+	if (!strcmp(ref->name, info->req_ref))
 		info->match = 1;
 	if (!info->first_ref)
-		info->first_ref = xstrdup(refname);
+		info->first_ref = xstrdup(ref->name);
 	return info->match;
 }
 
@@ -889,6 +890,8 @@ static void print_repo(FILE *f, struct cgit_repo *repo)
 	        repo->enable_blame);
 	fprintf(f, "repo.enable-commit-graph=%d\n",
 	        repo->enable_commit_graph);
+	fprintf(f, "repo.enable-follow-links=%d\n",
+		repo->enable_follow_links);
 	fprintf(f, "repo.enable-log-filecount=%d\n",
 	        repo->enable_log_filecount);
 	fprintf(f, "repo.enable-log-linecount=%d\n",
@@ -1119,6 +1122,12 @@ static int calc_ttl(void)
 	return ctx.cfg.cache_repo_ttl;
 }
 
+static NORETURN void cgit_die_routine(const char *msg, va_list params)
+{
+	cgit_vprint_error_page(400, "Bad request", msg, params);
+	exit(0);
+}
+
 int cmd_main(int argc, const char **argv)
 {
 	const char *path;
@@ -1126,6 +1135,7 @@ int cmd_main(int argc, const char **argv)
 
 	cgit_init_filters();
 	atexit(cgit_cleanup_filters);
+	set_die_routine(cgit_die_routine);
 
 	prepare_context();
 	cgit_repolist.length = 0;

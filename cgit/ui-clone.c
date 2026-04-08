@@ -15,41 +15,41 @@
 #include "html.h"
 #include "ui-shared.h"
 #include "packfile.h"
-#include "object-store.h"
+#include "odb/source-files.h"
 
-static int print_ref_info(const char *refname, const struct object_id *oid,
-                          int flags, void *cb_data)
+static int print_ref_info(const struct reference *ref, void *cb_data)
 {
 	struct object *obj;
 
-	if (!(obj = parse_object(the_repository, oid)))
+	if (!(obj = parse_object(the_repository, ref->oid)))
 		return 0;
 
-	htmlf("%s\t%s\n", oid_to_hex(oid), refname);
+	htmlf("%s\t%s\n", oid_to_hex(ref->oid), ref->name);
 	if (obj->type == OBJ_TAG) {
-		if (!(obj = deref_tag(the_repository, obj, refname, 0)))
+		if (!(obj = deref_tag(the_repository, obj, ref->name, 0)))
 			return 0;
-		htmlf("%s\t%s^{}\n", oid_to_hex(&obj->oid), refname);
+		htmlf("%s\t%s^{}\n", oid_to_hex(&obj->oid), ref->name);
 	}
 	return 0;
 }
 
 static void print_pack_info(void)
 {
-	struct packed_git *pack;
+	struct packfile_list_entry *e;
 	char *offset;
 
 	ctx.page.mimetype = "text/plain";
 	ctx.page.filename = "objects/info/packs";
 	cgit_print_http_headers();
-	reprepare_packed_git(the_repository);
-	for (pack = get_packed_git(the_repository); pack; pack = pack->next) {
-		if (pack->pack_local) {
-			offset = strrchr(pack->pack_name, '/');
+	odb_reprepare(the_repository->objects);
+	for (e = packfile_store_get_packs(odb_source_files_downcast(the_repository->objects->sources)->packed); e; e = e->next) {
+		struct packed_git *p = e->pack;
+		if (p->pack_local) {
+			offset = strrchr(p->pack_name, '/');
 			if (offset && offset[1] != '\0')
 				++offset;
 			else
-				offset = pack->pack_name;
+				offset = p->pack_name;
 			htmlf("P %s\n", offset);
 		}
 	}
@@ -96,7 +96,7 @@ void cgit_clone_info(void)
 
 void cgit_clone_objects(void)
 {
-	char *p;
+	char *p, *path;
 
 	if (!ctx.qry.path)
 		goto err;
@@ -117,7 +117,9 @@ void cgit_clone_objects(void)
 			goto err;
 	}
 
-	send_file(git_path("objects/%s", ctx.qry.path));
+	path = repo_git_path(the_repository, "objects/%s", ctx.qry.path);
+	send_file(path);
+	free(path);
 	return;
 
 err:
@@ -126,5 +128,9 @@ err:
 
 void cgit_clone_head(void)
 {
-	send_file(git_path("%s", "HEAD"));
+	char *path;
+
+	path = repo_git_path(the_repository, "HEAD");
+	send_file(path);
+	free(path);
 }
