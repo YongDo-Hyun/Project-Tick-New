@@ -116,7 +116,7 @@ You'll find some more code examples in the `examples` directory, and plenty more
 
 ### Conan
 
-Add `tomlplusplus/3.4.0` to your conanfile.
+Add `tomlplusplus/10.0.3` to your conanfile.
 
 ### DDS
 
@@ -124,7 +124,7 @@ Add `tomlpp` to your `package.json5`, e.g.:
 
 ```plaintext
 depends: [
-    'tomlpp^3.4.0',
+    'tomlpp^10.0.3',
 ]
 ```
 
@@ -169,7 +169,7 @@ include(FetchContent)
 FetchContent_Declare(
     tomlplusplus
     GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
-    GIT_TAG        v3.4.0
+    GIT_TAG        v10.0.3
 )
 FetchContent_MakeAvailable(tomlplusplus)
 # Example add library: target_link_libraries(MyApp tomlplusplus::tomlplusplus)
