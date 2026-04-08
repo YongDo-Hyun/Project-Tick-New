@@ -1,31 +1,23 @@
-# [![MNV The editor](https://github.com/Project-Tick/Project-Tick/raw/master/runtime/mnvlogo.gif)](https://www.mnv.org)
+# [![MNV The editor](https://github.com/Project-Tick/Project-Tick/raw/master/mnv/runtime/mnvlogo.gif)](https://www.projecttick.com)
 
-[![Github Build status](https://github.com/Project-Tick/Project-Tick/workflows/GitHub%20CI/badge.svg)](https://github.com/Project-Tick/Project-Tick/actions?query=workflow%3A%22GitHub+CI%22)
-[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/o2qht2kjm02sgghk?svg=true)](https://ci.appveyor.com/project/chrisbra/mnv)
-[![Cirrus Build Status](https://api.cirrus-ci.com/github/mnv/mnv.svg)](https://cirrus-ci.com/github/mnv/mnv)
-[![Coverage Status](https://codecov.io/gh/mnv/mnv/coverage.svg?branch=master)](https://codecov.io/gh/mnv/mnv?branch=master)
+[![CI](https://github.com/Project-Tick/Project-Tick/actions/workflows/ci.yml/badge.svg)](https://github.com/Project-Tick/Project-Tick/actions/workflows/ci.yml)
 [![Coverity Scan](https://scan.coverity.com/projects/241/badge.svg)](https://scan.coverity.com/projects/mnv)
-[![Debian CI](https://badges.debian.net/badges/debian/testing/mnv/version.svg)](https://buildd.debian.org/mnv)
 [![Packages](https://repology.org/badge/tiny-repos/mnv.svg)](https://repology.org/metapackage/mnv)
-[![Fossies codespell report](https://fossies.org/linux/test/mnv-master.tar.gz/codespell.svg)](https://fossies.org/linux/test/mnv-master.tar.gz/codespell.html)
 
 If you find a bug or want to discuss the best way to add a new feature, please
 [open an issue](https://github.com/Project-Tick/Project-Tick/issues/new/choose).
 If you have a question or want to discuss the best way to do something with
-MNV, you can join [`#mnv`](https://web.libera.chat/#mnv),
-[reddit.com/r/mnv](https://reddit.com/r/mnv),
-use [StackExchange](https://vi.stackexchange.com/),
-or one of the [Maillists](https://www.mnv.org/community.php).
+MNV, you can use [Discussions of Project Tick](https://github.com/Project-Tick/Project-Tick/discussions).
 
 ## What is MNV?
 
-MNV is a greatly improved version of the good old UNIX editor
-[Vi](https://en.wikipedia.org/wiki/Vi_(text_editor)).  Many new
-features have been added: multi-level undo, syntax highlighting, command line
-history, on-line help, spell checking, filename completion, block operations,
-script language, etc.  There is also a Graphical User Interface (GUI)
-available.  Still, Vi compatibility is maintained, those who have Vi "in the
-fingers" will feel at home.
+Firstly, MNV is fork of Vi IMproved. MNV is a greatly improved version of the
+good old UNIX editor [Vi](https://en.wikipedia.org/wiki/Vi_(text_editor)). Many
+new features have been added: multi-level undo, syntax highlighting, command
+line history, on-line help, spell checking, filename completion, block
+operations, script language, etc.  There is also a Graphical User Interface
+(GUI) available.  Still, Vi compatibility is maintained, those who have Vi "in
+the fingers" will feel at home.
 See [`runtime/doc/vi_diff.txt`](runtime/doc/vi_diff.txt) for differences with
 Vi.
 
@@ -42,8 +34,6 @@ MNV runs under MS-Windows (7, 8, 10, 11), macOS, Haiku, VMS and almost all
 flavours of UNIX.  Porting to other systems should not be very difficult.
 Older versions of MNV run on MS-DOS, MS-Windows 95/98/Me/NT/2000/XP/Vista,
 Amiga DOS, Atari MiNT, BeOS, RISC OS and OS/2.  These are no longer maintained.
-
-For MNV9 script see [README_MNV9](README_MNV9.md).
 
 ## Distribution
 
@@ -62,8 +52,6 @@ an overview of currently available distributions.
 Some popular places to get the latest MNV:
 * Check out the git repository from [GitHub](https://github.com/Project-Tick/Project-Tick).
 * Get the source code as an [archive](https://github.com/Project-Tick/Project-Tick/tags).
-* Get a Windows executable from the
-[mnv-win32-installer](https://github.com/Project-Tick/Project-Tick-win32-installer/releases) repository.
 
 ## Compiling
 
@@ -101,10 +89,9 @@ MNV.  See `:help user-manual`.
 
 ## Copying
 
-MNV is Charityware.  You can use and copy it as much as you like, but you are
-encouraged to make a donation to help orphans in Uganda.  Please read the file
-[`runtime/doc/uganda.txt`](./runtime/doc/uganda.txt)
-for details (do `:help uganda` inside MNV).
+MNV is Free. You can use and copy it as much as you like. Please read the file
+[`runtime/doc/license.txt`](./runtime/doc/license.txt)
+for details (do `:help license` inside MNV).
 
 Summary of the license: There are no restrictions on using or distributing an
 unmodified copy of MNV.  Parts of MNV may also be distributed, but the license
@@ -112,48 +99,14 @@ text must always be included.  For modified versions, a few restrictions apply.
 The license is GPL compatible, you may compile MNV with GPL libraries and
 distribute it.
 
-## Sponsoring
-
-Fixing bugs and adding new features takes a lot of time and effort.  To show
-your appreciation for the work and motivate developers to continue working on
-MNV please send a donation.
-
-The money you donated will be mainly used to help children in Uganda.  See
-[`runtime/doc/uganda.txt`](./runtime/doc/uganda.txt).  But at the same time
-donations increase the development team motivation to keep working on MNV!
-
-For the most recent information about sponsoring look on the MNV web site:
-	https://www.mnv.org/sponsor/
-
 ## Contributing
 
 If you would like to help make MNV better, see the
 [CONTRIBUTING.md](./CONTRIBUTING.md) file.
 
-## Information
-
-If you are on macOS, you can use [MacMNV](https://macmnv.org).
-
-The latest news about MNV can be found on the MNV home page:
-	https://www.mnv.org/
-
-If you have problems, have a look at the MNV documentation or tips:
-	https://www.mnv.org/docs.php
-	https://mnv.fandom.com/wiki/MNV_Tips_Wiki
-
-If you still have problems or any other questions, use one of the mailing
-lists to discuss them with MNV users and developers:
-	https://www.mnv.org/maillist.php
-
-If nothing else works, report bugs directly to the mnv-dev mailing list:
-	`<mnv-dev@mnv.org>`
-
 ## Main author
 
-Most of MNV was created by Bram Moolenaar `<Bram@mnv.org>`
-[Bram-Moolenaar](https://vimhelp.org/version9.txt.html#Bram-Moolenaar)
-
-Send any other comments, patches, flowers and suggestions to the mnv-dev mailing list:
-	`<mnv-dev@mnv.org>`
+Most of Vim was created by Bram Moolenaar `<Bram@vim.org>`
+[Bram-Moolenaar](https://vimhelp.org/version9.txt.html#Bram-Moolenaar) but MNV maintained by [Mehmet Samet Duman](https://github.com/YongDo-Hyun) behalf of [Project Tick](https://github.com/Project-Tick).
 
 This is `README.md` for version 10.0 of MNV: MNV is not Vim.

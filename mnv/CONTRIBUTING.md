@@ -1,12 +1,6 @@
 # Contributing to MNV
 
-Patches are welcome in whatever form.
-Discussions about patches happen on the [mnv-dev][0] mailing list.
-If you create a pull request on GitHub it will be
-forwarded to the mnv-dev mailing list. You can also send your patch there
-directly (but please note, the initial posting is subject to moderation).
-In that case an attachment with a unified diff format is preferred.
-Information about the mailing list can be found [on the MNV website][0]
+Patches are welcome in whatever form. Please create a pull request on GitHub.
 
 A pull request has the advantage that it will trigger the Continuous
 Integration tests, you will be warned of problems (you can ignore the coverage
@@ -16,10 +10,6 @@ Please always add a test, if possible. All new functionality should be tested
 and bug fixes should be tested for regressions: the test should fail before the
 fix and pass after the fix. Look through recent patches for examples and find
 help with ":help testing". The tests are located under "src/testdir".
-
-Contributions will be distributed with MNV under the MNV license. Providing a
-change to be included implies that you agree with this and your contribution
-does not cause us trouble with trademarks or patents. There is no CLA to sign.
 
 ## Signing-off commits
 
@@ -41,7 +31,7 @@ the git project. By making Signed-off commits a standard practice, we help
 maintain a legally compliant and well-governed codebase while fostering trust
 within our contributor community.
 
-When merging PRs into MNV, the current maintainer @chrisbra usually adds missing
+When merging PRs into MNV, the current maintainer @YongDo-Hyun usually adds missing
 `Signed-off-by` trailers for the author user name and email address as well for
 anybody that explicitly *ACK*s a pull request as a statement that those
 approvers are happy with that particular change.
@@ -87,13 +77,12 @@ features).
 If you find a problem with one of these files or have a suggestion for
 improvement, please first try to contact the maintainer directly.
 Look in the header of the file for the name, email address, github handle and/or
-upstream repository. You may also check the [MAINTAINERS][11] file.
+upstream repository. You may also check the [CODEOWNERS][11] file.
 
 The maintainer will take care of issues and send updates to the MNV project for
 distribution with MNV.
 
-If the maintainer does not respond, contact the [mnv-dev][0] mailing list or
-open an [issue][17] here.
+If the maintainer does not respond, open an [issue][17] here.
 
 Note: Whether or not to use MNV9 script is up to the maintainer. For runtime
 files maintained here, we aim to preserve compatibility with Neomnv if
@@ -146,29 +135,24 @@ For the recommended documentation style, please check [helphelp.txt][16].
 
 # I have a question
 
-If you have some question on the style guide, please contact the [mnv-dev][0]
-mailing list. For other questions you can join [`#mnv`][19], use the 
-[Vi Stack Exchange][8] website, the [mnv-use][9] mailing list or make use of the 
-[discussion][10] feature here at github.
+If you have some question on the style guide, please contact the [Github issues][17]
+mailing list. For other questions you can use of the [discussion][10] feature
+here at github.
 
-[todo list]: https://github.com/Project-Tick/Project-Tick/blob/master/runtime/doc/todo.txt
-[0]: http://www.mnv.org/maillist.php#mnv-dev
-[1]: https://github.com/Project-Tick/Project-Tick/blob/master/src/po/README.txt
-[2]: https://github.com/Project-Tick/Project-Tick/blob/master/runtime/lang/README.txt
-[3]: https://github.com/Project-Tick/Project-Tick/blob/master/runtime/tutor/README.txt
-[4]: https://github.com/Project-Tick/Project-Tick/blob/master/runtime/doc/mnv.1
-[5]: https://github.com/Project-Tick/Project-Tick/blob/master/nsis/lang/README.txt
-[6]: https://github.com/Project-Tick/Project-Tick/discussions/13087
-[7]: https://github.com/Project-Tick/Project-Tick/blob/master/runtime/doc/develop.txt
-[8]: https://vi.stackexchange.com
-[9]: http://www.mnv.org/maillist.php#mnv-use
+[todo list]: https://github.com/Project-Tick/Project-Tick/blob/master/mnv/runtime/doc/todo.txt
+[1]: https://github.com/Project-Tick/Project-Tick/blob/master/mnv/src/po/README.txt
+[2]: https://github.com/Project-Tick/Project-Tick/blob/master/mnv/runtime/lang/README.txt
+[3]: https://github.com/Project-Tick/Project-Tick/blob/master/mnv/runtime/tutor/README.txt
+[4]: https://github.com/Project-Tick/Project-Tick/blob/master/mnv/runtime/doc/mnv.1
+[5]: https://github.com/Project-Tick/Project-Tick/blob/master/mnv/nsis/lang/README.txt
+[6]: https://github.com/Vim/Vim/discussions/13087
+[7]: https://github.com/Project-Tick/Project-Tick/blob/master/mnv/runtime/doc/develop.txt
 [10]: https://github.com/Project-Tick/Project-Tick/discussions
-[11]: https://github.com/Project-Tick/Project-Tick/blob/master/.github/MAINTAINERS
-[12]: https://github.com/Project-Tick/Project-Tick/blob/master/src/testdir/test_filetype.mnv
-[13]: https://github.com/Project-Tick/Project-Tick/blob/master/runtime/doc/filetype.txt
-[14]: https://github.com/Project-Tick/Project-Tick/blob/master/runtime/doc/syntax.txt
-[15]: https://en.wikipedia.org/wiki/Developer_Certificate_of_Origin
-[16]: https://github.com/Project-Tick/Project-Tick/blob/master/runtime/doc/helphelp.txt
+[11]: https://github.com/Project-Tick/Project-Tick/blob/master/.github/CODEOWNERS
+[12]: https://github.com/Project-Tick/Project-Tick/blob/master/mnv/src/testdir/test_filetype.mnv
+[13]: https://github.com/Project-Tick/Project-Tick/blob/master/mnv/runtime/doc/filetype.txt
+[14]: https://github.com/Project-Tick/Project-Tick/blob/master/mnv/runtime/doc/syntax.txt
+[15]: https://developercertificate.org/
+[16]: https://github.com/Project-Tick/Project-Tick/blob/master/mnv/runtime/doc/helphelp.txt
 [17]: https://github.com/Project-Tick/Project-Tick/issues
-[18]: https://github.com/Project-Tick/Project-Tick/blob/master/src/testdir/test_codestyle.mnv
-[19]: https://web.libera.chat/#mnv
+[18]: https://github.com/Project-Tick/Project-Tick/blob/master/mnv/src/testdir/test_codestyle.mnv

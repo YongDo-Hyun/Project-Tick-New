@@ -113,7 +113,7 @@ func Test_line_continuation()
 endfunc
 
 func Test_E963()
-  " These commands used to cause an internal error prior to vim 8.1.0563
+  " These commands used to cause an internal error prior to mnv 8.1.0563
   let v_e = v:errors
   let v_o = v:oldfiles
   call assert_fails("let v:errors=''", 'E963:')
@@ -209,7 +209,7 @@ endfunc
 
 func Test_readfile_binary_empty()
   call writefile([], 'Xempty-file', 'D')
-  " This used to compare uninitialized memory in Vim <= 8.2.4065
+  " This used to compare uninitialized memory in MNV <= 8.2.4065
   call assert_equal([''], readfile('Xempty-file', 'b'))
 endfunc
 
@@ -1303,4 +1303,4 @@ func Test_clipboard_provider_clipboard_option()
   set clipboard&
 endfunc
 
-" vim: shiftwidth=2 sts=2 expandtab
+" mnv: shiftwidth=2 sts=2 expandtab

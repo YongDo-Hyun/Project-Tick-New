@@ -159,7 +159,7 @@ endfunc
 func Test_uncrypt_xchacha20()
   CheckFeature sodium
   let hex =<< trim END
-  00000000: 5669 6d43 7279 7074 7e30 3421 6b7d e607  mnvCrypt~04!k}..
+  00000000: 4d4e 5643 7279 7074 7e30 3421 6b7d e607  MNVCrypt~04!k}..
   00000010: 4ea4 e99f 923e f67f 7b59 a80d 3bca 2f06  N....>..{Y..;./.
   00000020: fa11 b951 8d09 0dc9 470f e7cf 8b90 4310  ...Q....G.....C.
   00000030: 653b b83b e493 378b 0390 0e38 f912 626b  e;.;..7....8..bk
@@ -178,7 +178,7 @@ func Test_uncrypt_xchacha20v2_custom()
   CheckFeature sodium
   " Test, reading xchacha20v2 with custom encryption parameters
   let hex =<< trim END
-  00000000: 5669 6d43 7279 7074 7e30 3521 934b f288  MNVCrypt~05!.K..
+  00000000: 4d4e 5643 7279 7074 7e30 3521 934b f288  MNVCrypt~05!.K..
   00000010: 10ba 8bc9 25a0 8876 f85c f135 6fb8 518b  ....%..v.\.5o.Q.
   00000020: b133 9af1 0300 0000 0000 0000 0000 0010  .3..............
   00000030: 0000 0000 0200 0000 b973 5f33 80e9 54fc  .........s_3..T.
@@ -199,7 +199,7 @@ func Test_uncrypt_xchacha20v2()
   CheckFeature sodium
   " Test, reading xchacha20v2
   let hex =<< trim END
-  00000000: 5669 6d43 7279 7074 7e30 3521 9f20 4e14  MNVCrypt~05!. N.
+  00000000: 4d4e 5643 7279 7074 7e30 3521 9f20 4e14  MNVCrypt~05!. N.
   00000010: c7da c1bd 7dea 8fbc db6c 38e6 7a77 6fef  ....}....l8.zwo.
   00000020: 82dd 964b 0300 0000 0000 0000 0000 0010  ...K............
   00000030: 0000 0000 0200 0000 a97c 2f00 0b9d 19eb  .........|/.....
@@ -464,7 +464,7 @@ func Test_uncrypt_empty()
   CheckFeature sodium
 
   let hex =<< trim END
-  00000000: 5669 6d43 7279 7074 7e30 3521 f02f 52ed  MNVCrypt~05!./R.
+  00000000: 4d4e 5643 7279 7074 7e30 3521 f02f 52ed  MNVCrypt~05!./R.
   00000010: adc3 e5f3 e06c 2fc8 3ce3 ffde d48b 95fe  .....l/.<.......
   00000020: 341e 74f7 0200 0000 0000 0000 0000 0004  4.t.............
   00000030: 0000 0000 0200 0000                      ........

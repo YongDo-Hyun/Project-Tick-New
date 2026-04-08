@@ -889,7 +889,7 @@ func Test_search_cmdline_incsearch_highlight_attr()
   " mnvmnvnv
   " Search: /mnv
   let attr_line1 = [a0,a0,a0,a0,a1,a1,a1,a0,a2,a2,a2,a0,a0,a0]
-  let attr_line2 = [a2,a2,a2,a0,a0,a2,a2,a2]
+  let attr_line2 = [a2,a2,a2,a2,a2,a2,a0,a0]
   call assert_equal(attr_line1, map(term_scrape(buf, 1)[:len(attr_line1)-1], 'v:val.attr'))
   call assert_equal(attr_line2, map(term_scrape(buf, 2)[:len(attr_line2)-1], 'v:val.attr'))
 
@@ -897,7 +897,7 @@ func Test_search_cmdline_incsearch_highlight_attr()
   call term_sendkeys(buf, "\<C-g>\<C-g>")
   call TermWait(buf, 100)
   let attr_line1 = [a0,a0,a0,a0,a2,a2,a2,a0,a2,a2,a2,a0,a0,a0]
-  let attr_line2 = [a1,a1,a1,a0,a0,a2,a2,a2]
+  let attr_line2 = [a1,a1,a1,a2,a2,a2,a0,a0]
   call assert_equal(attr_line1, map(term_scrape(buf, 1)[:len(attr_line1)-1], 'v:val.attr'))
   call assert_equal(attr_line2, map(term_scrape(buf, 2)[:len(attr_line2)-1], 'v:val.attr'))
 
@@ -905,7 +905,7 @@ func Test_search_cmdline_incsearch_highlight_attr()
   call term_sendkeys(buf, "\<C-t>")
   call TermWait(buf, 100)
   let attr_line1 = [a0,a0,a0,a0,a2,a2,a2,a0,a1,a1,a1,a0,a0,a0]
-  let attr_line2 = [a2,a2,a2,a0,a0,a2,a2,a2]
+  let attr_line2 = [a2,a2,a2,a2,a2,a2,a0,a0]
   call assert_equal(attr_line1, map(term_scrape(buf, 1)[:len(attr_line1)-1], 'v:val.attr'))
   call assert_equal(attr_line2, map(term_scrape(buf, 2)[:len(attr_line2)-1], 'v:val.attr'))
 
@@ -913,7 +913,7 @@ func Test_search_cmdline_incsearch_highlight_attr()
   call term_sendkeys(buf, "\<cr>")
   call TermWait(buf, 100)
   let attr_line1 = [a0,a0,a0,a0,a2,a2,a2,a0,a2,a2,a2,a0,a0,a0]
-  let attr_line2 = [a2,a2,a2,a0,a0,a2,a2,a2]
+  let attr_line2 = [a2,a2,a2,a2,a2,a2,a0,a0]
   call assert_equal(attr_line1, map(term_scrape(buf, 1)[:len(attr_line1)-1], 'v:val.attr'))
   call assert_equal(attr_line2, map(term_scrape(buf, 2)[:len(attr_line2)-1], 'v:val.attr'))
 

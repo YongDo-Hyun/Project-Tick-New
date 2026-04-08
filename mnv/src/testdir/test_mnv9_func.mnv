@@ -3238,11 +3238,11 @@ def Run_Test_closure_in_for_loop_fails()
   writefile(lines, 'XTest_closure_fails', 'D')
 
   # Check that an error shows
-  var buf = g:RunVimInTerminal('-S XTest_closure_fails', {rows: 6, wait_for_ruler: 0})
+  var buf = g:RunMNVInTerminal('-S XTest_closure_fails', {rows: 6, wait_for_ruler: 0})
   g:VerifyScreenDump(buf, 'Test_vim9_closure_fails', {wait: 3000})
 
   # clean up
-  g:StopVimInTerminal(buf)
+  g:StopMNVInTerminal(buf)
 enddef
 
 func Test_closure_in_for_loop_fails()
@@ -3632,12 +3632,12 @@ def Run_Test_silent_echo()
   writefile(lines, 'XTest_silent_echo', 'D')
 
   # Check that the balloon shows up after a mouse move
-  var buf = g:RunVimInTerminal('-S XTest_silent_echo', {'rows': 6})
+  var buf = g:RunMNVInTerminal('-S XTest_silent_echo', {'rows': 6})
   term_sendkeys(buf, ":abc")
   g:VerifyScreenDump(buf, 'Test_vim9_silent_echo', {})
 
   # clean up
-  g:StopVimInTerminal(buf)
+  g:StopMNVInTerminal(buf)
 enddef
 
 def SilentlyError()
@@ -4075,12 +4075,12 @@ def Run_Test_opfunc_error()
   END
   call writefile(lines, 'XTest_opfunc_error', 'D')
 
-  var buf = g:RunVimInTerminal('-S XTest_opfunc_error', {rows: 6, wait_for_ruler: 0})
+  var buf = g:RunMNVInTerminal('-S XTest_opfunc_error', {rows: 6, wait_for_ruler: 0})
   g:WaitForAssert(() => assert_match('Press ENTER', term_getline(buf, 6)))
   g:WaitForAssert(() => assert_match('E684: List index out of range: 0', term_getline(buf, 5)))
 
   # clean up
-  g:StopVimInTerminal(buf)
+  g:StopMNVInTerminal(buf)
 enddef
 
 " this was crashing on exit
@@ -4153,8 +4153,8 @@ def Test_script_local_other_script()
       function s:close_cb(...)
       endfunction
   END
-  lines->writefile('Xlegacy.vim', 'D')
-  source Xlegacy.vim
+  lines->writefile('Xlegacy.mnv', 'D')
+  source Xlegacy.mnv
   g:LegacyJob()
   g:LegacyJob()
   g:LegacyJob()
@@ -4668,7 +4668,7 @@ enddef
 
 func Test_keytyped_in_nested_function()
   CheckScreendump
-  CheckRunVimInTerminal
+  CheckRunMNVInTerminal
 
   call Run_Test_keytyped_in_nested_function()
 endfunc
@@ -4697,16 +4697,16 @@ def Run_Test_keytyped_in_nested_function()
          return str
       enddef
   END
-  writefile(lines, dir .. '/sample.vim')
+  writefile(lines, dir .. '/sample.mnv')
 
-  var buf = g:RunVimInTerminal('-S Xkeytyped', {rows: 6})
+  var buf = g:RunMNVInTerminal('-S Xkeytyped', {rows: 6})
 
   term_sendkeys(buf, ':"')
   g:VerifyScreenDump(buf, 'Test_keytyped_in_nested_func', {})
 
   # clean up
   term_sendkeys(buf, "\<Esc>")
-  g:StopVimInTerminal(buf)
+  g:StopMNVInTerminal(buf)
 enddef
 
 " Test for test_override('defcompile')
@@ -4760,12 +4760,12 @@ def Test_call_modified_import_func()
       done += 1
     enddef
   END
-  writefile(lines, 'XcallModifiedImportFunc.vim', 'D')
+  writefile(lines, 'XcallModifiedImportFunc.mnv', 'D')
 
   lines =<< trim END
     mnv9script
 
-    import './XcallModifiedImportFunc.vim' as imp
+    import './XcallModifiedImportFunc.mnv' as imp
 
     var setup = 0
 
@@ -4800,22 +4800,22 @@ enddef
 " The following messes up syntax highlight, keep near the end.
 if has('python3')
   def Test_python3_command()
-    py3 import vim
-    py3 vim.command("g:done = 'yes'")
+    py3 import mnv
+    py3 mnv.command("g:done = 'yes'")
     assert_equal('yes', g:done)
     unlet g:done
   enddef
 
   def Test_python3_heredoc()
     py3 << trim EOF
-      import vim
-      vim.vars['didit'] = 'yes'
+      import mnv
+      mnv.vars['didit'] = 'yes'
     EOF
     assert_equal('yes', g:didit)
 
     python3 << trim EOF
-      import vim
-      vim.vars['didit'] = 'again'
+      import mnv
+      mnv.vars['didit'] = 'again'
     EOF
     assert_equal('again', g:didit)
   enddef
@@ -4825,7 +4825,7 @@ if has('lua')
   def Test_lua_heredoc()
     g:d = {}
     lua << trim EOF
-        x = vim.eval('g:d')
+        x = mnv.eval('g:d')
         x['key'] = 'val'
     EOF
     assert_equal('val', g:d.key)
@@ -4836,7 +4836,7 @@ if has('lua')
       'mnv9script',
       'def ExeLua()',
         'lua << trim EOLUA',
-            "x = vim.eval('g:nodict')",
+            "x = mnv.eval('g:nodict')",
         'EOLUA',
       'enddef',
       'ExeLua()',
@@ -4864,4 +4864,4 @@ if has('perl')
 endif
 
 
-" vim: ts=8 sw=2 sts=2 expandtab tw=80 fdm=marker
+" mnv: ts=8 sw=2 sts=2 expandtab tw=80 fdm=marker

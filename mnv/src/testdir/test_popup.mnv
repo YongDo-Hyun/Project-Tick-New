@@ -1299,7 +1299,7 @@ func Test_pum_rightleft()
   call term_sendkeys(buf, "\<C-P>\<C-Y>")
   call TermWait(buf, 30)
   redraw!
-  call WaitForAssert({-> assert_match('\s*miv', Screenline(5))})
+  call WaitForAssert({-> assert_match('\s*vnm', Screenline(5))})
 
   " Test for expanding tabs to spaces in the popup menu
   let lines =<< trim END
