@@ -2,7 +2,7 @@
 
 ## What Is toml++?
 
-toml++ is a header-only TOML v1.0 parser, serializer, and data model library for C++17 and later. It is authored by Mark Gillard and published under the MIT license. The library version as of this documentation is **3.4.0**, implementing TOML language specification version **1.0.0**.
+toml++ is a header-only TOML v1.0 parser, serializer, and data model library for C++17 and later. It is authored by Mark Gillard and published under the MIT license. The library version as of this documentation is **10.0.3**, implementing TOML language specification version **1.0.0**.
 
 The library lives in the `toml` namespace and provides a complete object model for TOML documents: tables, arrays, and typed values. It can parse TOML from strings, streams, and files; manipulate the resulting tree programmatically; and serialize back to TOML, JSON, or YAML.
 
@@ -216,7 +216,7 @@ Version constants are defined in `include/toml++/impl/version.hpp`:
 #define TOML_LANG_PATCH 0
 ```
 
-- `TOML_LIB_MAJOR/MINOR/PATCH` — the library version (3.4.0)
+- `TOML_LIB_MAJOR/MINOR/PATCH` — the library version (10.0.3)
 - `TOML_LANG_MAJOR/MINOR/PATCH` — the TOML specification version implemented (1.0.0)
 
 ---

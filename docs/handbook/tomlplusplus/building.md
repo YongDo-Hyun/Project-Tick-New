@@ -119,7 +119,7 @@ project(
     'tomlplusplus',
     'cpp',
     license: 'MIT',
-    version: '3.4.0',
+    version: '10.0.3',
     meson_version: '>=0.61.0',
     default_options: [
         'buildtype=release',
@@ -173,7 +173,7 @@ Create `subprojects/tomlplusplus.wrap`:
 ```ini
 [wrap-git]
 url = https://github.com/marzer/tomlplusplus.git
-revision = v3.4.0
+revision = v10.0.3
 
 [provide]
 tomlplusplus = tomlplusplus_dep
@@ -181,7 +181,7 @@ tomlplusplus = tomlplusplus_dep
 
 Then in your `meson.build`:
 ```meson
-tomlplusplus_dep = dependency('tomlplusplus', version: '>=3.4.0')
+tomlplusplus_dep = dependency('tomlplusplus', version: '>=10.0.3')
 executable('my_app', 'main.cpp', dependencies: [tomlplusplus_dep])
 ```
 
@@ -234,7 +234,7 @@ cmake_minimum_required(VERSION 3.14)
 
 project(
     tomlplusplus
-    VERSION 3.4.0
+    VERSION 10.0.3
     DESCRIPTION "Header-only TOML config file parser and serializer for C++17"
     HOMEPAGE_URL "https://marzer.github.io/tomlplusplus/"
     LANGUAGES CXX
@@ -266,7 +266,7 @@ include(FetchContent)
 FetchContent_Declare(
     tomlplusplus
     GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
-    GIT_TAG v3.4.0
+    GIT_TAG v10.0.3
 )
 FetchContent_MakeAvailable(tomlplusplus)
 
@@ -327,7 +327,7 @@ vcpkg install tomlplusplus
 In your `conanfile.txt`:
 ```
 [requires]
-tomlplusplus/3.4.0
+tomlplusplus/10.0.3
 ```
 
 ### DDS
@@ -335,7 +335,7 @@ tomlplusplus/3.4.0
 In your `package.json5`:
 ```json5
 depends: [
-    'tomlpp^3.4.0',
+    'tomlpp^10.0.3',
 ]
 ```
 
