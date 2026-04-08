@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "meta"
-version = "0.0.5-1"
-description = "ProjT Launcher meta generator"
-authors = ["Yong Do Hyun <froster12@naver.com>"]
+version = "10.0.3"
+description = "MeshMC meta generator"
+authors = ["Mehmet Samet Duman <yongdohyun@projecttick.org>"]
 license = "MS-PL"
 readme = "README"
-repository = "https://github.com/Project-Tick/meta"
-documentation = "https://github.com/Project-Tick/meta"
-keywords = ["metadata", "projt", "launcher"]
+repository = "https://github.com/Project-Tick/Project-Tick"
+documentation = "https://github.com/Project-Tick/Project-Tick"
+keywords = ["metadata", "meshmc", "instance"]
 
 [tool.poetry.scripts]
 generateFabric = "meta.run.generate_fabric:main"

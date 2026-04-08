@@ -1,5 +1,5 @@
 {
-  description = "ProjT Launcher Metadata generation scripts";
+  description = "MeshMC Metadata generation scripts";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
