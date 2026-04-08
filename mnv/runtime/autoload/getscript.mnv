@@ -341,6 +341,51 @@ fun! getscript#GetLatestMNVScripts()
 endfun
 
 " ---------------------------------------------------------------------
+"  s:ConvertVimToMnv: convert downloaded .vim files to .mnv format {{{1
+"    Renames .vim extension to .mnv on disk and in sname.
+"    For .vmb/.vba files, converts Vimball headers and embedded .vim paths.
+fun! s:ConvertVimToMnv(sname)
+  let sname = a:sname
+  " rename .vim -> .mnv files
+  if sname =~ '\.vim\%(\.bz2\|\.bz3\|\.gz\|\.xz\)\=$'
+    let newname = substitute(sname, '\.vim\ze\%(\.bz2\|\.bz3\|\.gz\|\.xz\)\=$', '.mnv', '')
+    if filereadable(sname)
+      call rename(sname, newname)
+      let sname = newname
+    endif
+  endif
+  return sname
+endfun
+
+" s:ConvertVimball: convert Vimball content to MNVball format {{{1
+"    Converts Vimball Archiver header and embedded .vim paths to .mnv
+fun! s:ConvertVimball(sname)
+  let sname = a:sname
+  if sname =~ '\.vba$\|\.vmb$'
+    if filereadable(sname)
+      silent exe "split " . fnameescape(sname)
+      " convert Vimball header to MNVball header
+      if getline(1) =~ '^" Vimball Archiver'
+        silent! %s/^" Vimball Archiver/" MNVball Archiver/e
+      endif
+      " convert embedded .vim paths to .mnv
+      silent! %s/^\(.\+\)\.vim\t\[\[\[1$/\1.mnv\t[[[1/e
+      silent w!
+      silent bwipe!
+    endif
+  endif
+endfun
+
+" s:ConvertExtractedVimFiles: rename .vim files to .mnv after archive extraction {{{1
+fun! s:ConvertExtractedVimFiles()
+  let vimfiles = glob('**/*.vim', 0, 1)
+  for vf in vimfiles
+    let mnvf = substitute(vf, '\.vim$', '.mnv', '')
+    call rename(vf, mnvf)
+  endfor
+endfun
+
+" ---------------------------------------------------------------------
 "  GetOneScript: (Get Latest MNV script) this function operates {{{1
 "    on the current line, interpreting two numbers and text as
 "    ScriptID, SourceID, and Filename.
@@ -508,6 +553,9 @@ fun! s:GetOneScript(...)
     exe "silent !".g:GetLatestMNVScripts_wget." ".g:GetLatestMNVScripts_options." ".shellescape(sname)." ".shellescape(g:GetLatestMNVScripts_downloadaddr.latestsrcid)
    endif
 
+   " convert downloaded .vim files to .mnv format
+   let sname = s:ConvertVimToMnv(sname)
+
    " --------------------------------------------------------------------------
    " AutoInstall: only if doautoinstall has been requested by the plugin itself
    " --------------------------------------------------------------------------
@@ -546,19 +594,29 @@ fun! s:GetOneScript(...)
      else
      endif
 
+     " convert decompressed .vim files to .mnv and Vimball content to MNVball
+     let sname = s:ConvertVimToMnv(sname)
+     call s:ConvertVimball(sname)
+
      " distribute archive(.zip, .tar, .vba, .vmb, ...) contents
      if sname =~ '\.zip$'
       exe "silent !".g:GetLatestMNVScripts_unzip." -o ".shellescape(sname)
+      call s:ConvertExtractedVimFiles()
      elseif sname =~ '\.tar$'
       exe "silent !tar -xvf ".shellescape(sname)
+      call s:ConvertExtractedVimFiles()
      elseif sname =~ '\.tgz$'
       exe "silent !tar -zxvf ".shellescape(sname)
+      call s:ConvertExtractedVimFiles()
      elseif sname =~ '\.taz$'
       exe "silent !tar -Zxvf ".shellescape(sname)
+      call s:ConvertExtractedVimFiles()
      elseif sname =~ '\.tbz$'
       exe "silent !tar -jxvf ".shellescape(sname)
+      call s:ConvertExtractedVimFiles()
      elseif sname =~ '\.txz$'
       exe "silent !tar -Jxvf ".shellescape(sname)
+      call s:ConvertExtractedVimFiles()
      elseif sname =~ '\.vba$\|\.vmb$'
       silent 1split
       if exists("g:mnvball_home")
