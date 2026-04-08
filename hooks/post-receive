@@ -80,10 +80,15 @@ SUCCEEDED_REMOTES=()
 for remote in $MIRROR_REMOTES; do
     log "Pushing to remote: $remote"
 
-    # Use --mirror for full mirror, or --all --tags for selective
-    # --mirror pushes ALL refs (branches, tags, notes, etc.)
-    # --force ensures deleted branches/tags are also synced
-    if git push --mirror --force "$remote" 2>&1 | tee -a "$MIRROR_LOG" 2>/dev/null; then
+    git fetch "$remote" \
+        '+refs/heads/dependabot/*:refs/heads/dependabot/*' \
+        2>&1 | tee -a "$MIRROR_LOG" 2>/dev/null || true
+
+    if {
+        git push --force "$remote" \
+            'refs/heads/*:refs/heads/*' \
+            'refs/tags/*:refs/tags/*'
+    } 2>&1 | tee -a "$MIRROR_LOG" 2>/dev/null; then
         SUCCEEDED_REMOTES+=("$remote")
         log "  ✓ Successfully pushed to $remote"
     else
