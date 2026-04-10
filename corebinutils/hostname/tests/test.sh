@@ -184,6 +184,7 @@ run_namespace_mutation_test() {
 		*"unshare: unshare failed: Operation not permitted"*|\
 		*"unshare: unshare failed: Invalid argument"*|\
 		*"unshare: unshare failed: No space left on device"*|\
+		*"unshare: write failed /proc/self/uid_map: Operation not permitted"*|\
 		*"sethostname: Operation not permitted"*)
 			printf '%s\n' "SKIP: mutation test ($output)" >&2
 			return 0

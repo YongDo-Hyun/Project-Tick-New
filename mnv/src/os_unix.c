@@ -4703,7 +4703,7 @@ set_child_environment(
     static char	envbuf_Columns[20];
     static char	envbuf_Colors[20];
 #  ifdef FEAT_TERMINAL
-    static char	envbuf_Version[20];
+    static char	envbuf_Version[40];
 #  endif
 #  ifdef FEAT_CLIENTSERVER
     static char	envbuf_Servername[60];

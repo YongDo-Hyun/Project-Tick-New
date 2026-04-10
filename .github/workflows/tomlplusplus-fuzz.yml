@@ -18,6 +18,7 @@ jobs:
     permissions:
       security-events: write
     steps:
+    - uses: actions/checkout@v6
     - name: Build Fuzzers
       id: build
       uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master

@@ -1331,7 +1331,7 @@ do_intro_line(
     int		add_version,
     int		attr)
 {
-    char_u	vers[20];
+    char_u	vers[40];
     int		col;
     char_u	*p;
     int		l;
