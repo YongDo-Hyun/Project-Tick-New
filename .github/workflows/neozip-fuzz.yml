@@ -21,14 +21,14 @@ jobs:
         id: build
         uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
         with:
-          oss-fuzz-project-name: 'zlib-ng'
+          oss-fuzz-project-name: 'neozip'
           dry-run: false
           project-src-path: neozip
 
       - name: Run Fuzzers
         uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
         with:
-          oss-fuzz-project-name: 'zlib-ng'
+          oss-fuzz-project-name: 'neozip'
           fuzz-seconds: 600
           dry-run: false
 

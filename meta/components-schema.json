@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://projecttick.org/schemas/components-v1.json",
+  "title": "Project Tick Release Components Manifest",
+  "description": "Describes the canonical component versions shipped in a snapshot release. The release_tag is an opaque identifier (e.g. v202604102316); each component carries its own semver version for update comparison.",
+  "type": "object",
+  "required": ["schema_version", "release_tag", "release_date", "components"],
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "description": "Schema version. Always 1 for this format."
+    },
+    "release_tag": {
+      "type": "string",
+      "description": "The Git tag / GitHub release tag (e.g. v202604102316). Opaque identifier, NOT a version."
+    },
+    "release_date": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO 8601 date of the release (YYYY-MM-DD)."
+    },
+    "components": {
+      "type": "object",
+      "description": "Map of component-id to component metadata.",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["version"],
+        "properties": {
+          "version": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(\\.[0-9]+)?$",
+            "description": "Canonical semver for this component. Used for update comparison."
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

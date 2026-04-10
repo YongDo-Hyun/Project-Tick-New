@@ -43,8 +43,8 @@ jobs:
             **/CMakeFiles/CMakeError.log
           retention-days: 30
 
-  zlib-ng-compat:
-    name: Link zlib-ng compat
+  neozip-compat:
+    name: Link neozip compat
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -68,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v7
         if: failure()
         with:
-          name: Link zlib-ng compat (CMake Logs)
+          name: Link neozip compat (CMake Logs)
           path: |
             **/CMakeFiles/CMakeOutput.log
             **/CMakeFiles/CMakeError.log

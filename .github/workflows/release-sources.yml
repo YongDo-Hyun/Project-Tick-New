@@ -129,13 +129,13 @@ jobs:
 
       - name: Package release
         working-directory: neozip/out
-        run: 7z a -tzip ../zlib-ng-${{ matrix.deploy-name }}.zip bin include lib ../LICENSE.md ../PORTING.md ../README.md
+        run: 7z a -tzip ../neozip-${{ matrix.deploy-name }}.zip bin include lib ../LICENSE.md ../PORTING.md ../README.md
 
       - name: Upload binary artifact
         uses: actions/upload-artifact@v4
         with:
           name: neozip-${{ matrix.deploy-name }}
-          path: neozip/zlib-ng-${{ matrix.deploy-name }}.zip
+          path: neozip/neozip-${{ matrix.deploy-name }}.zip
           if-no-files-found: error
 
   # ── 3a. MeshMC source tree preparation (paralel, build'e bağımlı değil) ──
@@ -281,8 +281,59 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Checkout (for component version extraction)
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            meshmc/CMakeLists.txt
+            neozip/zlib.h.in
+          sparse-checkout-cone-mode: false
+
       - name: Set version
         run: echo "VERSION=${{ inputs.version || github.ref_name }}" >> "$GITHUB_ENV"
+
+      - name: Generate components.json
+        shell: bash
+        run: |
+          # Extract MeshMC version from CMakeLists.txt
+          MESHMC_MAJOR=$(grep 'set(MeshMC_VERSION_MAJOR' meshmc/CMakeLists.txt | sed 's/[^0-9]//g')
+          MESHMC_MINOR=$(grep 'set(MeshMC_VERSION_MINOR' meshmc/CMakeLists.txt | sed 's/[^0-9]//g')
+          MESHMC_HOTFIX=$(grep 'set(MeshMC_VERSION_HOTFIX' meshmc/CMakeLists.txt | sed 's/[^0-9]//g')
+          MESHMC_VER="${MESHMC_MAJOR}.${MESHMC_MINOR}.${MESHMC_HOTFIX}"
+
+          # Extract neozip version from zlib.h.in
+          NEOZIP_VER=$(grep '#define NEOZIP_VERSION' neozip/zlib.h.in | sed 's/.*"\(.*\)".*/\1/')
+
+          RELEASE_DATE=$(date -u +%Y-%m-%d)
+
+          cat > components.json <<EOF
+          {
+            "schema_version": 1,
+            "release_tag": "${{ env.VERSION }}",
+            "release_date": "${RELEASE_DATE}",
+            "components": {
+              "meshmc": {
+                "version": "${MESHMC_VER}"
+              },
+              "neozip": {
+                "version": "${NEOZIP_VER}"
+              }
+            }
+          }
+          EOF
+
+          # Remove leading whitespace from heredoc
+          python3 -c "
+          import json, sys
+          with open('components.json') as f:
+              data = json.load(f)
+          with open('components.json', 'w') as f:
+              json.dump(data, f, indent=2)
+              f.write('\n')
+          "
+
+          echo "=== components.json ==="
+          cat components.json
 
       - name: Download all artifacts
         uses: actions/download-artifact@v8
@@ -348,6 +399,7 @@ jobs:
           prerelease: false
           fail_on_unmatched_files: true
           files: |
+            components.json
             MeshMC-Linux-x86_64.AppImage
             MeshMC-Linux-x86_64.AppImage.zsync
             MeshMC-Linux-aarch64.AppImage
@@ -368,7 +420,7 @@ jobs:
             MeshMC-Windows-MSVC-Setup-${{ env.VERSION }}.exe
             MeshMC-macOS-${{ env.VERSION }}.zip
             MeshMC-macOS-${{ env.VERSION }}.dmg
-            neozip-*/zlib-ng-*.zip
+            neozip-*/neozip-*.zip
             meshmc-source-archives/*
             neozip-source-archives/*
             source-cgit/*

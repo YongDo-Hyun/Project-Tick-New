@@ -113,14 +113,14 @@ jobs:
     - name: Package release (Windows)
       if: runner.os == 'Windows'
       working-directory: neozip/out
-      run: 7z a -tzip ../zlib-ng-${{ matrix.deploy-name }}.zip bin include lib ../LICENSE.md ../PORTING.md ../README.md
+      run: 7z a -tzip ../neozip-${{ matrix.deploy-name }}.zip bin include lib ../LICENSE.md ../PORTING.md ../README.md
 
     - name: Upload release (Windows)
       uses: svenstaro/upload-release-action@v2
       if: runner.os == 'Windows'
       with:
-        asset_name: zlib-ng-${{ matrix.deploy-name }}.zip
-        file: neozip/zlib-ng-${{ matrix.deploy-name }}.zip
+        asset_name: neozip-${{ matrix.deploy-name }}.zip
+        file: neozip/neozip-${{ matrix.deploy-name }}.zip
         tag: ${{ env.tag }}
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         overwrite: true
