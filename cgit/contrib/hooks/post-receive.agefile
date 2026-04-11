@@ -9,6 +9,10 @@
 # To install the hook, copy (or link) it to the file "hooks/post-receive" in
 # each of your repositories.
 #
+# SPDX-FileCopyrightText: 2006-2014 cgit Development Team
+# SPDX-FileCopyrightText: 2026 Project Tick
+# SPDX-FileContributor: Project Tick
+# SPDX-License-Identifier: GPL-2.0-only
 
 agefile="$(git rev-parse --git-dir)"/info/web/last-modified
 

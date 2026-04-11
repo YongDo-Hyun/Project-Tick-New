@@ -1,0 +1,18 @@
+version = 1
+
+[[annotations]]
+path = [
+  ".gitignore",
+  ".gitattributes",
+  ".gitmodules",
+  "README",
+  "robots.txt",
+  "gen-version.sh",
+  "favicon.ico",
+  "COPYING",
+  "cgitrc.5.txt",
+  "cgit.png",
+  "cgit.conf"
+]
+SPDX-License-Identifier = "CC0-1.0"
+SPDX-FileCopyrightText = "NONE"

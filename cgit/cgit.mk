@@ -1,6 +1,11 @@
 # This Makefile is run in the "git" directory in order to re-use Git's
 # build variables and operating system detection.  Hence all files in
 # CGit's directory must be prefixed with "../".
+# SPDX-FileCopyrightText: 2006-2014 cgit Development Team
+# SPDX-FileCopyrightText: 2026 Project Tick
+# SPDX-FileContributor: Project Tick
+# SPDX-License-Identifier: GPL-2.0-only
+
 include Makefile
 
 CGIT_PREFIX = ../

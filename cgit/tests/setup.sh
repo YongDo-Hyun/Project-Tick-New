@@ -1,5 +1,9 @@
 # This file should be sourced by all test-scripts
 #
+# SPDX-FileCopyrightText: 2006-2014 cgit Development Team
+# SPDX-FileCopyrightText: 2026 Project Tick
+# SPDX-FileContributor: Project Tick
+# SPDX-License-Identifier: GPL-2.0-only
 # Main functions:
 #   prepare_tests(description) - setup for testing, i.e. create repos+config
 #   run_test(description, script) - run one test, i.e. eval script

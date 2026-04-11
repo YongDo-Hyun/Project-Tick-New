@@ -1,4 +1,9 @@
-/* ui-blame.c: functions for blame output
+/* SPDX-FileCopyrightText: 2006-2014 cgit Development Team
+ * SPDX-FileCopyrightText: 2026 Project Tick
+ * SPDX-FileContributor: Project Tick
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
+ * ui-blame.c: functions for blame output
  *
  * Copyright (C) 2006-2017 cgit Development Team <cgit@lists.zx2c4.com>
  * Copyright (C) 2026 Project Tick

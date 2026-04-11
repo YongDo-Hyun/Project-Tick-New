@@ -1,4 +1,8 @@
-/*
+/* SPDX-FileCopyrightText: 2006-2014 cgit Development Team
+ * SPDX-FileCopyrightText: 2026 Project Tick
+ * SPDX-FileContributor: Project Tick
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
  * Since git has it's own cache.h which we include,
  * lets test on CGIT_CACHE_H to avoid confusion
  */

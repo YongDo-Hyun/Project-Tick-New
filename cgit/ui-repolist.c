@@ -1,4 +1,9 @@
-/* ui-repolist.c: functions for generating the repolist page
+/* SPDX-FileCopyrightText: 2006-2014 cgit Development Team
+ * SPDX-FileCopyrightText: 2026 Project Tick
+ * SPDX-FileContributor: Project Tick
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
+ * ui-repolist.c: functions for generating the repolist page
  *
  * Copyright (C) 2006-2014 cgit Development Team <cgit@lists.zx2c4.com>
  * Copyright (C) 2026 Project Tick

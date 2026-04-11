@@ -1,4 +1,8 @@
 #!/bin/sh
+# SPDX-FileCopyrightText: 2006-2014 cgit Development Team
+# SPDX-FileCopyrightText: 2026 Project Tick
+# SPDX-FileContributor: Project Tick
+# SPDX-License-Identifier: GPL-2.0-only
 # This script can be used to generate links in commit messages.
 #
 # To use this script, refer to this file with either the commit-filter or the

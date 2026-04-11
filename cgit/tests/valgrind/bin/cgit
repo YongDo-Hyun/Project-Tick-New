@@ -1,5 +1,8 @@
 #!/bin/sh
-
+# SPDX-FileCopyrightText: 2006-2014 cgit Development Team
+# SPDX-FileCopyrightText: 2026 Project Tick
+# SPDX-FileContributor: Project Tick
+# SPDX-License-Identifier: GPL-2.0-only
 # Note that we currently use Git's suppression file and there are variables
 # $GIT_VALGRIND and $CGIT_VALGRIND which point to different places.
 exec valgrind -q --error-exitcode=126 \
