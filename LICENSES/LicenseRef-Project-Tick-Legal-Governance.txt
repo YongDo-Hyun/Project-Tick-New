@@ -1,0 +1,8 @@
+Copyright (C) 2026 Project Tick
+
+This Project Tick Management Document is an official governance document of Project Tick. It may be freely
+distributed in its original, unmodified form. Modification of this document is not permitted for official
+use. Only Project Tick may issue modified versions, which will be released under a new version identifier
+and archived accordingly. Any third-party modifications must not be presented, distributed, or referenced
+as an official Project Tick document. In such cases, the document must be renamed, and all references to
+the Project Tick name, branding, and trademarks must be removed or clearly distinguished to avoid confusion.
