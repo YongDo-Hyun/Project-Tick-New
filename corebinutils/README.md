@@ -1,4 +1,4 @@
-# bin
+# CoreBinUtils
 
 Top-level monolithic build entrypoint for Project Tick BSD/Linux `bin` ports.
 
