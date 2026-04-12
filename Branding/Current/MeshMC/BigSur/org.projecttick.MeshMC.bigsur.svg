@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1024mm"
+   height="1024mm"
+   viewBox="0 0 1024 1024"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   sodipodi:docname="org.projecttick.MeshMC.bigsur.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="true"
+     inkscape:zoom="0.10529373"
+     inkscape:cx="1210.8983"
+     inkscape:cy="2663.9762"
+     inkscape:window-width="1470"
+     inkscape:window-height="822"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       id="grid1"
+       units="mm"
+       originx="0"
+       originy="0"
+       spacingx="0.99999997"
+       spacingy="0.99999997"
+       empcolor="#0099e5"
+       empopacity="0.30196078"
+       color="#0099e5"
+       opacity="0.14901961"
+       empspacing="5"
+       enabled="true"
+       visible="true" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient5">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop4" />
+    </linearGradient>
+    <linearGradient
+       id="swatch3"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop3" />
+    </linearGradient>
+    <linearGradient
+       id="swatch2">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5"
+       id="linearGradient4"
+       gradientUnits="userSpaceOnUse"
+       x1="658"
+       y1="829"
+       x2="1000"
+       y2="829"
+       gradientTransform="translate(-10.367572,-10.367499)" />
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath6">
+      <rect
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.264999;paint-order:markers fill stroke"
+         id="rect7"
+         width="922.46198"
+         height="763.75885"
+         x="19.1325"
+         y="20.1325"
+         transform="rotate(45)" />
+    </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath4">
+      <rect
+         style="fill:#ffff00;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.264999;paint-order:markers fill stroke"
+         id="rect5"
+         width="979.63251"
+         height="979.63251"
+         x="19.999998"
+         y="19.999998"
+         rx="126" />
+    </clipPath>
+  </defs>
+  <g
+     inkscape:label="Katman 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g4"
+       clip-path="url(#clipPath4)">
+      <path
+         d="M 18.999874,19.999813 V 191.84617 1000.1121 H 190.84572 v -0.26667 h 637.15439 v 0.19997 h 171.84532 v -0.19997 h 0.19997 V 828.00011 h -0.19997 V 19.999813 H 999.04496 828.00011 Z M 190.84572,191.84617 H 828.00011 V 828.00011 H 190.84572 Z"
+         style="fill:#050505;stroke-width:0.242949"
+         id="path2" />
+      <path
+         id="rect3"
+         clip-path="url(#clipPath6)"
+         style="fill:#00ffff;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.330555;paint-order:markers fill stroke"
+         transform="rotate(-45)"
+         d="M -625.1311,249.81657 H 543.37659 V 380.6407 H -625.1311 Z" />
+      <rect
+         style="fill:url(#linearGradient4);fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.265;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+         id="rect2-8"
+         width="352"
+         height="352"
+         x="647.63251"
+         y="647.63251"
+         inkscape:label="backgroundofblock" />
+      <rect
+         style="fill:#ff003c;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0.265;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+         id="rect2"
+         width="342"
+         height="342"
+         x="658.13251"
+         y="658.13251"
+         inkscape:label="redblock" />
+    </g>
+  </g>
+</svg>
