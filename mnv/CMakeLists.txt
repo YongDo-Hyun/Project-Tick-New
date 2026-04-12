@@ -1,5 +1,5 @@
 ###############################################################################
-# MNV - CMake Build System
+# MNV - CMake Build System /*/ Experimental! Please Use ./configure && make method
 #
 # Modern, centralized CMake replacement for the autoconf/Makefile build.
 #
@@ -628,9 +628,19 @@ if(MNV_PERL)
                 ERROR_QUIET
             )
             if(PERL_LDFLAGS)
-                # Extract -l flags and -Wl flags from ldopts
-                string(REGEX MATCHALL "-l[^ ]+" _perl_link_libs "${PERL_LDFLAGS}")
-                string(REGEX MATCHALL "-Wl,[^ ]+" _perl_link_opts "${PERL_LDFLAGS}")
+                # Split into individual flags, then classify each one
+                separate_arguments(_perl_flags UNIX_COMMAND "${PERL_LDFLAGS}")
+                set(_perl_link_libs)
+                set(_perl_link_opts)
+                foreach(_flag IN LISTS _perl_flags)
+                    if(_flag MATCHES "^-l")
+                        list(APPEND _perl_link_libs "${_flag}")
+                    elseif(_flag MATCHES "^-L")
+                        list(APPEND _perl_link_opts "${_flag}")
+                    elseif(_flag MATCHES "^-Wl,")
+                        list(APPEND _perl_link_opts "${_flag}")
+                    endif()
+                endforeach()
                 set(PERL_EMBED_LIBRARIES ${_perl_link_libs} ${_perl_link_opts})
             endif()
         endif()
