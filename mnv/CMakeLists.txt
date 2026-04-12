@@ -1453,6 +1453,7 @@ if(MNV_BUILD_TESTS)
         COMMAND ${CMAKE_COMMAND} -E env
             "MNVPROG=$<TARGET_FILE:mnv>"
             "MNVRUNTIME=${CMAKE_CURRENT_SOURCE_DIR}/runtime"
+            "TERM=xterm"
             "LINES=24"
             "COLUMNS=80"
             ${CMAKE_MAKE_PROGRAM} -C ${CMAKE_CURRENT_SOURCE_DIR}/src/testdir
