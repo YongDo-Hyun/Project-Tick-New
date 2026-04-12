@@ -5,7 +5,7 @@
 
 all::
 
-CGIT_VERSION = 10.0.3-ProjTorg
+CGIT_VERSION = 10.0.3
 CGIT_SCRIPT_NAME = cgit.cgi
 CGIT_SCRIPT_PATH = /var/www/htdocs/cgit
 CGIT_DATA_PATH = $(CGIT_SCRIPT_PATH)
@@ -19,7 +19,7 @@ htmldir = $(docdir)
 pdfdir = $(docdir)
 mandir = $(prefix)/share/man
 SHA1_HEADER = <openssl/sha.h>
-GIT_VER = 60f07c4f5c5f81c8a994d9e06b31a4a3a1679864
+GIT_VER = 8c9303b1ffae5b745d1b0a1f98330cf7944d8db0
 GIT_URL = https://git.kernel.org/pub/scm/git/git.git/snapshot/git-$(GIT_VER).tar.gz
 INSTALL = install
 COPYTREE = cp -r
