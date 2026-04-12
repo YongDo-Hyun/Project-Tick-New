@@ -1,0 +1,28 @@
+                        PROJECT TICK GOVERNANCE LICENSE
+                           Version 3,  11 April 2026
+
+    Copyright (C) 2026 Project Tick <https://projecttick.org/>
+
+Based on the rights vested in me, permission is hereby granted to any person
+to use, copy, distribute, publish, and modify this notice text, with or without
+changes, for any purpose. This permission applies only to this notice text itself.
+It does not by itself amend, replace, waive, override, or limit the terms and
+conditions of any document to which this notice is attached. The governing terms
+of such document remain those stated in that document.
+
+                        PROJECT TICK GOVERNANCE LICENSE
+                  TERMS AND CONDITIONS, PLEASE USE ONLY THIS ONE
+
+  This [DOCUMENT NAME] is an official governance document of
+[ORGANIZATION NAME]. It may be freely distributed in its original, unmodified form.
+Modification of this document is not permitted for official use. Only [ORGANIZATION
+NAME] may issue modified versions, which will be released under a new version
+identifier and archived accordingly. Any third-party modifications must not be
+presented, distributed, or referenced as an official [ORGANIZATION NAME] document.
+In such cases, the document must be renamed, and all references to the [ORGANIZATION
+NAME] name, branding, and trademarks must be removed or clearly distinguished to
+avoid confusion.
+
+                        PROJECT TICK GOVERNANCE LICENSE
+                          END OF TERMS AND CONDITIONS
+

@@ -1,0 +1,187 @@
+                PROJECT TICK CONTRIBUTOR LICENSE AGREEMENT
+                      Version 3, 12 April 2026
+
+Copyright (C) 2026 Project Tick <https://projecttick.org/>
+
+Everyone is permitted to copy and distribute verbatim copies of this license
+document, but changing it is not allowed.
+
+                              Preamble
+
+  This Contributor License Agreement ("Agreement") applies to all
+contributions submitted to projects maintained within the Project Tick
+ecosystem, regardless of the contributor's country of residence or
+place of submission.
+
+                PROJECT TICK CONTRIBUTOR LICENSE AGREEMENT
+                          TERMS AND CONDITIONS
+
+  1. Definitions.
+
+"Contribution" means any code, documentation, design, data, or other
+material intentionally submitted by you to a Project Tick project for
+inclusion in a Work.
+
+"Work" means any Project Tick project or component to which the
+Contribution is submitted.
+
+  2. Authority and Right to Contribute.
+
+You represent and confirm that:
+(a) you have the legal right and authority to submit the Contribution;
+(b) the Contribution is your original work, or you have obtained all
+    necessary rights, permissions, or licenses to submit it under this
+    Agreement; and
+(c) to the best of your knowledge, the Contribution does not infringe
+    any copyright, patent, trademark, or other proprietary right of
+    any third party.
+
+  3. Grant of Copyright License.
+
+You hereby grant Project Tick and all downstream recipients a
+perpetual, worldwide, non-exclusive, royalty-free, and irrevocable
+copyright license to use, reproduce, modify, adapt, publish,
+distribute, sublicense, and convey your Contribution as part of the
+Work, under the terms of the applicable Project Tick license.
+
+This license grant applies to all current and future forms of
+distribution of the Work permitted by the applicable license.
+
+  4. License Consistency and Relicensing.
+
+You acknowledge that Project Tick maintains a family of licenses and
+that Contributions are integrated for long-term governance.
+
+Accordingly, you agree that your Contribution may be distributed under
+the applicable Project Tick license governing the Work, including
+future versions of that license or other Project Tick licenses where
+explicitly permitted by their terms.
+
+Once your Contribution has been accepted into a Work, you agree not to
+assert any right to revoke, withdraw, or relicense the Contribution
+independently of the Work, to the maximum extent permitted by applicable
+law.
+
+  5. No Warranty and No Obligation.
+
+You provide the Contribution "AS IS", without warranty of any kind,
+whether express or implied.
+
+You are not required to provide support, maintenance, updates, or
+ongoing services for the Contribution.
+
+Project Tick is under no obligation to accept, use, maintain, or
+distribute any Contribution.
+
+  6. No Additional Restrictions.
+
+You agree not to impose any legal, contractual, technical, or policy-
+based restrictions on the use of your Contribution that would conflict
+with this Agreement or with the applicable Project Tick license.
+
+  7. Governing Law and Interpretation.
+
+This Agreement is intended to be applied globally. It shall be
+interpreted in a manner that gives maximum effect to the permissions
+and intentions expressed herein, consistent with applicable local law.
+
+If any provision of this Agreement is held unenforceable under
+applicable law, such provision shall be interpreted or limited only to
+the extent necessary to render it enforceable, without affecting the
+validity of the remaining provisions.
+
+  8. Grant of Patent License.
+
+You hereby grant to Project Tick and all downstream recipients a
+perpetual, worldwide, non-exclusive, royalty-free, and irrevocable
+patent license to make, have made, use, sell, offer for sale, import,
+and otherwise transfer the Contribution, where such license applies
+only to those patent claims licensable by you that are necessarily
+infringed by your Contribution. If you initiate patent litigation
+against any entity alleging that the Work or a Contribution infringes
+a patent, then any patent licenses granted to you under this Agreement
+shall terminate as of the date such litigation is filed.
+
+  9. Developer Certification.
+
+By submitting a Contribution, you certify that you have the right to
+submit it under this Agreement and that the Contribution complies with
+the Developer Certificate of Origin (DCO), as defined and published by
+Project Tick.
+
+  10. Inbound = Outbound.
+
+Unless otherwise explicitly stated, any Contribution intentionally submitted
+to a Work shall be licensed under the same terms as the Work's governing
+license.
+
+  11. No Trademark License.
+
+This Agreement does not grant any rights to use the trademarks,
+service marks, trade names, or branding of Project Tick, except
+as required for reasonable and customary use in describing the
+origin of the Work.
+
+  12. Contribution Metadata.
+
+Project Tick may record, store, and publish metadata associated
+with Contributions, including contributor identity, timestamps,
+review status, and cryptographic sign-offs, for purposes of
+traceability, compliance, and governance.
+
+  13. Acceptance of Contributions.
+
+A Contribution shall be considered accepted when it is merged,
+committed, or otherwise incorporated into the Work by a Project
+Tick maintainer or automated integration system.
+
+  14. Contributions on Behalf of an Organization.
+
+If you submit a Contribution on behalf of an organization, you
+represent that you have the authority to bind that organization to
+this Agreement, and that the organization accepts the terms of this
+Agreement.
+
+  15. Scope of Contributions.
+
+A Contribution includes any material intentionally submitted to a
+Project Tick project, including but not limited to submissions made
+via version control systems, issue trackers, code review systems,
+mailing lists, or any other communication channels designated by
+Project Tick for collaboration.
+
+  16. Contributor Identity.
+
+You may submit Contributions using a pseudonym. However, you remain
+responsible for ensuring that you have the legal authority to submit
+the Contribution under this Agreement.
+
+  17. Automated Contributions.
+
+Contributions may be processed, reviewed, or integrated by automated
+systems. Such automated actions shall be considered valid acts of
+Project Tick for the purposes of this Agreement.
+
+  18. Removal of Contributions.
+
+Project Tick reserves the right to remove, revert, or otherwise
+exclude any Contribution from a Work at any time, without obligation
+or liability.
+
+  19. No Relationship.
+
+Nothing in this Agreement shall be deemed to create any partnership,
+joint venture, or fiduciary relationship between you and Project Tick.
+
+  20. Compliance with Laws.
+
+You agree that your Contributions comply with all applicable laws and
+regulations, including export control laws where applicable.
+
+  21. Irrevocability.
+
+All rights granted under this Agreement are irrevocable, except as
+expressly stated herein.
+
+                PROJECT TICK CONTRIBUTOR LICENSE AGREEMENT
+                      END OF TERMS AND CONDITIONS

@@ -1,0 +1,104 @@
+Copyright (C) <year> <copyright holder>
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Work"),
+to use, study, modify, and distribute the Work, subject to the terms
+and conditions of this License.
+
+                        TERMS AND CONDITIONS
+
+  1. Definitions.
+
+"Work" means the software program or other material licensed under this
+License.
+
+"Corresponding Source Code" means the preferred form of the Work for
+making modifications, including all files, scripts, build instructions,
+and interface definitions reasonably necessary to understand, modify,
+and redistribute the Work, excluding general-purpose interfaces,
+protocols, or standards that are not specific to the Work itself.
+
+"Independent Work" means a work that is not derived from the Work and
+that merely interfaces with, links to, or communicates with the Work
+through publicly documented or standard interfaces.
+
+"Network Use" means operation of the Work to provide its functionality
+or output to third parties over a computer network.
+
+  2. Source Availability.
+
+If the Work, or a modified version of the Work, is conveyed to third
+parties in source or binary form, the Corresponding Source Code of the
+Work must be made available under the terms of this License in a
+reasonable, timely, and publicly accessible manner.
+
+  3. Scope of Copyleft.
+
+Modifications to the Work itself, including derivative works based on
+the Work, must be licensed under this License.
+
+This License does not apply to Independent Works that merely interface
+with, link to, or communicate with the Work, provided that such
+Independent Works are not derived from the Work. A work shall not be
+considered derived solely by virtue of dynamic linking, inter-process
+communication, or network interaction using publicly documented or standard
+interfaces.
+
+  4. Network Use.
+
+Operation of the Work, or a modified version of the Work, to provide its
+functionality to third parties through Network Use shall be treated as
+equivalent to distribution solely for the purpose of triggering the
+source availability obligations under this License. This obligation
+applies only to the Work itself and does not extend to Independent Works,
+configurations, or deployment-specific code that are not derived from the Work.
+
+  5. No Additional Restrictions.
+
+No recipient may impose contractual, technical, legal, or policy-based
+restrictions that would prevent or interfere with the exercise of the
+rights granted under this License with respect to the Work.
+
+Any attempt to impose such additional restrictions is void and shall
+not affect the rights of other recipients under this License.
+
+  6. Compatibility and Combination.
+
+The Work may be combined with software licensed under other terms,
+provided that such combination does not restrict the rights granted
+under this License with respect to the Work itself.
+
+Nothing in this License shall be construed as requiring Independent
+Works to be licensed under this License.
+
+  7. Disclaimer of Warranty.
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+NON-INFRINGEMENT.
+
+  8. Limitation of Liability.
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION
+WITH THE WORK OR THE USE OR OTHER DEALINGS IN THE WORK.
+
+  9. Acceptance.
+
+However, by modifying, distributing, or operating the Work in a manner
+that triggers the obligations of this License, you indicate your
+acceptance of this License and all of its terms.
+
+  10. Patent License:
+
+Each contributor grants a perpetual, worldwide, non-exclusive,
+royalty-free patent license to make, use, sell, and distribute the
+Work, limited to patent claims necessarily infringed by their
+contribution.
+
+If you initiate patent litigation claiming that the Work infringes a
+patent, your rights under this License terminate.
+
+                    END OF TERMS AND CONDITIONS

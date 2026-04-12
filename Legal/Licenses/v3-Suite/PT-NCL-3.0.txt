@@ -1,0 +1,76 @@
+Copyright (C) <year> <copyright holder>
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Work"),
+to use, study, modify, and distribute the Work solely for
+Non-Commercial Purposes, subject to the terms and conditions of this
+License.
+
+  1. Definitions.
+
+"Work" means the software program, documentation, or other material
+licensed under this License.
+
+"Non-Commercial Purposes" means use of the Work exclusively for
+academic, educational, research, personal, or experimental purposes,
+where such use is not primarily intended for, or directed toward,
+commercial advantage, financial gain, or monetary compensation.
+
+"Commercial Use" means any use of the Work, whether direct or indirect,
+in connection with products, services, activities, or operations that
+are primarily intended to obtain commercial advantage, generate
+revenue, or receive monetary compensation, regardless of whether a fee
+is charged for access to the Work itself.
+
+  2. Grant of Rights.
+
+Subject to the terms of this License, you are permitted to use, study,
+modify, and distribute the Work for Non-Commercial Purposes only.
+
+  3. Prohibition of Commercial Use.
+
+Commercial Use of the Work is expressly prohibited under this License.
+
+Any Commercial Use of the Work requires a separate license or explicit
+written permission from the copyright holder.
+
+  4. Derivative Works.
+
+You may create and distribute derivative works based on the Work solely
+for Non-Commercial Purposes.
+
+All derivative works must be licensed under the terms of this License
+and must clearly indicate that they are derived from the original Work.
+
+  5. No Commercial Sublicensing.
+
+This License does not grant any right to sublicense, relicense, or
+otherwise authorize Commercial Use of the Work or any derivative work.
+
+  6. Disclaimer of Warranty.
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+NON-INFRINGEMENT.
+
+  7. Limitation of Liability.
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION
+WITH THE WORK OR THE USE OR OTHER DEALINGS IN THE WORK.
+
+  8. Termination.
+
+Any use of the Work in violation of this License shall automatically
+terminate the rights granted under this License.
+
+Termination does not affect the rights of recipients who have received
+the Work in compliance with this License prior to such termination.
+
+  9. Acceptance.
+
+You are not required to accept this License in order to receive or use
+a copy of the Work. However, by modifying or distributing the Work, you
+indicate your acceptance of this License and all of its terms.

@@ -1,0 +1,19 @@
+                      PROJECT TICK COMMERCIAL EXCEPTION
+                        Version 3, 12 April 2026
+
+  This Commercial Exception is an additional permission applicable to
+Works licensed under a Project Tick copyleft license.
+
+  Notwithstanding the copyleft requirements of the applicable Project
+Tick license, the copyright holder may, at its discretion, grant
+additional permissions allowing the covered Work to be used, linked,
+combined, incorporated, deployed, or operated into proprietary or commercial
+products or services, pursuant to a separate written commercial agreement.
+
+  This Commercial Exception is not self-executing and does not grant
+any rights unless and until a separate commercial agreement has
+been executed with the copyright holder.
+
+  This Commercial Exception shall be interpreted narrowly and does
+not modify, waive, or override the terms of the underlying license
+except to the limited extent expressly set forth herein.

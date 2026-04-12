@@ -1,0 +1,33 @@
+Copyright (C) <year> <copyright holder>
+
+Permission is hereby granted to use, copy, implement, and distribute
+this specification and any implementation that complies with it, for
+any purpose, provided that the terms of this License are respected.
+
+  1. Implementation Freedom.
+
+Implementations of this specification may be licensed under any terms,
+including proprietary or commercial licenses.
+
+  2. Preservation of the Specification.
+
+Modified versions of the specification itself must clearly indicate
+that they are modified and must not be represented as the official
+Project Tick specification.
+
+  3. No Restriction on Interoperability.
+
+No legal, contractual, or technical terms or conditions may be imposed
+that would restrict interoperability with other implementations that
+comply with this specification.
+
+  4. No Trademark Rights.
+
+This License does not grant permission to use the name "Project Tick" or
+any associated trademarks, logos, or service marks in a manner that
+suggests endorsement, sponsorship, or official status, except with
+separate permission.
+
+  5. Disclaimer of Warranty.
+
+THE SPECIFICATION IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
