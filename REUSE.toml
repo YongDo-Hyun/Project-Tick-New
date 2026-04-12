@@ -166,3 +166,10 @@ path = ["GOVERNANCE.md",
        ]
 SPDX-License-Identifier = "LicenseRef-Project-Tick-Legal"
 SPDX-FileCopyrightText = "2025-2026 Project Tick"
+
+[[annotations]]
+path = [
+        "Branding/**"
+       ]
+SPDX-License-Identifier = "LicenseRef-Project-Tick-Trademark"
+SPDX-FileCopyrightText = "2025-2026 Project Tick"
