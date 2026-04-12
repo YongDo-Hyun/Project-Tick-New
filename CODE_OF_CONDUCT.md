@@ -1,16 +1,26 @@
-# Project Tick Code of Conduct
+# PROJECT TICK CODE OF CONDUCT
+## Version 3, 12 April 2026
 
-## Version 2, 15 February 2026
+Copyright (C) 2026 Project Tick <https://projecttick.org/>
 
-### 1. Purpose
+Permission is granted to copy, modify, and distribute this document
+for use in any project or organization.
 
-Project Tick is a free software infrastructure initiative committed to technical excellence, legal clarity, and long-term sustainability.
+### Preamble
 
-This Code of Conduct defines the behavioral and ethical standards expected across all Project Tick spaces. Its purpose is to protect contributors, maintain the integrity of the ecosystem, and ensure the security and reliability of our infrastructure.
+Project Tick is a free software infrastructure initiative committed to technical
+excellence, legal clarity, and long-term sustainability.
+
+This Code of Conduct defines the behavioral and ethical standards expected across
+all Project Tick spaces. Its purpose is to protect contributors, maintain the
+integrity of the ecosystem, and ensure the security and reliability of our
+infrastructure.
 
 Participation in Project Tick constitutes agreement to abide by this Code.
 
-### 2. Core Principles
+### TERMS AND CONDITIONS
+
+  1. Core Principles
 
 Project Tick operates according to the following foundational principles:
 
@@ -22,7 +32,7 @@ Project Tick operates according to the following foundational principles:
 
 These principles apply equally to maintainers, contributors, and participants.
 
-### 3. Expected Conduct
+  2. Expected Conduct
 
 All participants are expected to:
 
@@ -36,32 +46,33 @@ All participants are expected to:
 
 Criticism of ideas is encouraged. Personal attacks are not.
 
-### 4. Prohibited Conduct
+  3. Prohibited Conduct
 
 The following behaviors are considered violations of this Code of Conduct:
 
-#### 4.1 Personal and Social Misconduct
+    3.1 Personal and Social Misconduct
 
-- Harassment, intimidation, or threats
-- Discriminatory behavior based on identity or personal characteristics
-- Insulting, demeaning, or hostile personal attacks
-- Sexualized behavior inappropriate to a professional technical environment
-- Sharing private information without explicit consent
+    - Harassment, intimidation, or threats
+    - Discriminatory behavior based on identity or personal characteristics
+    - Insulting, demeaning, or hostile personal attacks
+    - Sexualized behavior inappropriate to a professional technical environment
+    - Sharing private information without explicit consent
 
-#### 4.2 Technical and Legal Misconduct
+    3.2 Technical and Legal Misconduct
 
-- Intentional submission of malicious code
-- Supply-chain compromise attempts
-- License violations or intentional misattribution
-- Plagiarism or failure to credit sources
-- False copyright claims
-- Impersonation of maintainers or other participants
-- Infrastructure abuse, including CI/CD exploitation or service disruption
-- Repeated bad-faith technical disruption
+    - Intentional submission of malicious code
+    - Supply-chain compromise attempts
+    - License violations or intentional misattribution
+    - Plagiarism or failure to credit sources
+    - False copyright claims
+    - Impersonation of maintainers or other participants
+    - Infrastructure abuse, including CI/CD exploitation or service disruption
+    - Repeated bad-faith technical disruption
 
-Project maintainers reserve the right to determine whether conduct violates the spirit or intent of this Code.
+Project maintainers reserve the right to determine whether conduct violates the
+spirit or intent of this Code.
 
-### 5. Scope
+  4. Scope
 
 This Code of Conduct applies to:
 
@@ -73,19 +84,21 @@ This Code of Conduct applies to:
 - Official Project Tick domains and email accounts
 - Public representation of the project
 
-Individuals representing Project Tick in any official capacity are expected to uphold this Code at all times.
+Individuals representing Project Tick in any official capacity are expected to
+uphold this Code at all times.
 
-### 6. Reporting
+  5. Reporting
 
 Violations may be reported confidentially to:
 
-conduct@projecttick.org
+- projecttick@projecttick.org
 
-Reports will be reviewed in a timely and objective manner. Confidentiality will be respected to the extent reasonably possible.
+Reports will be reviewed in a timely and objective manner. Confidentiality will be
+respected to the extent reasonably possible.
 
 Malicious or knowingly false reports may themselves constitute a violation.
 
-### 7. Enforcement
+  6. Enforcement
 
 Enforcement decisions are made by the Project Tick maintainers.
 
@@ -100,7 +113,7 @@ Serious security, infrastructure, or legal violations may result in immediate pe
 
 Enforcement decisions are final and are not subject to public vote.
 
-### 8. Remediation
+  7. Remediation
 
 Where appropriate, resolution may involve:
 
@@ -111,8 +124,11 @@ Where appropriate, resolution may involve:
 
 Reinstatement after suspension is at the sole discretion of the maintainers.
 
-### 9. Independence
+  8. Independence
 
-This document was inspired by Contributor Covenant 3.0 but has been independently written and adapted to reflect the governance, infrastructure, and legal priorities of Project Tick.
+This document was inspired by Contributor Covenant 3.0 and has been
+independently adapted for use as a general-purpose Code of Conduct template.
 
 Project Tick maintains full authority over the interpretation and enforcement of this Code.
+
+### END OF TERMS AND CONDITIONS
