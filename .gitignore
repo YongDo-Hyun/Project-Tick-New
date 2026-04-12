@@ -61,3 +61,4 @@ node_modules/
 
 tree.txt
 build-tiny
+Patches/pull/*.patch
