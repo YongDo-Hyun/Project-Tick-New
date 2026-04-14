@@ -236,7 +236,7 @@ The `REUSE.toml` file at the repository root and individual SPDX headers in each
 | Resource | URL |
 |---|---|
 | Source Code | `https://github.com/Project-Tick/Project-Tick` |
-| Bug Tracker | `https://github.com/Project-Tick/MeshMC/issues` |
+| Bug Tracker | `https://bugs.projecttick.org/enter_bug.cgi?product=MeshMC` |
 | Metadata Server | `https://meta.projecttick.org/` |
 | News Feed | `https://projecttick.org/product/meshmc/feed.xml` |
 | Application ID | `org.projecttick.MeshMC` |

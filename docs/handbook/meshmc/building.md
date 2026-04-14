@@ -71,8 +71,8 @@ Uses Scoop for CLI tools and vcpkg for C/C++ libraries.
 MeshMC uses git submodules (notably `libnbtplusplus`). Always clone recursively:
 
 ```bash
-git clone --recursive https://github.com/Project-Tick/MeshMC.git
-cd MeshMC
+git clone --recursive https://github.com/Project-Tick/Project-Tick.git
+cd Project-Tick/MeshMC
 ```
 
 If you already cloned without `--recursive`:
@@ -398,7 +398,7 @@ These are typically set for custom/self-hosted deployments:
 | `MeshMC_UPDATER_FEED_URL` | `""` | RSS feed URL for updater |
 | `MeshMC_UPDATER_GITHUB_API_URL` | `""` | GitHub Releases API URL for update verification |
 | `MeshMC_NOTIFICATION_URL` | `https://projecttick.org/` | Notification check URL |
-| `MeshMC_BUG_TRACKER_URL` | `https://github.com/Project-Tick/MeshMC/issues` | Bug tracker URL |
+| `MeshMC_BUG_TRACKER_URL` | `hhttps://bugs.projecttick.org/enter_bug.cgi?product=MeshMC` | Bug tracker URL |
 
 ### API Key Options
 
