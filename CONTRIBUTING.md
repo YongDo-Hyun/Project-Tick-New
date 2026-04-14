@@ -2,7 +2,7 @@
 
 Firstly, Please read [GOVERNANCE.md](GOVERNANCE.md)
 
-<!-- ## Contributor License Agreement (CLA) // FIXME: CLA cannot be used until a CLA signing model is agreed upon.
+## Contributor License Agreement (CLA)
 
 By submitting a contribution to this repository, you agree that your
 contribution is made under the terms of the **Project Tick Contributor
@@ -23,10 +23,10 @@ configuration files.
 
 The full text of the current CLA is available at:
 
-- <https://projecttick.org/licenses/PT-CLA-2.0.txt>
+- <https://projecttick.org/licenses/PT-CLA-3.0.txt>
 
 If you do not agree to the CLA, please do not submit contributions.
- -->
+
 ---
 
 ## Quick Start
