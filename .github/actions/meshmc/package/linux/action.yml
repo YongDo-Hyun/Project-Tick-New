@@ -127,6 +127,22 @@ runs:
           --dst-dir "$INSTALL_PORTABLE_DIR" \
           "$INSTALL_PORTABLE_DIR"/bin/* "$QT_PLUGIN_PATH"/*/*.so
 
+        # Replace the sharun hardlink stub for bin/meshmc with a plain shell
+        # wrapper so the updater can install it over any previous binary or
+        # script at that path without needing to understand sharun internals.
+        printf '%s\n' \
+          '#!/bin/sh' \
+          'BINDIR="$(dirname "$(readlink -f "$0")")"' \
+          'ROOTDIR="$(dirname "$BINDIR")"' \
+          'export LD_LIBRARY_PATH="$ROOTDIR/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"' \
+          'if [ -f "$ROOTDIR/portable.txt" ]; then' \
+          '  exec "$ROOTDIR/shared/bin/meshmc" -d "$ROOTDIR" "$@"' \
+          'else' \
+          '  exec "$ROOTDIR/shared/bin/meshmc" "$@"' \
+          'fi' \
+          > "$INSTALL_PORTABLE_DIR/bin/meshmc"
+        chmod +x "$INSTALL_PORTABLE_DIR/bin/meshmc"
+
         # FIXME(@YongDo-Hyun): gamemode doesn't seem to be very portable with DBus. Find a way to make it work!
         find "$INSTALL_PORTABLE_DIR" -name '*gamemode*' -exec rm {} +
 
