@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # SPDX-FileCopyrightText: 2026 Project Tick
 #
-# MeshMC Bootstrap Script
+# Project Tick Bootstrap Script
 # Detects distro, installs dependencies, and sets up lefthook.
 
 set -euo pipefail
@@ -92,20 +92,47 @@ check_lib() {
     fi
 }
 
+LLVM_MIN_VER=22
+LLVM_CLANG=""
+
 check_llvm() {
-    local found=0
-    for bin in clang-22 clang++-22 llvm-config-22; do
-        if command -v "$bin" &>/dev/null; then
-            found=1
-            break
-        fi
-    done
-    if [ $found -eq 1 ]; then
-        ok "LLVM 22 is installed"
-    else
-        warn "LLVM 22 is NOT installed"
-        MISSING_DEPS+=("LLVM 22")
+    # 1. Try versioned binary (Debian/Ubuntu: clang-22)
+    if command -v "clang-${LLVM_MIN_VER}" &>/dev/null; then
+        LLVM_CLANG="clang-${LLVM_MIN_VER}"
+        ok "LLVM ${LLVM_MIN_VER} found: $LLVM_CLANG ($(command -v "$LLVM_CLANG"))"
+        return
     fi
+
+    # 2. Try Homebrew keg-only path (macOS)
+    if [[ "${DISTRO:-}" == "macos" ]]; then
+        local brew_llvm
+        brew_llvm="$(brew --prefix llvm 2>/dev/null || true)"
+        if [[ -n "$brew_llvm" && -x "${brew_llvm}/bin/clang" ]]; then
+            local ver
+            ver=$("${brew_llvm}/bin/clang" --version 2>/dev/null | head -1 | grep -oP '\d+' | head -1)
+            if [[ -n "$ver" && "$ver" -ge "$LLVM_MIN_VER" ]]; then
+                LLVM_CLANG="${brew_llvm}/bin/clang"
+                ok "LLVM ${ver} found via Homebrew: $LLVM_CLANG"
+                return
+            fi
+        fi
+    fi
+
+    # 3. Try unversioned binary and check version (Fedora/Arch/SUSE)
+    if command -v clang &>/dev/null; then
+        local ver
+        ver=$(clang --version 2>/dev/null | head -1 | grep -oP '\d+' | head -1)
+        if [[ -n "$ver" && "$ver" -ge "$LLVM_MIN_VER" ]]; then
+            LLVM_CLANG="clang"
+            ok "LLVM ${ver} found: clang ($(command -v clang))"
+            return
+        else
+            warn "clang found but version ${ver:-unknown} < ${LLVM_MIN_VER}"
+        fi
+    fi
+
+    warn "LLVM ${LLVM_MIN_VER}+ is NOT installed"
+    MISSING_DEPS+=("LLVM ${LLVM_MIN_VER}")
 }
 
 check_dependencies() {
@@ -149,7 +176,7 @@ install_debian_ubuntu() {
         extra-cmake-modules \
         pkg-config \
         reuse
-    if [[ " ${MISSING_DEPS[*]} " == *" LLVM 22 "* ]]; then
+    if [[ " ${MISSING_DEPS[*]} " == *" LLVM ${LLVM_MIN_VER} "* ]]; then
         install_llvm_debian_ubuntu
     fi
 }
@@ -165,9 +192,9 @@ install_fedora() {
         extra-cmake-modules \
         pkgconf \
         reuse
-    if [[ " ${MISSING_DEPS[*]} " == *" LLVM 22 "* ]]; then
-        info "Installing LLVM 22 via dnf..."
-        sudo dnf install -y clang22 llvm22
+    if [[ " ${MISSING_DEPS[*]} " == *" LLVM ${LLVM_MIN_VER} "* ]]; then
+        info "Installing LLVM via dnf..."
+        sudo dnf install -y clang llvm lld || install_llvm_debian_ubuntu
     fi
 }
 
@@ -183,9 +210,9 @@ install_rhel() {
         extra-cmake-modules \
         pkgconf \
         reuse
-    if [[ " ${MISSING_DEPS[*]} " == *" LLVM 22 "* ]]; then
-        info "Installing LLVM 22 via dnf..."
-        sudo dnf install -y clang22 llvm22 || install_llvm_debian_ubuntu
+    if [[ " ${MISSING_DEPS[*]} " == *" LLVM ${LLVM_MIN_VER} "* ]]; then
+        info "Installing LLVM via dnf..."
+        sudo dnf install -y clang llvm lld || install_llvm_debian_ubuntu
     fi
 }
 
@@ -200,9 +227,9 @@ install_suse() {
         extra-cmake-modules \
         pkg-config \
         python3-reuse
-    if [[ " ${MISSING_DEPS[*]} " == *" LLVM 22 "* ]]; then
-        info "Installing LLVM 22 via zypper..."
-        sudo zypper install -y clang22 llvm22
+    if [[ " ${MISSING_DEPS[*]} " == *" LLVM ${LLVM_MIN_VER} "* ]]; then
+        info "Installing LLVM via zypper..."
+        sudo zypper install -y clang llvm lld
     fi
 }
 
@@ -217,9 +244,9 @@ install_arch() {
         extra-cmake-modules \
         pkgconf \
         reuse
-    if [[ " ${MISSING_DEPS[*]} " == *" LLVM 22 "* ]]; then
-        info "Installing LLVM 22 via pacman..."
-        sudo pacman -Sy --needed --noconfirm llvm clang
+    if [[ " ${MISSING_DEPS[*]} " == *" LLVM ${LLVM_MIN_VER} "* ]]; then
+        info "Installing LLVM via pacman..."
+        sudo pacman -Sy --needed --noconfirm llvm clang lld
     fi
 }
 
@@ -239,9 +266,12 @@ install_macos() {
         extra-cmake-modules \
         reuse \
         lefthook
-    if [[ " ${MISSING_DEPS[*]} " == *" LLVM 22 "* ]]; then
-        info "Installing LLVM 22 via Homebrew..."
-        brew install llvm@22
+    if [[ " ${MISSING_DEPS[*]} " == *" LLVM ${LLVM_MIN_VER} "* ]]; then
+        info "Installing LLVM via Homebrew..."
+        brew install llvm
+        local brew_llvm
+        brew_llvm="$(brew --prefix llvm)"
+        info "LLVM is keg-only. Add to PATH: export PATH=\"${brew_llvm}/bin:\$PATH\""
     fi
 }
 
@@ -260,6 +290,35 @@ install_lefthook() {
         exit 1
     fi
     ok "lefthook installed successfully"
+}
+
+setup_mise() {
+    if command -v mise &>/dev/null; then
+        ok "mise is already installed ($(mise --version))"
+    else
+        info "Installing mise (dev environment manager)..."
+        if command -v curl &>/dev/null; then
+            curl -fsSL https://mise.run | sh
+        elif command -v wget &>/dev/null; then
+            wget -qO- https://mise.run | sh
+        else
+            err "curl or wget required to install mise"
+            return 1
+        fi
+        export PATH="$HOME/.local/bin:$PATH"
+        if ! command -v mise &>/dev/null; then
+            err "mise installation failed. See https://mise.jdx.dev/installing-mise.html"
+            return 1
+        fi
+        ok "mise installed successfully"
+    fi
+
+    if [ -f ".mise.toml" ]; then
+        info "Installing tools from .mise.toml..."
+        mise install --yes
+        ok "mise tools installed"
+        info "Activate mise in your shell: eval \"\$(mise activate bash)\" (or zsh/fish)"
+    fi
 }
 
 install_missing() {
@@ -310,7 +369,7 @@ init_submodules() {
 
 main() {
     echo
-    info "MeshMC Bootstrap"
+    info "Project Tick Bootstrap"
     echo "─────────────────────────────────────────────"
     echo
 
@@ -325,11 +384,17 @@ main() {
     install_missing
     echo
 
+    setup_mise
+    echo
+
     setup_lefthook
     echo
 
     echo "─────────────────────────────────────────────"
     ok "Bootstrap successful! You're all set."
+    if [[ -n "${LLVM_CLANG:-}" ]]; then
+        info "LLVM compiler: $LLVM_CLANG"
+    fi
     echo
 }
 
