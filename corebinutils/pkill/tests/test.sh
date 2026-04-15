@@ -623,7 +623,7 @@ wait_helper_exit "$HELPER_PID"
 # ============================================================
 # 24. pkill no match → status 1
 # ============================================================
-run_capture "$PKILL_BIN" "nonexistent_process_$$$RANDOM"
+run_capture "$PKILL_BIN" "nonexistent_process_$$$(date +%s)"
 assert_status "pkill no match: status" 1 "$LAST_STATUS"
 pass "pkill no match → status 1"
 
