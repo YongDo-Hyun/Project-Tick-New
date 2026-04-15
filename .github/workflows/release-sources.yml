@@ -164,7 +164,6 @@ jobs:
       - name: Patch CMakeLists.txt for bundled libnbtplusplus
         shell: bash
         run: |
-          cp bootstrap.sh bootstrap.cmd source-stage/meshmc/
           patch -p1 -d source-stage < .github/patches/meshmc-release-tarball.patch
 
       - name: Package source archives
