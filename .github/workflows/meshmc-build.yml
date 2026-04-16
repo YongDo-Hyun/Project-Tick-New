@@ -229,7 +229,7 @@ jobs:
         run: |
           MONOREPO_ROOT="${GITHUB_WORKSPACE}"
           INSTALL_PREFIX="${GITHUB_WORKSPACE}/meshmc-deps"
-          CMAKE_COMMON="-DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
+          CMAKE_COMMON="-DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
 
           # Install vcpkg packages needed by monorepo libraries
           if [[ "${{ matrix.vcvars-arch }}" == "arm64" ]]; then
