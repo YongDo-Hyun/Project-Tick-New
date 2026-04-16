@@ -21,13 +21,44 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Install zlib (Linux)
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y zlib1g-dev cxxtest
+      - name: Build and install monorepo libraries (Linux)
+        if: ${{ runner.os == 'Linux' }}
+        shell: bash
+        run: |
+          MONOREPO_ROOT="${GITHUB_WORKSPACE}"
+          CMAKE_COMMON="-DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Release"
 
-      - name: Install zlib (macOS)
-        if: runner.os == 'macOS'
-        run: brew install zlib cxxtest
+          install_lib() {
+            local dir="$1"; shift
+            echo "::group::Building $dir"
+            cmake -S "$MONOREPO_ROOT/$dir" -B "$MONOREPO_ROOT/$dir/build" \
+              $CMAKE_COMMON "$@" -G Ninja
+            cmake --build "$MONOREPO_ROOT/$dir/build"
+            sudo cmake --install "$MONOREPO_ROOT/$dir/build"
+            echo "::endgroup::"
+          }
+
+          # External dependencies from monorepo
+          install_lib neozip -DZLIB_COMPAT=OFF -DWITH_GTEST=OFF
+
+      - name: Build and install monorepo libraries (macOS)
+        if: ${{ runner.os == 'macOS' }}
+        shell: bash
+        run: |
+          MONOREPO_ROOT="${GITHUB_WORKSPACE}"
+          CMAKE_COMMON="-DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64;x86_64 -DCMAKE_PREFIX_PATH=$(brew --prefix libarchive)"
+
+          install_lib() {
+            local dir="$1"; shift
+            echo "::group::Building $dir"
+            cmake -S "$MONOREPO_ROOT/$dir" -B "$MONOREPO_ROOT/$dir/build" \
+              $CMAKE_COMMON "$@" -G Ninja
+            cmake --build "$MONOREPO_ROOT/$dir/build"
+            sudo cmake --install "$MONOREPO_ROOT/$dir/build"
+            echo "::endgroup::"
+          }
+
+          install_lib neozip -DZLIB_COMPAT=OFF -DWITH_GTEST=OFF
 
       - uses: ilammy/msvc-dev-cmd@v1
         if: runner.os == 'Windows'
