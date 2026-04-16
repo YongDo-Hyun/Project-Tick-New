@@ -13,7 +13,7 @@ name: CI
 
 on:
   push:
-    branches: ["**"]
+    branches: ["master"]
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
   pull_request_target:
