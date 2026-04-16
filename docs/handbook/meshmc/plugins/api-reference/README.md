@@ -39,6 +39,7 @@ Each section page documents:
 | S12 | [UI Dialogs](s12-ui-dialogs/) | `s12-ui-dialogs/` | `ui_show_message()`, `ui_add_menu_item()`, `ui_file_open_dialog()`, `ui_file_save_dialog()`, `ui_input_dialog()`, `ui_confirm_dialog()` |
 | S13 | [UI Page Builder](s13-ui-page-builder/) | `s13-ui-page-builder/` | `ui_page_create()`, `ui_page_add_to_list()`, `ui_layout_create()`, `ui_layout_add_widget()`, `ui_layout_add_layout()`, `ui_layout_add_spacer()`, `ui_page_set_layout()` |
 | S14 | [Utility](s14-utility/) | `s14-utility/` | `get_app_version()`, `get_app_dir()`, `get_data_dir()`, `get_timestamp()` |
+<!-- TODO: Document S15 -->
 
 ## Related Documentation
 
