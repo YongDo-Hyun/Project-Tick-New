@@ -21,6 +21,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Install cxxtest (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y cxxtest
+
+      - name: Install cxxtest (macOS)
+        if: runner.os == 'macOS'
+        run: brew install cxxtest
+      
       - name: Build and install monorepo libraries (Linux)
         if: ${{ runner.os == 'Linux' }}
         shell: bash
