@@ -237,7 +237,7 @@ jobs:
           else
             VCPKG_TRIPLET="x64-windows"
           fi
-          "$VCPKG_ROOT/vcpkg" install libarchive --triplet "$VCPKG_TRIPLET"
+          "$VCPKG_ROOT/vcpkg" install --classic libarchive --triplet "$VCPKG_TRIPLET"
 
           install_lib() {
             local dir="$1"; shift
