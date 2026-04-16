@@ -22,14 +22,13 @@ jobs:
         uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
         with:
           dry-run: false
-          language: c
-          project-src-path: cmark
+          language: c++
       - name: Run Fuzzers
         uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
         with:
           fuzz-seconds: 600
           dry-run: false
-          language: c
+          language: c++
       - name: Upload Crash
         uses: actions/upload-artifact@v7
         if: failure() && steps.build.outcome == 'success'

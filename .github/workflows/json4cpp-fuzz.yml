@@ -30,7 +30,6 @@ jobs:
       with:
         dry-run: false
         language: c++
-        project-src-path: json4cpp
     - name: Run Fuzzers
       uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
       with:
