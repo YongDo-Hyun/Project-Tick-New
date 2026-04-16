@@ -159,7 +159,7 @@ jobs:
         shell: bash
         run: |
           MONOREPO_ROOT="${GITHUB_WORKSPACE}"
-          CMAKE_COMMON="-DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"
+          CMAKE_COMMON="-DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_OSX_ARCHITECTURES=arm64;x86_64 -DCMAKE_PREFIX_PATH=$(brew --prefix libarchive)"
 
           install_lib() {
             local dir="$1"; shift
@@ -226,6 +226,8 @@ jobs:
         shell: bash
         env:
           VCPKG_ROOT: ${{ env.VCPKG_ROOT }}
+          CMAKE_C_COMPILER_LAUNCHER: ""
+          CMAKE_CXX_COMPILER_LAUNCHER: ""
         run: |
           MONOREPO_ROOT="${GITHUB_WORKSPACE}"
           INSTALL_PREFIX="${GITHUB_WORKSPACE}/meshmc-deps"
