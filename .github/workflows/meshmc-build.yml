@@ -267,6 +267,7 @@ jobs:
           install_lib javalauncher
 
           echo "CMAKE_PREFIX_PATH=$INSTALL_PREFIX" >> "$GITHUB_ENV"
+          echo "$INSTALL_PREFIX/bin" >> "$GITHUB_PATH"
 
       - name: Configure project
         run: |
