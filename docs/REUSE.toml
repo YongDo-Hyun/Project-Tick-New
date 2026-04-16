@@ -1,0 +1,29 @@
+version = 1
+
+[[annotations]]
+path = [
+  "**/TODO"
+]
+SPDX-License-Identifier = "CC0-1.0"
+SPDX-FileCopyrightText = "NONE"
+
+[[annotations]]
+path = [
+  "handbook/**.md"
+]
+SPDX-License-Identifier = "CC-BY-SA-4.0"
+SPDX-FileCopyrightText = "2026 Project Tick"
+
+[[annotations]]
+path = [
+  "RelNotes/**.md"
+]
+SPDX-License-Identifier = "CC-BY-ND-4.0"
+SPDX-FileCopyrightText = "2026 Project Tick"
+
+[[annotations]]
+path = [
+  "RelNotes/**.template.md"
+]
+SPDX-License-Identifier = "CC-BY-4.0"
+SPDX-FileCopyrightText = "2026 Project Tick"
