@@ -153,7 +153,7 @@ runs:
     - name: Upload binary tarball
       uses: actions/upload-artifact@v7
       with:
-        name: MeshMC-${{ inputs.artifact-name }}-Qt6-Portable-${{ inputs.version }}-${{ inputs.build-type }}
+        name: MeshMC-${{ inputs.artifact-name }}-Portable-${{ inputs.version }}-${{ inputs.build-type }}
         path: meshmc/MeshMC-portable.tar.gz
 
     - name: Upload AppImage

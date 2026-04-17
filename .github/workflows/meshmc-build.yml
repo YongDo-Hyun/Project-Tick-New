@@ -86,7 +86,7 @@ jobs:
         working-directory: meshmc
 
     env:
-      ARTIFACT_NAME: ${{ matrix.artifact-name }}-Qt6
+      ARTIFACT_NAME: ${{ matrix.artifact-name }}
       BUILD_PLATFORM: official
       BUILD_TYPE: ${{ inputs.build-type || 'Debug' }}
       CMAKE_PRESET: ${{ matrix.cmake-preset }}
