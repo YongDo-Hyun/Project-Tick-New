@@ -13,12 +13,11 @@ inputs:
     description: "Bundle docs/handbook/<project> into the source tree if it exists"
     required: false
     default: "true"
-  bundle-library-src:
-    description: "Extra directory to bundle into the source tree (e.g. libnbtplusplus)"
-    required: false
-    default: ""
-  bundle-library-dst:
-    description: "Destination path inside the source tree for the bundled library (e.g. libraries/libnbtplusplus)"
+  bundle-libraries:
+    description: >
+      Newline-separated list of library bundles in "src:dst" format.
+      Each line maps a source directory to a destination path inside
+      the source tree (e.g. "libnbtplusplus:libraries/libnbtplusplus").
     required: false
     default: ""
 
@@ -36,8 +35,7 @@ runs:
       env:
         PROJECT: ${{ inputs.project }}
         BUNDLE_HANDBOOK: ${{ inputs.bundle-handbook }}
-        BUNDLE_LIB_SRC: ${{ inputs.bundle-library-src }}
-        BUNDLE_LIB_DST: ${{ inputs.bundle-library-dst }}
+        BUNDLE_LIBRARIES: ${{ inputs.bundle-libraries }}
       run: |
         set -euo pipefail
 
@@ -51,10 +49,21 @@ runs:
           cp -a "docs/handbook/$PROJECT/." "$SRC_STAGE/$PROJECT/docs/handbook/"
         fi
 
-        # Optionally bundle an extra library directory
-        if [ -n "$BUNDLE_LIB_SRC" ] && [ -n "$BUNDLE_LIB_DST" ]; then
-          mkdir -p "$SRC_STAGE/$PROJECT/$BUNDLE_LIB_DST"
-          cp -a "$BUNDLE_LIB_SRC/." "$SRC_STAGE/$PROJECT/$BUNDLE_LIB_DST/"
+        # Bundle library directories (newline-separated "src:dst" pairs)
+        if [ -n "$BUNDLE_LIBRARIES" ]; then
+          while IFS= read -r entry; do
+            entry="$(echo "$entry" | xargs)"
+            [ -n "$entry" ] || continue
+            lib_src="${entry%%:*}"
+            lib_dst="${entry#*:}"
+            if [ -z "$lib_src" ] || [ -z "$lib_dst" ]; then
+              echo "::error::Invalid bundle-libraries entry: '$entry' (expected 'src:dst')"
+              exit 1
+            fi
+            echo "Bundling library: $lib_src -> $lib_dst"
+            mkdir -p "$SRC_STAGE/$PROJECT/$lib_dst"
+            cp -a "$lib_src/." "$SRC_STAGE/$PROJECT/$lib_dst/"
+          done <<< "$BUNDLE_LIBRARIES"
         fi
 
         echo "source-dir=$SRC_STAGE/$PROJECT" >> "$GITHUB_OUTPUT"

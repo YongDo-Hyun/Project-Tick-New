@@ -138,7 +138,6 @@ jobs:
           path: neozip/neozip-${{ matrix.deploy-name }}.zip
           if-no-files-found: error
 
-
   meshmc_prepare_source:
     name: MeshMC Source Archives
     runs-on: ubuntu-latest
@@ -153,18 +152,31 @@ jobs:
       - name: Set version
         run: echo "VERSION=${{ inputs.version || github.ref_name }}" >> "$GITHUB_ENV"
 
+      - name: Patch CMakeLists.txt for bundled libraries
+        shell: bash
+        run: |
+          git apply .github/patches/0001-GHA-RELEASE-Prepare-tarball-with-libraries-in-CMake.patch
+
       - name: Prepare source tree
         id: prepare
         uses: ./.github/actions/prepare-source-tree
         with:
           project: meshmc
-          bundle-library-src: libnbtplusplus
-          bundle-library-dst: libraries/libnbtplusplus
-
-      - name: Patch CMakeLists.txt for bundled libnbtplusplus
-        shell: bash
-        run: |
-          patch -p1 -d source-stage < .github/patches/meshmc-release-tarball.patch
+          bundle-libraries: |
+            classparser:libraries/classparser
+            cmark:libraries/cmark
+            ganalytics:libraries/ganalytics
+            iconfix:libraries/iconfix
+            javacheck:libraries/javacheck
+            javalauncher:libraries/launcher
+            katabasis:libraries/katabasis
+            libnbtplusplus:libraries/libnbtplusplus
+            LocalPeer:libraries/LocalPeer
+            neozip:libraries/neozip
+            optional-bare:libraries/optional-bare
+            rainbow:libraries/rainbow
+            systeminfo:libraries/systeminfo
+            xz-embedded:libraries/xz-embedded
 
       - name: Package source archives
         uses: ./.github/actions/package-source
@@ -182,43 +194,6 @@ jobs:
           name: meshmc-source-archives
           path: release-artifacts/
           if-no-files-found: error
-
-
-  neozip_prepare_source:
-    name: neozip Source Archives
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Set version
-        run: echo "VERSION=${{ inputs.version || github.ref_name }}" >> "$GITHUB_ENV"
-
-      - name: Prepare source tree
-        id: prepare
-        uses: ./.github/actions/prepare-source-tree
-        with:
-          project: neozip
-
-      - name: Package source archives
-        uses: ./.github/actions/package-source
-        with:
-          project: neozip
-          version: ${{ env.VERSION }}
-          source-dir: ${{ steps.prepare.outputs.source-dir }}
-          output-dir: release-artifacts
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-private-key-id: ${{ secrets.GPG_PRIVATE_KEY_ID }}
-
-      - name: Upload source artifacts
-        uses: actions/upload-artifact@v7
-        with:
-          name: neozip-source-archives
-          path: release-artifacts/
-          if-no-files-found: error
-
 
   package_sources:
     name: Source Archives (${{ matrix.project }})
@@ -250,6 +225,7 @@ jobs:
           - rainbow
           - systeminfo
           - xz-embedded
+          - neozip
 
     steps:
       - name: Checkout
@@ -286,7 +262,7 @@ jobs:
 
   create_release:
     name: Create Release Draft
-    needs: [meshmc_build, neozip_build, meshmc_prepare_source, neozip_prepare_source, package_sources]
+    needs: [meshmc_build, neozip_build, meshmc_prepare_source, package_sources]
 
     runs-on: ubuntu-latest
     permissions:
@@ -441,7 +417,8 @@ jobs:
             MeshMC-*.sha256
             neozip-*/neozip-*.zip
             meshmc-source-archives/*
-            neozip-source-archives/*
+            meshmc-without-libraries-source-archives/*
+            source-neozip/*
             source-cgit/*
             source-cmark/*
             source-corebinutils/*
@@ -482,7 +459,7 @@ jobs:
             [[ -d "$d" ]] || continue
             cp -a "$d"/. deploy-bundle/neozip/
           done
-          cp -a neozip-source-archives/. deploy-bundle/neozip/
+          cp -a source-neozip/. deploy-bundle/neozip/
 
           # Source-only projects (from package_sources matrix)
           for project in cgit cmark corebinutils forgewrapper genqrcode images4docker json4cpp libnbtplusplus mnv tomlplusplus LocalPeer classparser ganalytics iconfix javacheck javalauncher katabasis optional-bare rainbow systeminfo xz-embedded; do
