@@ -3,6 +3,7 @@ build/
 out/
 install/
 cmake-build-*/
+result
 
 # IDE and editor files
 .idea/
